@@ -48,11 +48,15 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          # Fetch remote branches so 'main-presentation' exists locally
-          git fetch origin main-presentation:main-presentation || echo "No remote branch yet"
+          # Fetch all branches and tags
+          git fetch origin
 
-          # Switch to the branch, or create it if it doesn't exist
-          git checkout main-presentation || git checkout -b main-presentation
+          # Switch to main-presentation (create it if it doesn’t exist)
+          if git show-ref --verify --quiet refs/heads/main-presentation; then
+            git checkout main-presentation
+          else
+            git checkout -b main-presentation
+          fi
 
           # Merge changes from main into it
           git rebase origin/main || git reset --hard origin/main
