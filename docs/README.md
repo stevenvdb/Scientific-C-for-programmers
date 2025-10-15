@@ -1,4 +1,5 @@
-TODO: short description
+This course is an introduction to using C as a scientific programming
+language.
 
 
 ## Learning outcomes
