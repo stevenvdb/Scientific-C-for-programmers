@@ -4,3 +4,5 @@ execute:
 project:
   type: website
   output-dir: _site   # Quarto will render into _site inside the presentation folder
+  preview:
+    watch-inputs: true

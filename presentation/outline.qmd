@@ -1,0 +1,35 @@
+## Outline
+
+<div style="display: flex; gap: 1em; flex-wrap: wrap;">
+<div style="flex: 1 1 45%;">
+<h3>Day 1</h3>
+<details>
+  <summary>Introduction</summary>
+  <ul>
+    <li>Course overview</li>
+    <li>Motivation</li>
+    <li>Context</li>
+  </ul>
+</details>
+<details>
+  <summary>Jumping in the deep end</summary>
+</details>
+<h3>Day 2</h3>
+<details>
+  <summary>Basic C</summary>
+</details>
+</div>
+<div style="flex: 1 1 45%;">
+<h3>Day 3</h3>
+<details>
+  <summary>Advanced C</summary>
+</details>
+<h3>Day 4</h3>
+<details>
+  <summary>External libraries</summary>
+</details>
+<details>
+  <summary>Wrapping up</summary>
+</details>
+</div>
+</div>

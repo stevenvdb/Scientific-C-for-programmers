@@ -1,1 +1,32 @@
+# Introduction
+
 ## Who am I?
+
+Main lecturer: Steven Vandenbrande
+ 
+- Member of the HPC Support Team of ICTS
+- HPC (High Performance Computing):<br>
+  KU Leuven offers Tier-2 cluster to researchers,<br>
+  part of the Vlaams Supercomputer Centrum (VSC)
+- Background in molecular modelling (Steven)
+
+## Who are you?
+
+Please present yourself:
+
+- Your name
+- Your scientific background
+- Your programming background
+- Why you want to learn scientific C
+
+## Practical aspects
+
+- Four sessions of 3 hours (with a break)
+- Course website: <https://stevenvdb.github.io/Scientific-C-for-programmers/>
+- Hands on: make sure you have a working C environment
+
+<div class="fragment">
+First run of this course, feedback is much appreciated.
+</div>
+
+{{< include outline.qmd >}}
