@@ -1,0 +1,63 @@
+name: Build Quarto presentation and commit to main-presentation
+
+on:
+  push:
+    branches:
+      - main
+    # ignore commits with this message (or made by a bot)
+    paths-ignore:
+      - 'docs/presentation/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Skip CI if last commit is from GitHub Actions
+        run: |
+          if [ "$(git log -1 --pretty=format:'%an')" = "github-actions" ]; then
+            echo "Last commit made by GitHub Actions — exiting."
+            exit 0
+          fi
+
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # fetch all history and branches
+          ref: main        # start from main
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.9.3   # pin for stability
+
+      - name: Render Quarto presentation
+        run: |
+          cd presentation
+          quarto render
+
+      - name: Copy rendered presentation to docs
+        run: |
+          mkdir -p docs/presentation
+          cp -r presentation/_site/* docs/presentation/
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          # Fetch remote branches so 'main-presentation' exists locally
+          git fetch origin main-presentation:main-presentation || echo "No remote branch yet"
+
+          # Switch to the branch, or create it if it doesn't exist
+          git checkout main-presentation || git checkout -b main-presentation
+
+          # Merge changes from main into it
+          git rebase origin/main || git reset --hard origin/main
+
+          # Add and commit your generated files
+          git add -f docs/presentation
+          git commit -m "Update rendered quarto presentation" || echo "No changes to commit"
+          git push -f origin main-presentation

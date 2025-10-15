@@ -1,0 +1,13 @@
+---
+title: "Scientific C for programmers"
+author: Steven Vandenbrande
+format:
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    css: styles.css
+---
+
+{{< include introduction.qmd >}}
