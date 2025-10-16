@@ -26,7 +26,17 @@ Please present yourself:
 - Hands on: make sure you have a working C environment
 
 <div class="fragment">
+::: {.callout-tip}
 First run of this course, feedback is much appreciated.
+:::
 </div>
 
 {{< include outline.qmd >}}
+
+# Motivation
+
+## Why learn to program in C?
+
+## Why learn to program ~~in C~~?
+
+
