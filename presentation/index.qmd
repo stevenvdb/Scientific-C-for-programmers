@@ -10,7 +10,7 @@ format:
     css: styles.css
 resources:
   - introduction.qmd
-  - jumping_in_the_deep_end.qmd
+  - jumping_in.qmd
   - c_basics.qmd
   - c_advanced.qmd
   - external_libraries.qmd
@@ -20,7 +20,7 @@ toc: false
 ---
 
 {{< include introduction.qmd >}}
-{{< include jumping_in_the_deep_end.qmd >}}
+{{< include jumping_in.qmd >}}
 {{< include c_basics.qmd >}}
 {{< include c_advanced.qmd >}}
 {{< include external_libraries.qmd >}}
