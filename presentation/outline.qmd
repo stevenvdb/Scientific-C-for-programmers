@@ -7,16 +7,16 @@
   <summary>Introduction</summary>
   <ul>
     <li>Motivation</li>
-    <li>Course overview</li>
     <li>Context</li>
-  </ul>
+    <li>Course overview</li>
+    </ul>
 </details>
 <details>
   <summary>Jumping in</summary>
 </details>
 <h3>Day 2</h3>
 <details>
-  <summary>Basic C</summary>
+  <summary>Basics of C</summary>
 </details>
 </div>
 <div style="flex: 1 1 45%;">
