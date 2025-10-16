@@ -1,0 +1,443 @@
+[
+  {
+    "objectID": "c_advanced.html",
+    "href": "c_advanced.html",
+    "title": "Advanced C",
+    "section": "",
+    "text": "Advanced C"
+  },
+  {
+    "objectID": "jumping_in.html",
+    "href": "jumping_in.html",
+    "title": "Jumping in",
+    "section": "",
+    "text": "Jumping in"
+  },
+  {
+    "objectID": "introduction.html",
+    "href": "introduction.html",
+    "title": "Introduction",
+    "section": "",
+    "text": "Main lecturer: Steven Vandenbrande\n\nMember of the HPC Support Team of ICTS\nHPC (High Performance Computing): KU Leuven offers Tier-2 cluster to researchers, part of the Vlaams Supercomputer Centrum (VSC 1)\nBackground in molecular modelling\n\nSupport during hands-on sessions from Jan De Laet\n\n\n\nPlease present yourself:\n\nYour name\nYour scientific background\nYour programming background\nWhy you want to learn scientific C\n\n\n\n\n\nFour sessions of 3 hours (with a break)\nCourse website: https://stevenvdb.github.io/Scientific-C-for-programmers/\nHands on: make sure you have a working C environment\n\n\n\n\n\n\n\n\nTip\n\n\n\nFirst run of this course, feedback is much appreciated.\n\n\n\n\n\n\n\n\n\n\n\nIntroduction\n\n\n\nMotivation\n\n\nContext\n\n\nCourse overview\n\n\n\n\n\nJumping in\n\n\n\n\n\nBasics of C\n\n\n\n\n\n\n\nAdvanced C\n\n\n\n\n\nExternal libraries\n\n\n\n\nWrapping up"
+  },
+  {
+    "objectID": "introduction.html#who-am-i",
+    "href": "introduction.html#who-am-i",
+    "title": "Introduction",
+    "section": "",
+    "text": "Main lecturer: Steven Vandenbrande\n\nMember of the HPC Support Team of ICTS\nHPC (High Performance Computing): KU Leuven offers Tier-2 cluster to researchers, part of the Vlaams Supercomputer Centrum (VSC 1)\nBackground in molecular modelling\n\nSupport during hands-on sessions from Jan De Laet"
+  },
+  {
+    "objectID": "introduction.html#who-are-you",
+    "href": "introduction.html#who-are-you",
+    "title": "Introduction",
+    "section": "",
+    "text": "Please present yourself:\n\nYour name\nYour scientific background\nYour programming background\nWhy you want to learn scientific C"
+  },
+  {
+    "objectID": "introduction.html#practical-aspects",
+    "href": "introduction.html#practical-aspects",
+    "title": "Introduction",
+    "section": "",
+    "text": "Four sessions of 3 hours (with a break)\nCourse website: https://stevenvdb.github.io/Scientific-C-for-programmers/\nHands on: make sure you have a working C environment\n\n\n\n\n\n\n\n\nTip\n\n\n\nFirst run of this course, feedback is much appreciated."
+  },
+  {
+    "objectID": "introduction.html#outline",
+    "href": "introduction.html#outline",
+    "title": "Introduction",
+    "section": "",
+    "text": "Introduction\n\n\n\nMotivation\n\n\nContext\n\n\nCourse overview\n\n\n\n\n\nJumping in\n\n\n\n\n\nBasics of C\n\n\n\n\n\n\n\nAdvanced C\n\n\n\n\n\nExternal libraries\n\n\n\n\nWrapping up"
+  },
+  {
+    "objectID": "introduction.html#why-learn-to-program-in-c",
+    "href": "introduction.html#why-learn-to-program-in-c",
+    "title": "Introduction",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?"
+  },
+  {
+    "objectID": "introduction.html#why-learn-to-program-in-c-1",
+    "href": "introduction.html#why-learn-to-program-in-c-1",
+    "title": "Introduction",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?\nDidn’t AI agents take over programming? In my opinion:\n\nAI agents are invaluable assistants\nStill benefit greatly from a prompter with expertise because:\n\nThey will confidently write code that is wrong\nThey will often produce suboptimal code (speed, maintainability, …)\n\n\n\n\n\n\n\n\n\nWarning\n\n\n\nThis opinion might be outdated very soon."
+  },
+  {
+    "objectID": "introduction.html#why-learn-to-program-in-c-2",
+    "href": "introduction.html#why-learn-to-program-in-c-2",
+    "title": "Introduction",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?\nI encourage you to use AI assistance during this course\n\nYou will use it in real-life coding\nYou need to learn how to use it\n\nwith two caveats:\n\nThe exercises are educational,AI might perform better than for your real problems\nDon’t cheat on yourself,try to understand the answers to learn something"
+  },
+  {
+    "objectID": "introduction.html#why-learn-to-program-in-c-3",
+    "href": "introduction.html#why-learn-to-program-in-c-3",
+    "title": "Introduction",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?\n\nRelatively low level, close to hardware\n\nPopular to write system software (OS for example)\nGives insight into computer architecture\n\nPotentially gives good performance\n\nFairly popular in scientific computing\n\nSmall and stable language, syntax can be learned quickly\nGood basis to learn other programming languages\nYou inherited a project written in C\n\nNot a good intrinsic motivation, but a reality"
+  },
+  {
+    "objectID": "introduction.html#scientific-programming-landscape",
+    "href": "introduction.html#scientific-programming-landscape",
+    "title": "Introduction",
+    "section": "Scientific programming landscape",
+    "text": "Scientific programming landscape"
+  },
+  {
+    "objectID": "introduction.html#assembly",
+    "href": "introduction.html#assembly",
+    "title": "Introduction",
+    "section": "Assembly",
+    "text": "Assembly\n\nVery low level, essentially machine code in readable format\nMachine dependent, specific to each architecture\nUsed in performance-critical parts of low-level libraries\nIf you are not sure you need it, you don’t\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nThe godbolt project gives a taste of what assembly looks like."
+  },
+  {
+    "objectID": "introduction.html#c",
+    "href": "introduction.html#c",
+    "title": "Introduction",
+    "section": "C",
+    "text": "C\n\nFirst appeared in 1972, successor of B\nFirst standard in 1989, four revisions since\nCompiled language with static typing\nSmall language and standard library\nGives a lot of low-level control (e.g., memory management)"
+  },
+  {
+    "objectID": "introduction.html#c-1",
+    "href": "introduction.html#c-1",
+    "title": "Introduction",
+    "section": "C++",
+    "text": "C++\n\nExtension of C, adding object-oriented features\nCompiled language with static typing\nAllows better and more complex project constructs\nMore syntax and much larger standard library\nIn principle retains all benefits from C,in practice you program differently"
+  },
+  {
+    "objectID": "introduction.html#rust",
+    "href": "introduction.html#rust",
+    "title": "Introduction",
+    "section": "Rust",
+    "text": "Rust\n\n“Modern” version of C/C++\nVery different approach to memory management:\n\nC/C++ are prone to bugs causing safety issues\nRust is proposed as an alternative, see DARPA: Translating all C to Rust\nNot as problematic for programs you run locally\n\nEcosystem for scientific computing not as advanced as C/C++,but efforts are under way"
+  },
+  {
+    "objectID": "introduction.html#fortran",
+    "href": "introduction.html#fortran",
+    "title": "Introduction",
+    "section": "Fortran",
+    "text": "Fortran\n\nFortran (Formula Translating System) appeared in 1957\nCompiled language with static typing\nObject-oriented features added in 2003 standard\nStill a lot of Fortran compilers produce fast code\nGood fit for mathematical applications"
+  },
+  {
+    "objectID": "introduction.html#java",
+    "href": "introduction.html#java",
+    "title": "Introduction",
+    "section": "Java",
+    "text": "Java\n\nSyntax influences by C/C++, support object orientation\nSource code compiled to Java bytecode which runs in virtual machine\n\n=&gt; in principle slower code execution\n\nMemory safety and automatic garbage collection\nQuite often used in bioinformatics"
+  },
+  {
+    "objectID": "introduction.html#julia",
+    "href": "introduction.html#julia",
+    "title": "Introduction",
+    "section": "Julia",
+    "text": "Julia\n\nDesigned for technical and numerical computing\nDynamically typed, supports multiple paradigms\nCan be used as both a scripted or compiled language\nDesigned for parallel computing"
+  },
+  {
+    "objectID": "introduction.html#python",
+    "href": "introduction.html#python",
+    "title": "Introduction",
+    "section": "Python",
+    "text": "Python\n\nScripting language, runs in Python interpreter\nDynamically typed, garbage collection\nPerceived as easy to learn\nNot very performant (unless actual work is done by C/Fortran)\nPopular in scientific computing, including machine learning 2"
+  },
+  {
+    "objectID": "introduction.html#r",
+    "href": "introduction.html#r",
+    "title": "Introduction",
+    "section": "R",
+    "text": "R\n\nAimed at statistical computing and visualization\nInterpreted language, runs in R interpreter\nSimilar in many aspects to Python\nPopular in some fields such as social sciences and economics"
+  },
+  {
+    "objectID": "introduction.html#matlab",
+    "href": "introduction.html#matlab",
+    "title": "Introduction",
+    "section": "Matlab",
+    "text": "Matlab\n\nProprietary numeric computing environment\nExtensive built-in functions for linear algebra, signal processing, optimization, and statistics"
+  },
+  {
+    "objectID": "introduction.html#scientific-programming-landscape-1",
+    "href": "introduction.html#scientific-programming-landscape-1",
+    "title": "Introduction",
+    "section": "Scientific programming landscape",
+    "text": "Scientific programming landscape"
+  },
+  {
+    "objectID": "introduction.html#programming-accelerators",
+    "href": "introduction.html#programming-accelerators",
+    "title": "Introduction",
+    "section": "Programming accelerators",
+    "text": "Programming accelerators\n\nThus far: general-purpose programming languages for CPUs\nGPUs (originally for visualization) are well suited for scientific computing\n\nRequire dedicated programming languages\nCUDA for NVIDIA GPUs\nROCm for AMD GPUs\nOpenCL/OpenMP/… support multiple devices"
+  },
+  {
+    "objectID": "introduction.html#parallelization",
+    "href": "introduction.html#parallelization",
+    "title": "Introduction",
+    "section": "Parallelization",
+    "text": "Parallelization\n\nHigh performance computing (HPC) is all about parallelization\nNearly all programming languages are inherently serial,parallelization has to be added\nSeveral paradigms:\n\npthreads (OS level)\nOpenMP: shared-memory parallel programming in C/C++ and Fortran\nMPI: message passing interface for communication between processes"
+  },
+  {
+    "objectID": "introduction.html#scientific-programming-landscape-2",
+    "href": "introduction.html#scientific-programming-landscape-2",
+    "title": "Introduction",
+    "section": "Scientific programming landscape",
+    "text": "Scientific programming landscape\nConclusions:\n\nKnowing multiple languages is useful\n\nAllows you to use the right tool for the right job\nFor example, C for computationally-intensive parts, Python for postprocessing\n\nSelect a few languages in which you become an expert\nLook beyond intrinsic properties, the ecosystem and support is important"
+  },
+  {
+    "objectID": "introduction.html#what-you-will-learn-in-this-course",
+    "href": "introduction.html#what-you-will-learn-in-this-course",
+    "title": "Introduction",
+    "section": "What you will learn in this course",
+    "text": "What you will learn in this course\n\nthe place of C in the landscape of scientific programming languages\nlearn (most of) the C syntax 3\nwrite and run basic C programs with a focus on programming concepts encountered in science\nhow to use external libraries when writing C code"
+  },
+  {
+    "objectID": "introduction.html#what-you-will-not-learn-in-this-course",
+    "href": "introduction.html#what-you-will-not-learn-in-this-course",
+    "title": "Introduction",
+    "section": "What you will not learn in this course 4",
+    "text": "What you will not learn in this course 4\n\nHow to do HPC =&gt; HPC intro and Linux for HPC\nBuild systems =&gt; CMake intro and Makefile intro\nVersion control =&gt; Version control with git\nOptimizing code =&gt; Code optimization\nDebugging code =&gt; Defensive programming and debugging\nParallel programming =&gt; Parallel programming\nSetting up an Integrated Development Environment (IDE)"
+  },
+  {
+    "objectID": "introduction.html#what-you-will-not-learn-in-this-course-1",
+    "href": "introduction.html#what-you-will-not-learn-in-this-course-1",
+    "title": "Introduction",
+    "section": "What you will not learn in this course 5",
+    "text": "What you will not learn in this course 5\n\n\n\n\n\n\nTip\n\n\n\nThe calendar of VSC Trainings can be found at https://www.vscentrum.be/vsctraining. Learning paths that show connections between trainings can be found at https://gjbex.github.io/."
+  },
+  {
+    "objectID": "introduction.html#outline-1",
+    "href": "introduction.html#outline-1",
+    "title": "Introduction",
+    "section": "Outline",
+    "text": "Outline\n\n\n\nDay 1\n\n\n\nIntroduction\n\n\n\nMotivation\n\n\nContext\n\n\nCourse overview\n\n\n\n\n\nJumping in\n\n\n\nDay 2\n\n\n\nBasics of C\n\n\n\n\n\nDay 3\n\n\n\nAdvanced C\n\n\n\nDay 4\n\n\n\nExternal libraries\n\n\n\n\nWrapping up"
+  },
+  {
+    "objectID": "introduction.html#footnotes",
+    "href": "introduction.html#footnotes",
+    "title": "Introduction",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nVSCentrum.be↩︎\nThe heavy computational lifting is usually not done in Python↩︎\nBased on “The C Programming Language” second edition by Kernighan and Ritchie↩︎\nDo not worry if you currently do not understand all terminology, we will come back to this at the end of the course↩︎\nDo not worry if you currently do not understand all terminology, we will come back to this at the end of the course↩︎"
+  },
+  {
+    "objectID": "c_basics.html",
+    "href": "c_basics.html",
+    "title": "Basics of C",
+    "section": "",
+    "text": "Basics of C"
+  },
+  {
+    "objectID": "index.html#who-am-i",
+    "href": "index.html#who-am-i",
+    "title": "Scientific C for programmers",
+    "section": "Who am I?",
+    "text": "Who am I?\nMain lecturer: Steven Vandenbrande\n\nMember of the HPC Support Team of ICTS\nHPC (High Performance Computing): KU Leuven offers Tier-2 cluster to researchers, part of the Vlaams Supercomputer Centrum (VSC 1)\nBackground in molecular modelling\n\nSupport during hands-on sessions from Jan De Laet\nVSCentrum.be"
+  },
+  {
+    "objectID": "index.html#who-are-you",
+    "href": "index.html#who-are-you",
+    "title": "Scientific C for programmers",
+    "section": "Who are you?",
+    "text": "Who are you?\nPlease present yourself:\n\nYour name\nYour scientific background\nYour programming background\nWhy you want to learn scientific C"
+  },
+  {
+    "objectID": "index.html#practical-aspects",
+    "href": "index.html#practical-aspects",
+    "title": "Scientific C for programmers",
+    "section": "Practical aspects",
+    "text": "Practical aspects\n\nFour sessions of 3 hours (with a break)\nCourse website: https://stevenvdb.github.io/Scientific-C-for-programmers/\nHands on: make sure you have a working C environment\n\n\n\n\n\n\n\n\nTip\n\n\nFirst run of this course, feedback is much appreciated."
+  },
+  {
+    "objectID": "index.html#outline",
+    "href": "index.html#outline",
+    "title": "Scientific C for programmers",
+    "section": "Outline",
+    "text": "Outline\n\n\n\nDay 1\n\n\n\nIntroduction\n\n\n\nMotivation\n\n\nContext\n\n\nCourse overview\n\n\n\n\n\nJumping in\n\n\n\nDay 2\n\n\n\nBasics of C\n\n\n\n\n\nDay 3\n\n\n\nAdvanced C\n\n\n\nDay 4\n\n\n\nExternal libraries\n\n\n\n\nWrapping up"
+  },
+  {
+    "objectID": "index.html#why-learn-to-program-in-c",
+    "href": "index.html#why-learn-to-program-in-c",
+    "title": "Scientific C for programmers",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?"
+  },
+  {
+    "objectID": "index.html#why-learn-to-program-in-c-1",
+    "href": "index.html#why-learn-to-program-in-c-1",
+    "title": "Scientific C for programmers",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?\nDidn’t AI agents take over programming? In my opinion:\n\nAI agents are invaluable assistants\nStill benefit greatly from a prompter with expertise because:\n\nThey will confidently write code that is wrong\nThey will often produce suboptimal code (speed, maintainability, …)\n\n\n\n\n\n\n\n\n\nWarning\n\n\nThis opinion might be outdated very soon."
+  },
+  {
+    "objectID": "index.html#why-learn-to-program-in-c-2",
+    "href": "index.html#why-learn-to-program-in-c-2",
+    "title": "Scientific C for programmers",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?\nI encourage you to use AI assistance during this course\n\nYou will use it in real-life coding\nYou need to learn how to use it\n\nwith two caveats:\n\nThe exercises are educational,AI might perform better than for your real problems\nDon’t cheat on yourself,try to understand the answers to learn something"
+  },
+  {
+    "objectID": "index.html#why-learn-to-program-in-c-3",
+    "href": "index.html#why-learn-to-program-in-c-3",
+    "title": "Scientific C for programmers",
+    "section": "Why learn to program in C?",
+    "text": "Why learn to program in C?\n\nRelatively low level, close to hardware\n\nPopular to write system software (OS for example)\nGives insight into computer architecture\n\nPotentially gives good performance\n\nFairly popular in scientific computing\n\nSmall and stable language, syntax can be learned quickly\nGood basis to learn other programming languages\nYou inherited a project written in C\n\nNot a good intrinsic motivation, but a reality"
+  },
+  {
+    "objectID": "index.html#scientific-programming-landscape",
+    "href": "index.html#scientific-programming-landscape",
+    "title": "Scientific C for programmers",
+    "section": "Scientific programming landscape",
+    "text": "Scientific programming landscape"
+  },
+  {
+    "objectID": "index.html#assembly",
+    "href": "index.html#assembly",
+    "title": "Scientific C for programmers",
+    "section": "Assembly",
+    "text": "Assembly\n\nVery low level, essentially machine code in readable format\nMachine dependent, specific to each architecture\nUsed in performance-critical parts of low-level libraries\nIf you are not sure you need it, you don’t\n\n\n\n\n\n\n\n\n\nTip\n\n\nThe godbolt project gives a taste of what assembly looks like."
+  },
+  {
+    "objectID": "index.html#c",
+    "href": "index.html#c",
+    "title": "Scientific C for programmers",
+    "section": "C",
+    "text": "C\n\nFirst appeared in 1972, successor of B\nFirst standard in 1989, four revisions since\nCompiled language with static typing\nSmall language and standard library\nGives a lot of low-level control (e.g., memory management)"
+  },
+  {
+    "objectID": "index.html#c-1",
+    "href": "index.html#c-1",
+    "title": "Scientific C for programmers",
+    "section": "C++",
+    "text": "C++\n\nExtension of C, adding object-oriented features\nCompiled language with static typing\nAllows better and more complex project constructs\nMore syntax and much larger standard library\nIn principle retains all benefits from C,in practice you program differently"
+  },
+  {
+    "objectID": "index.html#rust",
+    "href": "index.html#rust",
+    "title": "Scientific C for programmers",
+    "section": "Rust",
+    "text": "Rust\n\n“Modern” version of C/C++\nVery different approach to memory management:\n\nC/C++ are prone to bugs causing safety issues\nRust is proposed as an alternative, see DARPA: Translating all C to Rust\nNot as problematic for programs you run locally\n\nEcosystem for scientific computing not as advanced as C/C++,but efforts are under way"
+  },
+  {
+    "objectID": "index.html#fortran",
+    "href": "index.html#fortran",
+    "title": "Scientific C for programmers",
+    "section": "Fortran",
+    "text": "Fortran\n\nFortran (Formula Translating System) appeared in 1957\nCompiled language with static typing\nObject-oriented features added in 2003 standard\nStill a lot of Fortran compilers produce fast code\nGood fit for mathematical applications"
+  },
+  {
+    "objectID": "index.html#java",
+    "href": "index.html#java",
+    "title": "Scientific C for programmers",
+    "section": "Java",
+    "text": "Java\n\nSyntax influences by C/C++, support object orientation\nSource code compiled to Java bytecode which runs in virtual machine\n\n=&gt; in principle slower code execution\n\nMemory safety and automatic garbage collection\nQuite often used in bioinformatics"
+  },
+  {
+    "objectID": "index.html#julia",
+    "href": "index.html#julia",
+    "title": "Scientific C for programmers",
+    "section": "Julia",
+    "text": "Julia\n\nDesigned for technical and numerical computing\nDynamically typed, supports multiple paradigms\nCan be used as both a scripted or compiled language\nDesigned for parallel computing"
+  },
+  {
+    "objectID": "index.html#python",
+    "href": "index.html#python",
+    "title": "Scientific C for programmers",
+    "section": "Python",
+    "text": "Python\n\nScripting language, runs in Python interpreter\nDynamically typed, garbage collection\nPerceived as easy to learn\nNot very performant (unless actual work is done by C/Fortran)\nPopular in scientific computing, including machine learning 1\n\nThe heavy computational lifting is usually not done in Python"
+  },
+  {
+    "objectID": "index.html#r",
+    "href": "index.html#r",
+    "title": "Scientific C for programmers",
+    "section": "R",
+    "text": "R\n\nAimed at statistical computing and visualization\nInterpreted language, runs in R interpreter\nSimilar in many aspects to Python\nPopular in some fields such as social sciences and economics"
+  },
+  {
+    "objectID": "index.html#matlab",
+    "href": "index.html#matlab",
+    "title": "Scientific C for programmers",
+    "section": "Matlab",
+    "text": "Matlab\n\nProprietary numeric computing environment\nExtensive built-in functions for linear algebra, signal processing, optimization, and statistics"
+  },
+  {
+    "objectID": "index.html#scientific-programming-landscape-1",
+    "href": "index.html#scientific-programming-landscape-1",
+    "title": "Scientific C for programmers",
+    "section": "Scientific programming landscape",
+    "text": "Scientific programming landscape"
+  },
+  {
+    "objectID": "index.html#programming-accelerators",
+    "href": "index.html#programming-accelerators",
+    "title": "Scientific C for programmers",
+    "section": "Programming accelerators",
+    "text": "Programming accelerators\n\nThus far: general-purpose programming languages for CPUs\nGPUs (originally for visualization) are well suited for scientific computing\n\nRequire dedicated programming languages\nCUDA for NVIDIA GPUs\nROCm for AMD GPUs\nOpenCL/OpenMP/… support multiple devices"
+  },
+  {
+    "objectID": "index.html#parallelization",
+    "href": "index.html#parallelization",
+    "title": "Scientific C for programmers",
+    "section": "Parallelization",
+    "text": "Parallelization\n\nHigh performance computing (HPC) is all about parallelization\nNearly all programming languages are inherently serial,parallelization has to be added\nSeveral paradigms:\n\npthreads (OS level)\nOpenMP: shared-memory parallel programming in C/C++ and Fortran\nMPI: message passing interface for communication between processes"
+  },
+  {
+    "objectID": "index.html#scientific-programming-landscape-2",
+    "href": "index.html#scientific-programming-landscape-2",
+    "title": "Scientific C for programmers",
+    "section": "Scientific programming landscape",
+    "text": "Scientific programming landscape\nConclusions:\n\nKnowing multiple languages is useful\n\nAllows you to use the right tool for the right job\nFor example, C for computationally-intensive parts, Python for postprocessing\n\nSelect a few languages in which you become an expert\nLook beyond intrinsic properties, the ecosystem and support is important"
+  },
+  {
+    "objectID": "index.html#what-you-will-learn-in-this-course",
+    "href": "index.html#what-you-will-learn-in-this-course",
+    "title": "Scientific C for programmers",
+    "section": "What you will learn in this course",
+    "text": "What you will learn in this course\n\nthe place of C in the landscape of scientific programming languages\nlearn (most of) the C syntax 1\nwrite and run basic C programs with a focus on programming concepts encountered in science\nhow to use external libraries when writing C code\n\nBased on “The C Programming Language” second edition by Kernighan and Ritchie"
+  },
+  {
+    "objectID": "index.html#what-you-will-not-learn-in-this-course",
+    "href": "index.html#what-you-will-not-learn-in-this-course",
+    "title": "Scientific C for programmers",
+    "section": "What you will not learn in this course 1",
+    "text": "What you will not learn in this course 1\n\nHow to do HPC =&gt; HPC intro and Linux for HPC\nBuild systems =&gt; CMake intro and Makefile intro\nVersion control =&gt; Version control with git\nOptimizing code =&gt; Code optimization\nDebugging code =&gt; Defensive programming and debugging\nParallel programming =&gt; Parallel programming\nSetting up an Integrated Development Environment (IDE)\n\nDo not worry if you currently do not understand all terminology, we will come back to this at the end of the course"
+  },
+  {
+    "objectID": "index.html#what-you-will-not-learn-in-this-course-1",
+    "href": "index.html#what-you-will-not-learn-in-this-course-1",
+    "title": "Scientific C for programmers",
+    "section": "What you will not learn in this course 1",
+    "text": "What you will not learn in this course 1\n\n\n\n\n\n\nTip\n\n\nThe calendar of VSC Trainings can be found at https://www.vscentrum.be/vsctraining. Learning paths that show connections between trainings can be found at https://gjbex.github.io/.\n\n\n\nDo not worry if you currently do not understand all terminology, we will come back to this at the end of the course"
+  },
+  {
+    "objectID": "index.html#outline-1",
+    "href": "index.html#outline-1",
+    "title": "Scientific C for programmers",
+    "section": "Outline",
+    "text": "Outline\n\n\n\nDay 1\n\n\n\nIntroduction\n\n\n\nMotivation\n\n\nContext\n\n\nCourse overview\n\n\n\n\n\nJumping in\n\n\n\nDay 2\n\n\n\nBasics of C\n\n\n\n\n\nDay 3\n\n\n\nAdvanced C\n\n\n\nDay 4\n\n\n\nExternal libraries\n\n\n\n\nWrapping up"
+  },
+  {
+    "objectID": "external_libraries.html",
+    "href": "external_libraries.html",
+    "title": "External libraries",
+    "section": "",
+    "text": "External libraries"
+  },
+  {
+    "objectID": "wrapping_up.html",
+    "href": "wrapping_up.html",
+    "title": "Wrapping up",
+    "section": "",
+    "text": "Wrapping up"
+  },
+  {
+    "objectID": "outline.html",
+    "href": "outline.html",
+    "title": "",
+    "section": "",
+    "text": "Introduction\n\n\n\nMotivation\n\n\nContext\n\n\nCourse overview\n\n\n\n\n\nJumping in\n\n\n\n\n\nBasics of C\n\n\n\n\n\n\n\nAdvanced C\n\n\n\n\n\nExternal libraries\n\n\n\n\nWrapping up"
+  },
+  {
+    "objectID": "outline.html#outline",
+    "href": "outline.html#outline",
+    "title": "",
+    "section": "",
+    "text": "Introduction\n\n\n\nMotivation\n\n\nContext\n\n\nCourse overview\n\n\n\n\n\nJumping in\n\n\n\n\n\nBasics of C\n\n\n\n\n\n\n\nAdvanced C\n\n\n\n\n\nExternal libraries\n\n\n\n\nWrapping up"
+  }
+]
