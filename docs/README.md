@@ -1,5 +1,6 @@
 This course is an introduction to using C as a scientific programming
-language.
+language. The content is based on the similar
+[Scientific C course](https://github.com/gjbex/Scientific-C) by Geert Jan Bex.
 
 
 ## Learning outcomes
@@ -62,7 +63,7 @@ Total duration: 3 hours
 
 ## Training materials
 
-The slides are available as part of the documentation pages:
+The slides are available as part of the documentation pages
 on [this link](https://stevenvdb.github.io/Scientific-C-for-programmers/presentation).
 Example code and hands-on material can be found in the
 [GitHub repository](https://github.com/stevenvdb/Scientific-C-for-programmers/).
