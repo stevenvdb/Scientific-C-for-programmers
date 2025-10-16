@@ -6,8 +6,8 @@
 <details>
   <summary>Introduction</summary>
   <ul>
-    <li>Course overview</li>
     <li>Motivation</li>
+    <li>Course overview</li>
     <li>Context</li>
   </ul>
 </details>
