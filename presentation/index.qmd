@@ -8,6 +8,8 @@ format:
       buttons: false
     preview-links: auto
     css: styles.css
+    code-annotations: true
+    code-line-numbers: true
 resources:
   - introduction.qmd
   - jumping_in.qmd

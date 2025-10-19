@@ -1,1 +1,145 @@
 # Jumping in {.smaller}
+
+## The obligatory "Hello, world"
+
+**Goal:** Print `Hello, world` on the screen
+
+**Learning outcome:** Compile and run a C program
+
+---
+
+Create a text file called `hello.c` containing:
+
+```{.c}
+#include <stdio.h>
+
+int main() {
+    printf("Hello, world\n");
+    return 0;
+}
+```
+
+Compile and run it in a terminal as follows:
+
+```{.bash}
+gcc hello.c -o hello
+./hello
+```
+
+::: {.callout-tip}
+You can use another compiler such as `clang` if you prefer, some options can be different.
+:::
+
+## Temperature conversion
+
+**Goal:**
+
+- Print a table with temperatures in Fahrenheit and Celcius
+- The formula is $^\circ C= \frac{5}{9}(^\circ F - 32)$
+
+**Learning outcome:**
+
+- Exposure to variables, operators and loops 
+- Correct some common errors
+
+---
+
+**Hints:**
+
+- Download the training repository to access the exercices<br>(or copy-paste code from a browser):
+
+```{.bash}
+git clone https://github.com/stevenvdb/Scientific-C-for-programmers/
+```
+
+- This exercise is located in exercises/01\_temperature\_conversion.
+
+---
+
+```{.c .small-code}
+#include <stdio.h>
+
+int main() {
+    float fahr, celcius;
+    float lower, upper, step;
+
+    lower = 0;   // Lowest temperature in Fahrenheit
+    upper = 100; // Highest temperature in Fahrenheit
+    step = 10;   // Increment of temperature
+
+    fahr = lower;
+    while (fahr < upper) {
+        celcius = (5 / 9) * (fahr - 32);
+        printf("%8.1f %8.1f\n", fahr, celcius);
+        fahr = fahr + step
+    }
+    return 0;
+}
+```
+
+Fix the problems (there are 3) to compile and run the code:
+
+```{.bash .small-code}
+gcc convert_temperatures.c -o convert_temperatures
+./convert_temperatures
+```
+
+## Logistic map
+
+- Simple formula to model evolution of population size $N_n$:
+
+$$
+N_{n+1} = (a-bN_n)N_n
+$$
+
+- Intuitive explanation:
+  - $N_{n+1} \propto N_n$: increases with more offspring
+  - $N_{n+1} \propto (a-bN_n)$: decreases because of competition
+- Normalized version: $x_{n+1} = r(1-x_n)x_n$ with $0\leq x_n \leq 1$
+
+## Logistic map
+
+**Goal:**
+
+- Print evolution of a population according to logistic map
+- Read the initial population $x_0$ and the $r$ parameter as input
+
+**Learning outcome:**
+
+- Write your first function
+- Learn how to read input values
+
+---
+
+```{.c}
+#include <stdio.h>
+
+<return type> update_population(<list of arguments (type + local name>) {
+    <your implementation>
+}
+
+int main() {
+    const int Nsteps = 100;
+    double growth_rate;
+    double current_population = 0.5;
+
+    printf("Please enter the growth rate: ");
+    scanf("%f", &growth_rate);
+
+    for (int i=0; i < Nsteps; i++){
+        current_population = update_population(current_population, growth_rate);
+        printf("%d %12.6f\n", i, current_population);
+    }
+}
+```
+
+- Implement the `update_population` function
+- Read the initial population from input
+- [Bonus] Check README.md in `exercices/02_logistic_map`
+
+---
+
+TODO Solution and discussion
+
+## The Julia set
+
