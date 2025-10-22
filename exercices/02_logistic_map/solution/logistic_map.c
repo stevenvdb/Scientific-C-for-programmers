@@ -9,10 +9,12 @@ int main() {
     const int Nsteps = 100;
 
     double growth_rate;
-    double current_population = 0.5;
+    double current_population;
 
     printf("Please enter the growth rate: ");
     scanf("%lf", &growth_rate);
+    printf("Please enter the initial population: ");
+    scanf("%lf", &current_population);
 
     FILE *outputfile = fopen("population.txt", "w");
 
