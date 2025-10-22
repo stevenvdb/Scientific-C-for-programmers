@@ -115,21 +115,26 @@ $$
 #include <stdio.h>
 
 <return type> update_population(<list of arguments (type + local name>) {
-    <your implementation>
 }
 
 int main() {
     const int Nsteps = 100;
+
     double growth_rate;
     double current_population = 0.5;
 
     printf("Please enter the growth rate: ");
-    scanf("%f", &growth_rate);
+    scanf("%lf", &growth_rate);
+
+    FILE *outputfile = fopen("population.txt", "w");
 
     for (int i=0; i < Nsteps; i++){
         current_population = update_population(current_population, growth_rate);
-        printf("%d %12.6f\n", i, current_population);
+        fprintf(outputfile, "%d %12.6f\n", i, current_population);
     }
+
+    fclose(outputfile);
+    return 0;
 }
 ```
 
@@ -139,7 +144,21 @@ int main() {
 
 ---
 
-TODO Solution and discussion
+```
+double update_population(double current_population, double growth_rate) {
+    return growth_rate * current_population * (1.0 - current_population);
+}
+...
+    printf("Please enter the initial population: ");
+    scanf("%lf", &current_population);
+...
+```
+
+---
+
+Comparison of two populations with slightly different initial populations ($r=3.8$)
+
+![](images/logistic_map_populations.png)
 
 ## The Julia set
 
