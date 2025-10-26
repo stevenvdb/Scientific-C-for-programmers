@@ -144,14 +144,15 @@ int main() {
 
 ---
 
-```
+```{.c}
 double update_population(double current_population, double growth_rate) {
     return growth_rate * current_population * (1.0 - current_population);
 }
-...
+```
+
+```{.c}
     printf("Please enter the initial population: ");
     scanf("%lf", &current_population);
-...
 ```
 
 ---
@@ -159,6 +160,4 @@ double update_population(double current_population, double growth_rate) {
 Comparison of two populations with slightly different initial populations ($r=3.8$)
 
 ![](images/logistic_map_populations.png)
-
-## The Julia set
 

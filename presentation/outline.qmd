@@ -9,20 +9,35 @@
     <li>Motivation</li>
     <li>Context</li>
     <li>Course overview</li>
-    </ul>
+  </ul>
 </details>
 <details>
   <summary>Jumping in</summary>
+  <ul>
+    <li>Hello, world</li>
+    <li>Temperature conversion</li>
+    <li>Logistic map</li>
+  </ul>
 </details>
 <h3>Day 2</h3>
 <details>
   <summary>Basics of C</summary>
+  <ul>
+    <li>Types and operators</li>
+    <li>Control flow</li>
+    <li>Functions</li>
+    <li>Input and output</li>
+  </ul>
 </details>
 </div>
 <div style="flex: 1 1 45%;">
 <h3>Day 3</h3>
 <details>
   <summary>Advanced C</summary>
+  <ul>
+    <li>Arrays and pointers</li>
+    <li>Structures</li>
+  </ul>
 </details>
 <h3>Day 4</h3>
 <details>

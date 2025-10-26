@@ -1,1 +1,542 @@
 # Basics of C
+
+{{< include outline.qmd >}}
+
+# Data types, operators and expressions
+
+## Data types, operators and expressions ^[Kernighan and Ritchie, Chapter 2, Types, operators and expressions] ^[Adapted from https://github.com/gjbex/Scientific-C]
+
+- Variables are the basic data objects manipulated in a C program
+- C is *statically* typed: a variable is of a specific type defined at compile 
+  time
+- C allows manipulation of variables by expressions with operators
+
+## The very basics
+
+:::: {.columns}
+
+::: {.column width="55%"}
+
+- C statements ^[A statement is *roughly* an instruction, something to do] end with a semicolon
+- Braces `{}` are used to group statements into a code block
+- Whitespace is mostly ignored, allows to improve readability
+- Compiler ignores what comes after `//` and between `/*` and `*/`
+
+:::
+
+::: {.column width="45%"}
+
+```{.c}
+int a = 10;
+if (a > 0) {
+    b = 2; // Single-line comment
+    c = 3;
+}
+/* Multi-line
+   comment */
+```
+:::
+::::
+
+## Names of data objects in C:
+
+- are case sensitive
+- consist of `{A,...,Z,a,...,z,_,0,...,9}`
+- start with `{A,...,Z,a,...,z,_}`
+- can have any length, but at most:
+  - variables: 31 significant, 64 for C99+
+  - functions: 6 significant^[guaranteed by standard, nowadays most compilers allow longer lengths], 32 for C99+
+- cannot be reserved words such as `if`, `while`, `char`, `int`, ...
+
+## Conventions for names
+
+- variables, functions: start with lowercase
+- constants, type names: start with uppercase
+- names reflect semantics of entity!
+  - variables with very small scope have a short name
+- camelCase (e.g., `nrOfRuns`) or underscores `nr_of_runs`
+
+::: {.callout-tip}
+Try to be consistent within a project. If you might share code with others,
+try to stick to a generally accepted code style, e.g. the
+[GNU coding standard](https://www.gnu.org/prep/standards/html_node/Writing-C.html)
+:::
+
+## Overview of data types
+
+- `char`: single character
+- `int`: integer, allows qualifiers (`signed`, `long`, ...)
+- `float`/`double`/`long double`: real numbers
+- `enum`: list of constants
+- `struct`: structure, group of related variables
+
+## Characters
+
+- a `char` holds 1 character of the local character set
+- usually 1 byte, check with the `sizeof` operator
+- limits are defined in `limits.h` header as `CHAR_MIN` and `CHAR_MAX`
+- `char` can be signed or unsigned
+  - almost always irrelevant, just use `char`
+- Example: `char myChar = 'b';`
+  - `"b"` is a string (=array of chars)!
+
+## Special characters are escaped with `\`
+
+- `'\a'`: bell
+- `'\n'`: new line
+- `'\r'`: carriage return
+- `'\t'`: horizontal tab
+- `'\\'`: backslash
+- `'\''`: single quote
+- `'\"'`: double quote
+- `'\0'`: null character (terminates strings)
+
+## Integers
+
+- `int`: typically 4 bytes (which allows at most $2^{32}$ distinct values)
+- modifiers:
+  - `unsigned int`: only non-negative integers, natural for array indices
+  - `short int`/`long int`/`long long int`: different ranges compared to *plain* `int`,
+    can be combined with `unsigned`
+
+::: {.callout-tip}
+The range of `int` can be a limitation in practice, think about the range you
+need and choose the appropriate type.
+:::
+
+## Fixed-size integers
+
+The C standard only imposes a minimal range for integers:
+
+- For example, `int` should at least cover $[−32767, +32767]$
+- Some platforms provide larger range => code is potentially platform dependent
+
+If you need a fixed range:
+
+- Include the `stdint.h` header
+- Use `uint8_t`, `int16_t`, ..., which provide exactly the specified number of *bits*
+
+## Real numbers
+
+Real numbers are represented in a computer in a format very similar to
+exponential notation^[not part of the C standard, but quite universal]:
+
+<img src="images/float_mantissa_exponent.png" width="20%"/>
+
+The same thing in a binary representation (IEEE SP standard):
+
+<img src="images/single_precision.jpg" width="20%"/>
+
+- The exponent determines the range
+- The mantissa determines the precision
+
+## Double precision
+
+:::: {.columns}
+
+::: {.column width="25%"}
+![](images/double_precision_axis.png)
+:::
+
+::: {.column width="75%"}
+- a `double` is usually 8 bytes and gives about 15 *decimal* digit precision
+- the `float.h` header provides:
+  - `DBL_MAX`: largest positive `double`
+  - `DBL_MIN`: smallest positive `double`
+  - `DBL_EPSILON`: difference between `1.0` and next representable value
+     ($\approx$ machine precision)
+  - `BLD_DIG`: number of significant decimal digits
+:::
+
+::::
+
+## Other floating-point representations
+
+- `double`: most often used in science
+- `float`: half the number of bits compared to `double`, usually 7 *decimal* digit precision
+- `long double`: usually larger range than `double`, not used often
+
+::: {.callout-note}
+In deep learning, reduced-precision formats (FP16, FP8) are often used. Only
+dedicated devices like GPUs give hardware support.
+:::
+
+## Enumeration
+
+- `enum` makes it convenient to refer to constants symbolically
+- Using automatic integer numbering:
+
+```{.c}
+enum Level = {LOW, MEDIUM, HIGH};
+enum Level myLevel = MEDIUM; // myLevel will be 1
+```
+
+- Using custom values:
+
+```{.c}
+enum Pieces = {King = 'K', Queen = 'Q', Rook = 'R', Bishop = 'B', Knight = 'N'};
+enum Pieces myPiece = Bishop; // myPiece will be 'B'
+```
+
+## Type conversion
+
+- In constants, use suffix, e.g. `123456789L` is a `long int`
+- In expressions, automatic conversion to largest type, e.g. `5/9.0` is interpreted as `5.0/9.0`
+- Explicit casting with brackets, e.g. `(int) 5.3` becomes the `int` 5 (information is lost)
+
+## Accidental type conversion
+
+- What do you expect the following code will do?
+
+```{.c}
+double a = -1.6e5;
+if (abs(a) >= 0) {
+    printf("a is positive\n");
+}
+else {
+    printf("a is strictly negative\n");
+}    
+```
+
+::: {.fragment}
+- Behaviour is unexpected?
+
+```{.bash}
+$ gcc main.c -o main
+$ ./main
+a is positive
+```
+:::
+
+## Accidental type conversion
+
+- Compilation with `-Wconversion` flags provide a hint
+
+```{.bash}
+$ gcc -Wconversion main.c -o main
+main.c: In function ‘main’:
+main.c:6:13: warning: conversion from ‘double’ to ‘int’ may change value [-Wfloat-conversion]
+    6 |     if (abs(a) >= 0) {
+```
+
+::: {.fragment}
+- The `abs` function works on integers, `double a` was silently converted
+- Solution is to use the `fabs` function
+
+```{.c}
+double a = -1.6e5;
+if (fabs(a) >= 0) {
+    printf("a is positive\n");
+}
+else {
+    printf("a is strictly negative\n");
+}
+```
+
+:::
+
+## Variable declaration
+
+- C is statically typed, each variable has to be declared with type information: `int a, b;`
+- Can be combined with an assignmnent, but no automatic initalization:
+  - `double x = 3.2, y;`
+  - `double z = sqrt(2.0);`
+- Constants cannot be modified during runtime, *must* be assigned on declaration: `const int MINUTESPERHOUR = 60;`
+  - Convention: names of constants are capitalized
+
+## Boolean
+
+TODO
+
+## Exercise: data type sizes
+
+`exercises/04_data_type_sizes`
+
+**Goal:** Print information about sizes and ranges of several types
+
+**Learning outcomes:** Understand the C data type
+
+**Instructions:**
+
+- Extend the provided program to print information about more types and ranges
+- Explain the relation between sizes and ranges
+
+## Exercise: data type sizes solution
+
+Code:
+
+```{.c}
+printf("The size of int is %ld bytes; it ranges from %d to %d\n",
+       sizeof(int), INT_MIN, INT_MAX);
+printf("The size of unsigned long int is %ld bytes; its max is %lu\n",
+       sizeof(unsigned long int), ULONG_MAX);
+```
+
+Output:
+
+```{.bash}
+The size of int is 4 bytes; it ranges from -2147483648 to 2147483647
+The size of unsigned long int is 8 bytes; its max is 18446744073709551615
+```
+
+- 4 bytes = 32 bits: `int` is in $[-2^{31}, 2^{31}-1]$
+- 8 bytes = 64 bits: `unsigned long int` is in $[0, 2^{64}-1]$
+
+## Exercise: data type sizes solution
+
+Code:
+
+```{.c}
+printf("The largest double that can be represented is %6.1e\n", DBL_MAX);
+printf("The smallest positive double that can be represented is %6.1e\n", DBL_MIN);
+printf("The machine epsilon is %6.1e\n", DBL_EPSILON);
+printf("The number of digits is %d\n", DBL_DIG);
+```
+
+Output:
+
+```{.bash}
+The largest double that can be represented is 1.8e+308
+The smallest positive double that can be represented is 2.2e-308
+The machine epsilon is 2.2e-16
+The number of digits is 15
+```
+
+- Exponent has 11 bits -> in range [-1023,1024] -> $2^{1024} \approx 10^{308}$
+- Significant has 52 bits -> 52 significant digits in binary -> $52 \log_{10} 2 \approx 15.6$
+
+# Operators
+
+## Overview of operators
+
+- arithmetic operators
+- relational operators
+- logical operators
+- bitwise operators
+- assignment operators
+- incremental operators
+- conditional operator
+
+## Arithmetic operators
+
+- addition, subtraction: `+`, `-`
+- multiplication, division: `*`, `/`
+  - integer division truncates fractional part, `5/9` equals `0`
+- modulo (only for integers): `%`
+- `*`, `/`, `%` take precedence over `+` and `-`
+
+::: {.fragment}
+::: {.callout-tip}
+Use brackets for clarity instead of relying on precedence rules
+:::
+:::
+
+## Relational operators
+
+- order:
+  - smaller, smaller or equal: `<`, `<=`
+  - larger, larger or equal: `>`, `>=`
+- equality:
+  - equal to, not equal to: `==`, `!=`
+
+::: {.fragment}
+::: {.callout-tip}
+Be careful when comparing doubles, e.g. `pow(sqrt(5.0), 2) == 5.0` is false!
+:::
+:::
+
+## Logical operators
+
+- logical and, logical or: `&&`, `||`
+  - evaluated left to right with early stopping,<br> `(i < N) && (a[i] > 0)` will not access `a[i]` unless `i < N`
+- unary negation `!`
+  - converts non-zero operand into 0 and zero operand into 1
+  - zero is false, non-zero is true
+
+## Increment/decrement operators
+
+- C specific shorthand notation
+  - increment: `i = i + 1;` is the same as `i++;` or `++i;`
+  - decrement: `i = i - 1;` is the same as `i--;` or `--i;`
+- post/pre increment matters when value is used, for example in assignment:
+  - `int j = ++i;`: first increment `i`, then assign it to `j`
+  - `int j = i++;`: first assign `i` to `j`, then increment `j`
+
+## Bitwise operators
+
+Manipulate bits of integers (signed and unsigned `char`, `int`, `long`, ...)
+
+- Bitwise and, or, xor: `&`, `|`, `^`
+  - `0011 & 0101` -> `0001`
+- Shift bits left, right: `<<`, `>>`
+  - `0111 1000 >> 2` -> `xx01 1110`
+  - x is zero if unsigned, undefined otherwise
+- One's complement: `~`
+  - `~1101` -> `0010`
+
+::: {.fragment}
+::: {.callout-tip}
+Bitwise operators are powerful, but also tedious. Use with care!
+:::
+:::
+
+## Assignment operators
+
+- Simple assignment is done with `=` (do not confuse with comparison `==`)
+- Assignment operators allow to compress statements:
+  - `i = i + 2;` is the same as `i += 2`;
+  - Most binary operators have a corresponding assignment operator
+  - More concise, but often more intuitive as well
+
+## Conditional expression
+
+Conditional expression is a ternary operator `condition ? expr_true : expr_false`
+
+- Evaluate the `condition`
+  - If true, evaluate `expr_true` as the result
+  - If false, evaluate `expr_false` as the result
+
+```{.c}
+// z = max(a, b)
+if (a > b) {
+    z = a;
+} else {
+    z = b;
+}
+// same thing but shorter
+z = (a > b) ? a : b;
+```
+
+## Precedence and associativity
+
+- K&R provide a table with precedence rules (2.12)
+  - Make your code readable and maintable by using brackets
+- C does not specify order of evaluation for most operators:
+  - order can even depend on compiler options
+  - `x = f() + g();` might evaluate `g` before `f`
+    - important if `g` alters variable used by `f`
+  - `a + b + c;` could be `(a + b) + c` or `a + (b + c)`
+    - floating-point arithmetic does not preserve mathematical associativity
+
+## Exercise: operators
+
+**Goal:** Solve a few operator-related programming questions
+**Learning outcome:** Understand the basics of C operators
+**Instructions:** See `exercises/05_operators`
+
+::: {.callout-tip}
+This exercise uses the `assert()` function to check your solution. This function
+can be useful for debugging, but should not be used in production code.
+:::
+::: {.callout-tip}
+You can easily "cheat" the `assert()` statements, but that is not the intention
+of course.
+:::
+
+## Exercise: operators solution
+
+Implement a function that returns if a year is a leap year: easy to achieve
+by combining modulo and logical operators.
+
+```{.c}
+int isLeapYear(int year) {
+    /* Return 1 if year is a leap year and return 0 otherwise
+       A year is a leap year if:
+       - it is divisible by 4 but not by 100 OR
+       - it is disisible by 400
+    */
+    if ( (year % 4 == 0 && year % 100 != 0) || (year % 400) == 0) return 1;
+    else return 0;
+}
+```
+
+## Exercise: operators solution
+
+```{.c}
+    // Multiply i by 8 and store it in j, but without making use of the * operator
+    // Hint: use a bitwise operator
+    int i = 5;
+    int j = i << 3;
+    assert(j == 40);
+
+    // Compute c as the minimal value of a and b without using an if-else statement
+    int a = 126;
+    int b = 45;
+    int c = (a < b) ? a : b;
+    assert(c == b);
+```
+
+# Control flow
+
+## Statements and blocks {.smaller}
+
+- Use `;` to terminate a statement
+- Group multiple statements in blocks with braces `{}`
+  - blocks can be nested
+  - variables can be redeclared and have block scope
+    ``` {.c .small-code}
+    {
+       int i = 3; // from here, i is 3
+       {
+          int i = 5; //from here, i is 5
+       }
+       // from here, i is 3 again
+    }
+    ```
+
+::: {.callout-tip}
+Use blocks to make your code *more* readable, unless you want to participate
+in the [The International Obfuscated C Code Contest](https://www.ioccc.org/)
+:::
+
+## if-else statement
+:::: {.columns}
+::: {.column width="40%"}
+```{.c}
+if (expression != 0) {
+    statement_true;
+} else {
+    statement_false;
+}
+```
+:::
+::: {.column width="60%"}
+```{mermaid}
+flowchart LR
+    B{expression != 0} -->|true| C[statement_true]
+    B -->|false| E[statement_false]
+```
+:::
+::::
+
+- The `else` clause is optional
+- For a single-line statement, braces are optional
+- Indentation is only for style, but helps for readability
+- `if (expression)` is the same as `if (expression != 0)`
+
+## else-if statement
+:::: {.columns}
+::: {.column width="40%"}
+```{.c}
+if (expression1) {
+    statement1;
+} else if (expression2) {
+    statement2;
+} else {
+    statement3;
+}
+```
+:::
+::: {.column width="60%"}
+```{mermaid}
+flowchart LR
+    B{expression1} -->|true| C[statement1]
+    B -->|false| E{expression2}
+    E -->|true| F[statement2]
+    E -->|false| G[statement3]
+```
+:::
+::::
+
+- General way to write a multi-way decision
+- The `else` clause is optional

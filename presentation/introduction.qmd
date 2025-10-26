@@ -27,11 +27,18 @@ Please present yourself:
 - Course website: <https://stevenvdb.github.io/Scientific-C-for-programmers/>
 - Hands on: make sure you have a working C environment
 
-<div class="fragment">
+::: {.fragment}
 ::: {.callout-tip}
 First run of this course, feedback is much appreciated.
 :::
-</div>
+:::
+::: {.fragment}
+::: {.callout-warning}
+These slides are not intended as a reference manual, but to accompany a talk.
+A book like [The C programming language](https://en.wikipedia.org/wiki/The_C_Programming_Language)
+is better suited as a reference.
+:::
+:::
 
 {{< include outline.qmd >}}
 
