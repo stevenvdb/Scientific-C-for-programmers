@@ -8,14 +8,13 @@ format:
       buttons: false
     preview-links: auto
     css: styles.css
-    code-annotations: true
     code-line-numbers: true
 resources:
   - introduction.qmd
   - jumping_in.qmd
   - c_basics.qmd
   - c_advanced.qmd
-  - external_libraries.qmd
+  - beyond_c_core.qmd
   - wrapping_up.qmd
   - outline.qmd
 toc: false
@@ -25,5 +24,5 @@ toc: false
 {{< include jumping_in.qmd >}}
 {{< include c_basics.qmd >}}
 {{< include c_advanced.qmd >}}
-{{< include external_libraries.qmd >}}
+{{< include beyond_c_core.qmd >}}
 {{< include wrapping_up.qmd >}}
