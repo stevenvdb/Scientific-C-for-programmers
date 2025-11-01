@@ -7,7 +7,7 @@ Main lecturer: Steven Vandenbrande
 - Member of the HPC Support Team of ICTS
 - HPC (High Performance Computing):<br>
   KU Leuven offers Tier-2 cluster to researchers,<br>
-  part of the Vlaams Supercomputer Centrum (VSC ^[[VSCentrum.be](https://www.vscentrum.be/)])
+  part of the Vlaams Supercomputer Centrum (VSC ^[[https://www.vscentrum.be](https://www.vscentrum.be/)])
 - Background in molecular modelling
 
 Support during hands-on sessions from Jan De Laet
@@ -24,7 +24,7 @@ Please present yourself:
 ## Practical aspects
 
 - Four sessions of 3 hours (with a break)
-- Course website: <https://stevenvdb.github.io/Scientific-C-for-programmers/>
+- Course website:<br><https://stevenvdb.github.io/Scientific-C-for-programmers/>
 - Hands on: make sure you have a working C environment
 
 ::: {.fragment}
@@ -131,7 +131,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 - More syntax and much larger standard library
 - In principle retains all benefits from C,<br>in practice you program differently
 
-![](images/cpp.png)
+<img src="images/cpp.png" width="20%"/>
 
 ## Rust
 
@@ -140,7 +140,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
   - C/C++ are prone to bugs causing safety issues
   - Rust is proposed as an alternative, see [DARPA: Translating all C to Rust](https://www.darpa.mil/research/programs/translating-all-c-to-rust)
   - Not as problematic for programs you run locally
-- Ecosystem for scientific computing not as advanced as C/C++,<br>but efforts are under way
+- Ecosystem for scientific computing not as advanced as {C/C++}, but efforts are under way
 
 ![](images/rust.png)
 
@@ -158,17 +158,21 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 
 - Syntax influences by C/C++, support object orientation
 - Source code compiled to Java bytecode which runs in virtual machine
-  - => in principle slower code execution
+  - in principle slower code execution
 - Memory safety and automatic garbage collection
 - Quite often used in bioinformatics
 
 ![](images/java.png)
 
+## Scientific programming landscape ^[The line between compiled and interpreted is not as clear as indicated in this picture]
+
+![](images/scientific_programming_languages_landscape.png)
+
 ## Julia
 
 - Designed for technical and numerical computing
 - Dynamically typed, supports multiple paradigms
-- Can be used as both a scripted or compiled language
+- Scripted language with some support for compiling
 - Designed for parallel computing
 
 ![](images/julia.png)

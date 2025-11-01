@@ -1,0 +1,19 @@
+## Swapping variables: pointers
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.c}
+{{< include /code_examples/swap_pointers.c >}}
+```
+:::
+::: {.column width="50%"}
+
+| **Variable** | Address | Value   |
+|----------|---------|---------|
+| `x`      | `0x100` | `5`     |
+| `y`      | `0x104` | `10`    |
+| `a`      | `0x108` | `0x100` |
+| `b`      | `0x10C` | `0x104` |
+| `temp`   | `0x110` | `5`     |
+:::
+::::

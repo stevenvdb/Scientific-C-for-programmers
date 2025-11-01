@@ -1,0 +1,19 @@
+## Swapping variables: naive approach
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.c}
+{{< include /code_examples/swap_naive.c >}}
+```
+:::
+::: {.column width="50%"}
+
+| **Variable** | Address | Value   |
+|----------|---------|---------|
+| `x`      | `0x100` | `5`     |
+| `y`      | `0x104` | `10`    |
+| `a`      | `0x108` | `5`     |
+| `b`      | `0x10C` | `10`    |
+| `temp`   | `0x110` | `5`     |
+:::
+::::

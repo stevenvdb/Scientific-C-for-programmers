@@ -14,3 +14,30 @@ h1.title {
   background-position: left, right;
   background-size: 200px, 200px;
 }
+
+.reveal .slides section.x-slide {
+  position: relative;
+}
+
+.reveal .slides section.x-slide::before,
+.reveal .slides section.x-slide::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 6px;
+  background-color: red;
+  transform-origin: center;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.reveal .slides section.x-slide::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.reveal .slides section.x-slide::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+

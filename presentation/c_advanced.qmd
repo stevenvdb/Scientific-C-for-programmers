@@ -1,1 +1,516 @@
 # Advanced C
+
+# Pointers and arrays
+
+## Pointers and arrays ^[Kernighan and Ritchie, Chapter 5, Pointers and arrays] ^[Adapted from https://github.com/gjbex/Scientific-C]
+
+- A pointer is a variable that contains the address of a variable
+- The `&` operator gives the address of an object
+- The `*` operator dereferences a pointer
+- Declarations like `int *px` indicate that `px` is a pointer and `*px` is an `int`
+
+## Virtual memory layout {.smaller}
+
+:::: {.columns}
+::: {.column width="55%"}
+- Virtual memory looks like a table with two columns
+  - Address column in hexadecimal format
+  - Value column in decimal format
+  - Remember that internally it's all binary
+  - Some variables take up more than one address
+  - The *Variable* column is just for mnemonics
+:::
+::: {.column width="45%"}
+| Variable | Address | Value   |
+| ---------- | ------- | ------- |
+| `int x`    | `0x0000`  | `42`      |
+| `int y`    | `0x0004`  | `43`      |
+| `double a` | `0x0008`  | `12.6e10` |
+| `double a` | `0x000c`  |         |
+| `float b`  | `0x0010`  | `3.14`    |
+:::
+::::
+
+{{< include code_examples/swap_naive.qmd >}}
+
+## Working with large arrays
+
+- Suppose you construct vectors using a `struct` (see later)
+- You want a function `double innerProduct(struct vector v1, struct vector v2)` that
+  computes the inner product
+- Since C uses pass-by-value, those objects would be copied when function is called
+- Memory access is slow, this would give bad performance for large cases
+
+=> This is also addressed by pointers
+
+## Pointer basics
+
+- A pointer is a variable that contains the address of a variable
+- Pointer arguments allow modifying object in the calling function
+- There are different pointer types, depending on the object they point to
+  - `int *px;`
+  - `double *pa;`
+
+::: {.callout-tip}
+Mnemonic: read `int *px` as `*px` is of type `int`. Sometimes people also use
+`int* px` to declare an integer pointer.
+:::
+
+## Pointer basics
+
+- The `&` operator gives the address of an object
+- The `*` operator dereferences a pointer
+
+```{.c}
+int x = 1, y;
+int *px;
+
+px = &x; // px now points to x, i.e. it holds the address of x
+y = *px; // y now holds the value of the object px points to, i.e. y = 1
+*px = 10; // the value of the object px points to is set, i.e. x = 10
+```
+
+{{< include code_examples/swap_pointers.qmd >}}
+
+## Pointers and arrays
+
+- An array is a block of consecutive objects of a specified type
+  - `int a[10];` declares 10 consecutive `int` objects
+  - The i-th element can be accessed as `a[i]`
+- Pointers are a natural way to loop over arrays
+
+```{.c}
+int a[10];
+int *pa;
+pa = &a[0]; // pa points to first element of a
+pa++; // pa now points to second element of a
+```
+
+::: {.callout-warning}
+When pointing to array elements, incrementing a pointer *always* means going to the next object
+irrespective of the object type!
+:::
+
+## Array indexing sourcery
+
+- In C, the name of an array is a synonym for the location of the initial element
+  - `int *pa = &a[0]` is identical to `int *pa = a`
+- Access to the i-th element `a[i]` is translated to `*(a+i)`
+- Because integer addition is `a[i]` is identical to `i[a]`!
+
+## Arrays as function arguments
+
+- When passing an array to a function, the location of the initial element is passed
+- Within the called function, the corresponding local variable is a pointer
+- You can pass a part of an array to a function
+  - `f(&a[2])` pass the subarray that starts at `a[2]`
+
+::: {.callout-warning}
+You cannot pass a *slice* of an array, the called function is responsible to
+respect the bounds of the array. This is one of the reasons why C programs are
+often considered at risk for unsafe memory management.
+:::
+
+## Character pointers
+
+- C does not have a basic string type
+- An array of characters is very similar to a string
+
+```{.c}
+char amessage[] = "My first string";
+char *pmessage = "My second string";
+```
+
+- String constants are terminated with `\0` internally
+  - Allows to know where string ends
+  - You do not need to know this if you use functions from the standard library to work with strings
+
+## Dynamic memory allocation {.smaller}
+
+- The C89 standard does not allow variable length arrays
+  - Array size must be known at compile time
+  - `size_t len = 5; int a[len];` is stricly speaking invalid
+  - Since C99 it is supported and many compilers allow it by default
+- Even if you can have VLAs, there are some downsides
+  - Allocated on stack, so limited in size
+  - Scope is local, similar as other variables
+  - VLA *might* be less efficient
+
+::: {.callout-tip}
+Variable length refers to the fact that length is only known at runtime,
+a variable length array remains of the same size during its lifetime.
+:::
+
+## Dynamic memory allocation
+
+- Memory for arrays can be dynamically allocated on the heap
+  - Heap is a large area of memory used at runtime
+  - Signature: `void *malloc(size_t size);`
+  - `size` is in bytes: make use of `sizeof`
+  - returns `void` pointer, cast it to correct pointer type
+  - if memory cannot be allocated, null pointer is returned
+  - *always* `free()` the memory *exactly* once!
+  - `calloc`: includes initializing to zero (so slower than `malloc`)
+
+## Dynamic memory allocation
+
+```{.c}
+#include <stdlib.h>
+int main(int argc, char **argv) {
+    size_t len = atoi(argv[1]);
+    double *pa = (double *) malloc(len * sizeof(double));
+    if (pa == NULL) { return 1;}
+    free(pa);
+}
+```
+
+## Multidimensional arrays
+
+- C supports multidimensional arrays by using multiple `[]`
+
+```{.c}
+int matrix[2][3] = {
+    {1, 2, 3},
+    {4, 5, 6}
+};
+```
+
+- Indexing is done with `[i][j]` (not `[i,j]`)
+```{.c}
+int x = matrix[1][2]
+```
+
+- C uses row-major storage: last dimension is fastest in memory
+
+## Pointers to pointers
+
+- A pointer is also a variable -> another pointer can point to its address
+- In contrast to multidimensional arrays, we can now have irregular structures
+- Example: storing an upper triangular matrix
+
+```{.c}
+double **lower;
+lower = (double **)malloc( n * sizeof(double *))
+for (int i=0; i<n; i++) {
+    lower[i] = (double *)malloc( (n - i) * sizeof(double));
+}
+...
+for (int i=0; i<n; i++) {
+    free(lower[i]);
+}
+free(lower);
+```
+
+## Arrays of pointers
+
+- By now it should be clear pointers and arrays are very similar
+- The previous example as an array of pointers:
+
+```{.c}
+double *lower[n];
+for (int i=0; i<n; i++) {
+    lower[i] = (double *)malloc( (n - i) * sizeof(double));
+}
+...
+for (int i=0; i<n; i++) {
+    free(lower[i]);
+}
+```
+
+## Pointers to function
+
+- Example
+  - When $a$ and $b$ are close, the integral $\int_a^{b} f(x) dx \approx \frac{1}{2} \frac{f(a) + f(a)}{b-a}$
+  - This rule can be written for any $f(x)$ as:
+
+```{.c}
+double trapezoidRule (double (*f)(double), double a, double b) {
+    return (b-a)*(f(a) + f(b))/2;
+}
+double trap = trapezoidRule(cos, 0, M_PI);
+```
+
+# Exercises
+
+## Quadrature {.smaller}
+
+**Goal:** 
+
+- Write a program that can numerically integrate arbitrary functions
+
+**Learning outcome:**
+
+- Use pointers to let functions operate on arrays and functions
+
+**Instructions:**
+
+- Write a function that allocates an array, with evenly spaced real numbers in a chosen interval as entries
+- Write a function that approximates the integral of `sin` and `tan` on the chosen interval
+- See `exercises/08_quadrature`
+
+## Heat equation {.smaller}
+
+**Goal:**
+
+- Write a program that solves the 2D heat equation
+
+**Learning outcome:**
+
+- Learn to work with multi-dimensional arrays
+
+**Instructions:** 
+
+- See `exercises/09_heat_equation`
+
+# Structures
+
+## Structures ^[Kernighan and Ritchie, Chapter 6, Structures] ^[Adapted from https://github.com/gjbex/Scientific-C]
+
+- A structure is a collection of one or more variables
+- Makes it convenient to organize and handle complicated data
+- A very lightweight class (but do not call C object-oriented):
+  - No inheritance
+  - No class methods
+
+## Structure example
+
+- A structure is defined with `struct`, usually followed by a tag as a name
+
+```{.c}
+struct particle {
+    double x;
+    double y;
+    double z;
+    double mass;
+}
+```
+
+- The variables named in the `struct` are members and can be accessed with the `.` operator
+
+## Structure example
+
+- A `struct` can be initialized directly or member-by-member
+
+```{.c}
+struct particle p1;
+p1.x = 1.0;
+p1.y = 2.0;
+p1.z = 3.0;
+p1.m = 1.000784;
+struct particle p2 = {2.0, 4.0, 5.0, 4.002602};
+```
+
+## Structures and functions
+
+- Functions can operate on structures much the same way as basic types
+
+```{.c}
+struct particle centerOfMass(struct particle p1, struct particle p2) {
+    double mass = p1.m + p2.m;
+    struct particle com;
+    com.x = (p1.x * p1.m + p2.x * p2.m) / mass;
+    com.y = (p1.y * p1.m + p2.y * p2.m) / mass;
+    com.z = (p1.z * p1.m + p2.z * p2.m) / mass;
+    com.mass = mass
+    return com;
+}
+```
+
+## Arrays of structures
+
+- Arrays can be made up of `struct`s
+
+```{.c}
+// Make an array with n particles
+struct particle particles[n];
+```
+
+- Defined in this way, accessing all `x` coordinates would give strided memory access
+  - Having a struct with arrays can be more efficient than an array of structs
+  - Depends on the specific application 
+
+## Structures and pointers
+
+- Structures are variables, so you can point to their address
+
+```{.c}
+void translateX(struct particle *p, double distance) {
+    (*p).x += distance;
+}
+```
+
+- A member of a pointer can be accessed with `->`
+  - If `p` is a pointer to a `struct particle`, `(*p).x` is the same as `p->x`
+
+```{.c}
+void translateX(struct particle *p, double distance) {
+    p->x += distance;
+}
+```
+
+## Structures and pointers
+
+- The `.` and `->` operators have highest precedence:
+  - `*p.x` would be interpreted as `*(p.x)` (unwanted in our example)
+  - use brackets to make your intention clear
+
+## Self-referencing structures: linked list
+
+- A member can have the same type as the structure it is a member of
+- Self-referencing structures are quite common: linked list, tree, ...
+
+## Linked list
+
+TODO
+
+## Typedef
+
+TODO
+
+# Exercises
+
+## Size of structure {.smaller}
+
+**Goal:**
+
+- Write a program centered around a `Person` structure
+
+**Learning outcomes:**
+
+- Define a structure and functions operating ont
+- Think about memory alignment
+
+**Instructions:**
+
+- Create a `Person` structure with members height, weight, year of birth, and first letter of name
+- Write a function that computes the total weight of a group of persons
+- Check the size of the structure in memory and explain the result
+- See `exercises/10_struct_basics`
+
+## DNA transcription {.smaller}
+
+TODO
+
+# Input and output
+
+## Input and output ^[Kernighan and Ritchie, Chapter 7, Input and Output] ^[Adapted from https://github.com/gjbex/Scientific-C]
+
+- Input/output is not part of C, but of standard library => need for `#include <stdio.h>`
+- Converting input/output can be tedious (use AI assistant?)
+- Make use of dedicated libraries/formats such as HDF5, NetCDF, Zarr
+- Annotate input/output with metadata (units, meaning, etc...)
+- Limited coverage in this course, see K&R Appendix B
+
+## Writing to standard out (stdout)
+
+`printf` allows to print internal values as characters in terminal
+
+```{.c}
+// int with minimal width 5
+printf("a = %5d\n", a); // a =    10
+// int with minimal width 5 and zero padding
+printf("a = %05d\n", a); // a = 00010
+// double with 8 digits after comma
+printf("pi = %.8f\n", M_PI); // pi = 3.14159265
+// double in exponential notation
+printf("pi = %8.2e\n", M_PI); // pi = 3.14e+00
+// fixed-width string
+printf("%.10s\n", "Hello, world"); // Hello, wor
+```
+
+## Reading from standard in (stdin)
+
+```{.c}
+int day;
+char month[20];
+printf("Enter data in format '01 January'\n");
+scanf("%d %s", &day, month); // Make sure to check values!
+```
+
+`scanf`:
+
+- returns number of matched items
+- stops when format string is exhausted or input fails to match specification
+
+::: {.callout-tip}
+To run non-interactively, you can redirect file contents to stdin on Linux with `./a.out <inputfile`
+:::
+
+## Command-line arguments
+
+- Command-line arguments are passed to `main`
+- First argument: number of command-line arguments + 1 (typically `argc`)
+- Second argument: pointer to array of character strings (typically `argv`)
+  - First array element (at index 0) has name of program
+
+## Command-line arguments
+
+```{.c}
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+    printf("There are %d command-line arguments\n", argc);
+    printf("The program is called %s\n", argv[0]);
+    for (int i = 1; i < argc; i++)
+        printf("Command-line argument %d is %s\n", i, argv[i]);
+    return 0;
+}
+```
+
+```{.bash}
+$ ./a.out Hello World
+There are 3 command-line arguments
+The program is called ./a.out
+Command-line argument 1 is Hello
+Command-line argument 2 is World
+```
+
+## File access
+
+- Files are accessed using a `FILE` structure defined in `stdio.h`:
+  - `FILE *fp; fp = fopen(name, mode);`
+- `mode` can be read `r`, append `a`, or write `w`
+- Make sure to check if `fopen` was succesful by comparing with `NULL` pointer
+- Make for to close file again with `fclose(fp)`;
+
+## File access example
+
+```{.c}
+    FILE *values = fopen("values.txt", "r");
+    if (values == NULL) {
+        printf("Failed to open values.txt\n");
+        return 1;
+    }
+    char line[256];
+    while (fgets(line, sizeof(line), fp)) {
+        double value;
+        if (sscanf(line, "%lf", &value) == 2) {
+            printf("Read value %f\n", value);
+        }
+    }
+    fclose(values);
+```
+```{.bash}
+$ cat values.txt
+42
+3.14
+981.12
+$ ./a.out
+Read value 42.000000
+Read value 3.140000
+Read value 981.120000
+```
+
+## Exercise: regression
+
+**Goal:** 
+
+- Write a program that reads temperature anomalies and predicts future values using simple linear regression
+
+**Learning outcomes:**
+
+- Learn how to read numbers from a structured input file and process them
+
+**Instructions:**
+
+- See `exercises/12_regression`

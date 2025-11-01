@@ -17,7 +17,7 @@
 
 ::: {.column width="55%"}
 
-- C statements ^[A statement is *roughly* an instruction, something to do] end with a semicolon
+- C statements ^[A statement is *roughly* a programming instruction, something to do] end with a semicolon
 - Braces `{}` are used to group statements into a code block
 - Whitespace is mostly ignored, allows to improve readability
 - Compiler ignores what comes after `//` and between `/*` and `*/`
@@ -26,7 +26,7 @@
 
 ::: {.column width="45%"}
 
-```{.c}
+```{.c code-line-numbers="false"}
 int a = 10;
 if (a > 0) {
     b = 2; // Single-line comment
@@ -38,7 +38,7 @@ if (a > 0) {
 :::
 ::::
 
-## Names of data objects in C:
+## Names of data objects in C
 
 - are case sensitive
 - consist of `{A,...,Z,a,...,z,_,0,...,9}`
@@ -91,9 +91,24 @@ try to stick to a generally accepted code style, e.g. the
 - `'\"'`: double quote
 - `'\0'`: null character (terminates strings)
 
+## Strings?
+
+- C does not have a basic string type
+- An array of characters is very similar to a string
+
+```{.c}
+char amessage[] = "My first string";
+char *pmessage = "My second string";
+```
+
+- The second example is a character pointer, we discuss pointers later on
+- String constants are terminated with `\0` internally
+  - Allows to know where string ends
+  - You do not need to know this if you use functions from the standard library to work with strings
+
 ## Integers
 
-- `int`: typically 4 bytes (which allows at most $2^{32}$ distinct values)
+- `int`: typically 4 bytes, offers $2^{32}$ distinct values
 - modifiers:
   - `unsigned int`: only non-negative integers, natural for array indices
   - `short int`/`long int`/`long long int`: different ranges compared to *plain* `int`,
@@ -118,17 +133,22 @@ If you need a fixed range:
 
 ## Real numbers
 
-Real numbers are represented in a computer in a format very similar to
-exponential notation^[not part of the C standard, but quite universal]:
+:::: {.columns}
+::: {.column width="60%"}
 
-<img src="images/float_mantissa_exponent.png" width="20%"/>
+- Real numbers are represented in a computer in a format very similar to
+  exponential notation^[not part of the C standard, but quite universal]:
+- Computer uses binary representation, e.g., the IEEE SP standard:
+  - Exponent determines range
+  - Mantissa determines precision
 
-The same thing in a binary representation (IEEE SP standard):
+:::
+::: {.column width="40%"}
+![](images/float_mantissa_exponent.png)
+![](images/single_precision.jpg)
+:::
+::::
 
-<img src="images/single_precision.jpg" width="20%"/>
-
-- The exponent determines the range
-- The mantissa determines the precision
 
 ## Double precision
 
@@ -212,7 +232,7 @@ a is positive
 
 - Compilation with `-Wconversion` flags provide a hint
 
-```{.bash}
+```{.bash .small-code}
 $ gcc -Wconversion main.c -o main
 main.c: In function ‘main’:
 main.c:6:13: warning: conversion from ‘double’ to ‘int’ may change value [-Wfloat-conversion]
@@ -220,10 +240,10 @@ main.c:6:13: warning: conversion from ‘double’ to ‘int’ may change value
 ```
 
 ::: {.fragment}
-- The `abs` function works on integers, `double a` was silently converted
-- Solution is to use the `fabs` function
+- The `abs` function is for `int`, `double a` was silently converted
+- Solution: use the `fabs` function
 
-```{.c}
+```{.c .small-code}
 double a = -1.6e5;
 if (fabs(a) >= 0) {
     printf("a is positive\n");
@@ -244,21 +264,28 @@ else {
 - Constants cannot be modified during runtime, *must* be assigned on declaration: `const int MINUTESPERHOUR = 60;`
   - Convention: names of constants are capitalized
 
-## Boolean
+## Booleans
 
-TODO
+- The original C89 standard does not have a boolean type
+  - true: non-zero integer, non-NULL pointer
+  - flase: zero, NULL pointer
+- The C99 standard adds the `bool` type and `true/false` keywords (after including `<stdbool.h>`)
+- The C23 standard provides booleans by default
+- You can get by with the C89 approach, dedicated `bool` type might be somewhat more efficient in some cases
 
-## Exercise: data type sizes
+## Exercise: data type sizes {.smaller}
 
-`exercises/04_data_type_sizes`
+**Goal:**
 
-**Goal:** Print information about sizes and ranges of several types
+- Print information about sizes and ranges of several types
 
-**Learning outcomes:** Understand the C data type
+**Learning outcomes:**
+
+- Understand C data types
 
 **Instructions:**
 
-- Extend the provided program to print information about more types and ranges
+- Extend the program provided in `exercises/04_data_type_sizes` to print information about more types and ranges
 - Explain the relation between sizes and ranges
 
 ## Exercise: data type sizes solution
@@ -266,9 +293,9 @@ TODO
 Code:
 
 ```{.c}
-printf("The size of int is %ld bytes; it ranges from %d to %d\n",
+printf("The size of int is %zu bytes; it ranges from %d to %d\n",
        sizeof(int), INT_MIN, INT_MAX);
-printf("The size of unsigned long int is %ld bytes; its max is %lu\n",
+printf("The size of unsigned long int is %zu bytes; its max is %lu\n",
        sizeof(unsigned long int), ULONG_MAX);
 ```
 
@@ -362,6 +389,12 @@ Be careful when comparing doubles, e.g. `pow(sqrt(5.0), 2) == 5.0` is false!
   - `int j = ++i;`: first increment `i`, then assign it to `j`
   - `int j = i++;`: first assign `i` to `j`, then increment `j`
 
+::: {.fragment}
+::: {.callout-note}
+The name C++ can be interpreted as "incremented C"
+:::
+:::
+
 ## Bitwise operators
 
 Manipulate bits of integers (signed and unsigned `char`, `int`, `long`, ...)
@@ -384,7 +417,7 @@ Bitwise operators are powerful, but also tedious. Use with care!
 
 - Simple assignment is done with `=` (do not confuse with comparison `==`)
 - Assignment operators allow to compress statements:
-  - `i = i + 2;` is the same as `i += 2`;
+  - `i = i + 2;` is the same as `i += 2;`
   - Most binary operators have a corresponding assignment operator
   - More concise, but often more intuitive as well
 
@@ -468,6 +501,13 @@ int isLeapYear(int year) {
 
 # Control flow
 
+## Control flow ^[Kernighan and Ritchie, Chapter 3, Control Flow] ^[Adapted from https://github.com/gjbex/Scientific-C]
+
+- Control flow statements specify order in which computations are performed
+- Often multiple ways to achieve the same end result
+  - Involves an element of personal preference
+  - One way might provide faster code than another
+
 ## Statements and blocks {.smaller}
 
 - Use `;` to terminate a statement
@@ -515,6 +555,7 @@ flowchart LR
 - `if (expression)` is the same as `if (expression != 0)`
 
 ## else-if statement
+
 :::: {.columns}
 ::: {.column width="40%"}
 ```{.c}
@@ -540,3 +581,407 @@ flowchart LR
 
 - General way to write a multi-way decision
 - The `else` clause is optional
+
+## Switch
+
+:::: {.columns}
+::: {.column width="45%"}
+```{.c code-line-numbers="false"}
+switch (expression) {
+    case const-expr1: statements1
+    case const-expr2: statements2
+    default: statements3
+}
+```
+:::
+::: {.column width="55%"}
+```{mermaid}
+flowchart LR
+    B{e == const-expr1} -->|true| C[statements1]
+    B -->|false| E{e == const-expr2}
+    E -->|true| F[statement2]
+    E -->|false| G[statement3]
+    C --> E
+```
+:::
+::::
+
+- Multi-way decision to branch based on comparison with constant integer values
+- Fall through: execution goes to next case
+  - You can leave a `switch` with `break` or `return`
+- Case expressions must be constant and unique
+- `default` is optional
+
+## Switch example
+
+```{.c code-line-numbers="false"}
+// Count occurence of odd and even digits in a string
+switch (c) {
+case '0': case '2': case '4': case '6': case '8':
+    neven++;
+    break;
+case '1': case '3': case '5': case '7': case '9':
+    nodd++;
+    break;
+```
+
+## For loop
+
+```{.c}
+// General for loop
+for (expr1; expr2; expr3) {
+    statements;
+}
+// Most common usage
+for (int i = 0; i < N; i++) {
+    statements;
+}
+```
+- `expr1`: executed once at start, typically for initialization
+- `expr2`: evaluated at start of each iteration, for loop stops if false
+- `expr3`: evaluated at end of each iteration
+
+## For loop
+
+- *Should* be used when number of repetitions is known or computed
+- Each expression is optional, `for (;;) {}` is an infinite loop
+- `break` in loop body terminates loop
+- `continue` in loop body goes to next iteration
+
+## While loop
+
+```{.c}
+// General while loop
+while (expression) {
+    statements;
+}
+// Check if str contains c
+while (i < strlen(str) && !found) {
+    if (str[i] == c)
+        found = True;
+    else
+        i++;
+}
+```
+
+- `statements` are executed zero or more times, as long as `expression` is true
+- *should* be used when number of repetitions is unknown
+
+## Do-While loop
+
+```{.c}
+// General while loop
+do {
+    statements;
+} while (expression);
+```
+
+- `statements` are executed at least once, until `expression` is false
+- Similar to `while` loop, but `expression` is evaluated at end of iteration
+
+## Goto and labels {.x-slide}
+
+```{.c}
+goto label;
+...
+label:
+    statements;
+```
+
+- `goto` allows to branch to a specified `label`
+- never necessary, often makes code hard to read
+- even C inventors discourage it, do do not use it
+
+# Functions and Program Structure
+
+## Functions and Program Structure ^[Kernighan and Ritchie, Chapter 4, Functions and Program Structure] ^[Adapted from https://github.com/gjbex/Scientific-C]
+
+- Functions break large computing tasks into smaller ones
+- Help to bring structure into code
+- Hide implementations details
+- Make it easier to reuse existing code
+
+## Basics of functions {.smaller}
+
+```{.c}
+// General function definition
+return-type function-name(type1 arg1, type2 arg2, ...) {
+    declarations and statements;
+    return expression;
+} 
+```
+
+- A function can have no arguments: `int myFunction(void);`
+- A function can return nothing: `void myFunction(int A);`
+  - No `return` statement in body required
+- The compiler requires a function to be *known* before it can process a call
+  - Declare the function: `return-type function-name(type1 arg1, type2 arg2);`
+  - Declaration is promise to provide implementation later
+
+## Function examples
+
+```{.c}
+// The most minimal (useless) function
+dummy() {}
+// Compute the square of a floating-point number
+double square(double a) {
+    return a * a;
+}
+```
+
+## Return statement(s) {.smaller}
+
+- A return statements returns a value (or nothing), but also returns control to the caller
+- A function can have multiple return statements, but at most one is executed in each call
+
+```{.c .small-code}
+int index(char c, char s[]) {
+    unsigned i;
+    for (i = 0; i < strlen(s); i++)
+        if (s[i] == c)
+            return i;
+    return -1;
+}
+```
+
+- The returned expression is converted to function's return type
+
+```{.c}
+// Valid, but dubious
+int returnInt() {
+    double a = 5.0;
+    return a;
+}
+```
+
+## More on functions {.smaller}
+
+- `main` function is special: always the entry point of the program
+- C passes arguments by value, inside the function a local copy is made
+  - changes to values are invisible outside of function
+  - pointers (see Day 3) allow to circumvent limitations
+- A function can only return one variable
+  - pack multiple values in a `struct`
+  - use pointers (see Day 3) to pass out values
+  - external variables (usually a bad idea)
+
+## External variables
+
+- internal variable: defined *inside* function
+  - lifetime and scope limited to function call
+- external variable: defined *outside* function
+  - bigger scope: globally accessible inside any function
+  - longer lifetime: keeps value between calls
+  - alternative for long list of function arguments
+
+::: {.callout-tip}
+External variables typically make code less reusable, so generally they should be avoided
+:::
+
+## External variables example
+
+```{.c}
+#include <stdio.h>
+int external_variable;
+
+void someFunction(void) {
+    printf("In someFunction, external variable is %d\n", external_variable);
+    external_variable++;
+    }
+
+int main(void) {
+    external_variable = 1;
+    someFunction();
+    printf("in main, external variable is %d\n", external_variable);
+    return 0;
+}
+```
+
+::: {.fragment}
+Value of `external_variable` persists:
+```{.bash}
+$ ./a.out
+In someFunction, external variable is 1
+in main, external variable is 2
+```
+:::
+
+## Scope
+
+The *scope* of a variable or function is the part of the program where the variable of function can be used
+
+- Local variables
+  - From definition until end of block
+  - Includes function arguments
+- External variables
+  - From definition until end of file
+  - Can be used in multiple files by *declaring* with `extern` (not covered)
+ 
+## Header files and build systems {background-color="lightgrey"}
+
+- So far: small programs in one `.c` file: easy to compile
+- Larger projects: many source files
+  - Order of compilation can matter because of dependencies
+  - Difficult to remember compilation commands (linking and flags)
+  - Editing one file does not require recompiling entirely
+
+## Header files and build systems {background-color="lightgrey"}
+ 
+- Use header files:
+  - `.h` files containing shared definitions and declarations
+  - `#include "example.h"` or `#include <stdio.h>`
+- Use a build system (not covered here)
+  - Makefile ([https://github.com/hpcleuven/Makefile-intro](https://github.com/hpcleuven/Makefile-intro)]
+  - CMake ([https://github.com/hpcleuven/CMake-intro](https://github.com/hpcleuven/CMake-intro)]
+  - Meson
+
+::: {.callout-tip}
+Most exercises can be compiled by running the `make` command in the exercise directory
+:::
+
+## Static variables
+
+- Internal variables with `static` declaration
+  - Remain in existing across function calls
+  - Provide permanent private storage within a single function
+
+```{.c}
+unsigned uniqueIdentifier() {
+    // id Indicates how many times the function has been called
+    static unsigned id = 0;
+    return id++;
+}
+```
+
+## Static functions
+
+- Functions with `static` declaration
+  - A static function is only visible within the file where it is declared
+  - A *normal* function is visible everywhere
+- External variables with `static` declaration
+  - Can only be used in file where they are declared
+
+## Initialization
+
+- Automatic internal variables
+  - Without explicit initialization (such as `int x;`), values are "garbage"
+  - Initial value can come from expression: `double y = sqrt(6.0);`
+  - Re-initialized each time the block is entered
+  - Compiler can warn about uninitialized variables
+    - E.g., `-Wuninitialized` for gcc (not perfect)
+
+## Initialization
+
+- Static internal variables
+  - Guaranteed to initialize to zero
+  - Initialization first time it is encountered
+  - Expression or constant expression
+- External variables
+  - Guaranteed to initialize to zero
+  - Initialized at start of execution
+  - Constant expression
+
+## Recursion
+
+Functions can call themselves (i.e. recursion)
+
+```{.c}
+unsigned long fac(unsigned long n) {
+    if (n == 0 || n == 1)
+        return 1;
+    else
+        return n*fac(n-1);
+}
+```
+
+- Each function call has overhead (pushing frame on stack)
+- Often not the fastest or lowest footprint
+  - Deep recursion levels can even cause stack overflow
+- Often closer to mathematical description
+
+## The C Preprocessor
+
+A few statements are processed *before* compilation
+
+- `#include "filename"` or `include <filename>`
+- `#define name replacement`
+- conditional inclusions with `#if`, `#elif`, `#else`, `#endif`
+
+In your head, do not interpret these as C code, but imagine their impact on the
+code presented to compiler.
+
+## The C Preprocessor
+
+- `#include "myheader.h"`: includes content from `myheader.h` in current directory verbatim
+- `#include <math.h>`: includes content from `math.h` in include directory verbatim
+- guarantees all source files have same definitions and variable declarations
+
+## The C Preprocessor
+
+A macro substitution replaces each occurrence of a `name` with a `replacement`,
+for example `#define max(A, B) ((A) > (B) ? (A) : (B))`
+
+- Every occurence of `max(x, y)` will be replaced
+- Use with care, can make code more readable, but also obfuscate when reading code for the first time
+- Macros avoid overhead associated with function call
+
+## The C Preprocessor
+
+Conditional inclusion gives control over preprocessor statements
+
+```{.c}
+// Prevent redefinition
+#ifndef FOUR_PI
+#define FOUR_PI 4 * M_PI
+#endif
+// Use SYSTEM to decide which header is included
+#if SYSTEM == SYSV
+    #define HDR "sysv.h"
+#elif SYSTEM == MSDOS
+    #define HDR "msdos.h"
+#else
+    #define HDR "default.h"
+#endif
+```
+
+## Variadic functions
+
+TODO
+
+# Exercises
+
+## Compute $\pi$ using Monte Carlo {.smaller}
+
+**Goal:**
+
+- Write a program that approximates $\pi$ by using a Monte Carlo algorithm
+
+**Learning outcomes:**
+
+- Write a loop and use control flow
+
+**Instructions:**
+
+- The quarter unit circle in the first quadrant has area $\frac{\pi}{4}$. Approximate this
+area by generating uniformly distributed points in $[0,1] \times [0,1]$ (`get_random_double` is provided) and selecting
+points inside a unit circle
+- How does the estimate converge with the number of samples?
+- See `exercices/06_mc_pi`.
+
+## Fibonacci {.smaller}
+
+**Goal:** 
+
+- Write a program to compute the Fibonacci sequence
+
+**Learning outcome:**
+
+- Write (recursive) functions
+
+**Instructions:**
+
+- The Fibonacci sequence is defined by ${\displaystyle F_{n}=F_{n-1}+F_{n-2}}$ and $F_0=0, F_1=1$
+- Compute the nth element by using a recursive function
+- Try to trigger a stack overflow for large n
+- Write a function without recursion
+- See `exercises/07_recursion`
