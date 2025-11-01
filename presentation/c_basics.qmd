@@ -15,7 +15,7 @@
 
 :::: {.columns}
 
-::: {.column width="5%"}
+::: {.column width="55%"}
 
 - C statements ^[A statement is *roughly* a programming instruction, something to do] end with a semicolon
 - Braces `{}` are used to group statements into a code block
