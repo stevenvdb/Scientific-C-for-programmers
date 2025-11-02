@@ -9,7 +9,7 @@ for $r$, this system can show chaotic behavior.
 
 ## Goal of the program
 
-- Write the time evolution according to the logistic map to a file
+- Write the time evolution according to the logistic map to a text file
 - Read the initial value and $r$ parameter as input from the user
 
 ## Learning outcomes

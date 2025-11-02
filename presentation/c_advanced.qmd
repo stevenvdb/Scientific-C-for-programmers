@@ -245,7 +245,7 @@ double trap = trapezoidRule(cos, 0, M_PI);
 **Instructions:**
 
 - Write a function that allocates an array, with evenly spaced real numbers in a chosen interval as entries
-- Write a function that approximates the integral of `sin` and `tan` on the chosen interval
+- Write a function that approximates the integral of `sin` and `cos^2` on the chosen interval
 - See `exercises/08_quadrature`
 
 ## Heat equation {.smaller}
@@ -387,7 +387,7 @@ TODO
 - Check the size of the structure in memory and explain the result
 - See `exercises/10_struct_basics`
 
-## DNA transcription {.smaller}
+## DNA sequencing {.smaller}
 
 TODO
 
