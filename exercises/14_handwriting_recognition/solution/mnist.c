@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
+#include <string.h>
 
+#include "hdf5.h"
 #include "include/mnist_file.h"
 #include "include/neural_network.h"
+#include "include/checkpointing.h"
 
-#define STEPS 1000
+#define STEPS 100
 #define BATCH_SIZE 100
 
 /**
@@ -16,6 +19,7 @@ const char * train_images_file = "data/train-images-idx3-ubyte";
 const char * train_labels_file = "data/train-labels-idx1-ubyte";
 const char * test_images_file = "data/t10k-images-idx3-ubyte";
 const char * test_labels_file = "data/t10k-labels-idx1-ubyte";
+
 
 /**
  * Calculate the accuracy of the predictions of a neural network on a dataset.
@@ -61,7 +65,11 @@ int main(int argc, char *argv[])
     test_dataset = mnist_get_dataset(test_images_file, test_labels_file);
 
     // Initialise weights and biases with random values
-    neural_network_random_weights(&network);
+    int initial_step = read_latest_parameters(&network);
+    if (initial_step < 0) {
+        neural_network_random_weights(&network);
+        initial_step = 0;
+    }
 
     // Calculate how many batches (so we know when to wrap around)
     batches = train_dataset->size / BATCH_SIZE;
@@ -78,6 +86,9 @@ int main(int argc, char *argv[])
 
         printf("Step %04d\tAverage Loss: %.2f\tAccuracy: %.3f\n", i, loss / batch.size, accuracy);
     }
+
+    // Save the current parameters to HDF5
+    write_to_hdf5(&network, initial_step + STEPS);
 
     // Cleanup
     mnist_free_dataset(train_dataset);
