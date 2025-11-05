@@ -1,5 +1,8 @@
 _site
 a.out
+*.bin
+*.gif
+u_*.png
 population.txt
 # We chose to not give an extension to executables, so here we list all
 # executables from the exercises
@@ -12,7 +15,7 @@ operators
 mc_pi
 fibonacci
 quadrature
-head_equation_2D
+heat_equation_2D
 struct_basics
 dna_sequencing
 balancing_equations
