@@ -3,27 +3,33 @@
 ## Goal
 
 Write a program to detect motifs in a DNA sequence associated with an increased
-risk of a hypothetical disease.
+risk of a hypothetical disease
 
 ## Learning Outcomes
 
-- Define and use `struct`s for organizing biological data.
-- Work with **arrays of structs**.
-- Implement string search algorithms in C.
-- Translate biological problems into computational algorithms.
-- Compute and interpret a simple **risk score** based on sequence patterns.
+- Define and use `struct`s for organizing biological data
+- Work with arrays of structs
+- Implement string search algorithms in C
 
 ## Instructions
 
-1. Review the `struct DNASequence` definition in the C code.
-2. Notice how each sequence has an **ID**, **name**, and the **sequence string**.
-3. The program defines a set of **motifs** associated with disease risk.
-4. The program scans each sequence and counts motif occurrences.
-5. For each sequence, it prints:
-   - The **ID**
-   - The **name**
-   - The computed **risk score**
-6. Your tasks:
-   - Modify or add more DNA sequences.
-   - Add additional motifs and adjust the program to calculate their contribution to risk.
-   - Optionally, read sequences from a file or introduce weighted motifs for more advanced scoring.
+- Consider the following hypothetical DNA sequences:
+
+  | ID  |  Name | Sequence |
+  | --- | ----- | -------- |
+  | seq1 | Alice | ATCGGGTAATCG |
+  | seq2 | Bob  | GGTAATCGGGTA |
+  | seq3 | Carol | ATCGATCGGGTA |
+  | seq4 | Dave | GGGGATCGATCG |
+  | seq5 | Eve | ATCGGGGGGGTA |
+
+  Imagine that the number of times one of the following motifs is present,
+  increases the risk to carry a certain disease:
+
+  | Motif | Disease |
+  | ----- | ------- |
+  | ATCG  | Disease1 |
+  | GGTA  | Disease2 |
+
+- Construct `struct`s to represent DNA sequences and motifs
+- Compute for each sequence and for each disease the risk factor
