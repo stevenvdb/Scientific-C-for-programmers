@@ -1,2 +1,23 @@
 _site
 a.out
+*.bin
+*.gif
+u_*.png
+population.txt
+# We chose to not give an extension to executables, so here we list all
+# executables from the exercises
+hello
+convert_temperatures
+logistic_map
+heat_equilibrium
+data_type_sizes
+operators
+mc_pi
+fibonacci
+quadrature
+heat_equation_2D
+struct_basics
+dna_sequencing
+balancing_equations
+handwriting_recognition
+regression
