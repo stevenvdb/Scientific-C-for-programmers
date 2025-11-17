@@ -22,8 +22,7 @@ Total duration: 3 hours
   | Subject                                     | Duration |
   |---------------------------------------------|----------|
   | introduction, motivation, context           | 80 min.  |
-  | coffee break                                | 20 min.  |
-  | jumping in the deep end                     | 80 min.  |
+  | jumping in                                  | 100 min.  |
 
 
 ### Session two
@@ -32,11 +31,9 @@ Total duration: 3 hours
 
   | Subject                                     | Duration |
   |---------------------------------------------|----------|
-  | control flow                                | 40 min.  |
-  | data types                                  | 40 min.  |
-  | coffee break                                | 20 min.  |
-  | functions                                   | 40 min.  |
-  | simple I/O                                  | 40 min.  |
+  | control flow                                | 60 min.  |
+  | data types                                  | 60 min.  |
+  | functions                                   | 60 min.  |
 
 
 ### Session three
@@ -45,9 +42,9 @@ Total duration: 3 hours
 
   | Subject                              | Duration |
   |--------------------------------------|----------|
-  | arrays and user defined types        | 80 min.  |
-  | coffee break                         | 20 min.  |
-  | pointers & dynamic memory management | 80 min.  |
+  | arrays and user defined types        | 60 min.  |
+  | pointers & dynamic memory management | 60 min.  |
+  | input and output                     | 60 min.  |
 
 
 ### Session four
@@ -56,8 +53,7 @@ Total duration: 3 hours
 
   | Subject                              | Duration |
   |--------------------------------------|----------|
-  | using third-party libraries          | 100 min. |
-  | coffee break                         | 20 min.  |
+  | using third-party libraries          | 120 min. |
   | wrap up                              | 60 min.  |
 
 
