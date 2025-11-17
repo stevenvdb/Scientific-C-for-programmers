@@ -349,7 +349,7 @@ The `_Generic` Keyword
 - New mathematical functions in `math.h`
   - `sinpi(x)` is the same as `sin(pi*x)` with better precision
   - `exp10` et al.
-- Checked integer artithmetic in `stdckdint.h`
+- Checked integer arithmetic in `stdckdint.h`
   - `ckd_add` et al.
 - Support for `1'000` and `1'133.023` notation
 - Decimal floating-point math (IEEE 754-2008/2019)

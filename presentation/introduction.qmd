@@ -8,7 +8,7 @@ Main lecturer: Steven Vandenbrande
 - HPC (High Performance Computing):<br>
   KU Leuven offers Tier-2 cluster to researchers,<br>
   part of the Vlaams Supercomputer Centrum (VSC ^[[https://www.vscentrum.be](https://www.vscentrum.be/)])
-- Background in molecular modelling
+- Background in molecular modeling
 
 Support during hands-on sessions from Jan De Laet
 
@@ -55,7 +55,7 @@ Didn't AI agents take over programming? In my opinion:
 - AI agents are invaluable assistants
 - Still benefit greatly from a prompter with expertise because:
   - They will confidently write code that is wrong
-  - They will often produce suboptimal code (speed, maintainability, ...)
+  - They will often produce sub-optimal code (speed, maintainability, ...)
 
 <div class="fragment">
 ::: {.callout-warning}
@@ -81,6 +81,7 @@ with two caveats:
 
 ## Why learn to program in C?
 
+::: {.incremental}
 - Relatively low level, close to hardware
   - Popular to write system software (OS for example)
   - Gives insight into computer architecture
@@ -90,6 +91,7 @@ with two caveats:
 - Good basis to learn other programming languages
 - You inherited a project written in C
   - Not a good intrinsic motivation, but a reality
+:::
 
 # Context:<br>the landscape of<br>scientific programming
 
@@ -140,7 +142,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
   - C/C++ are prone to bugs causing safety issues
   - Rust is proposed as an alternative, see [DARPA: Translating all C to Rust](https://www.darpa.mil/research/programs/translating-all-c-to-rust)
   - Not as problematic for programs you run locally
-- Ecosystem for scientific computing not as advanced as {C/C++}, but efforts are under way
+- Ecosystem for scientific computing not as advanced as <span style="white-space:nowrap">C/C++</span>, but efforts are under way
 
 ![](images/rust.png)
 
@@ -156,11 +158,11 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 
 ## Java
 
-- Syntax influences by C/C++, support object orientation
+- Syntax influenced by C/C++, supports object orientation
 - Source code compiled to Java bytecode which runs in virtual machine
   - in principle slower code execution
 - Memory safety and automatic garbage collection
-- Quite often used in bioinformatics
+- Quite often used in bio informatics
 
 ![](images/java.png)
 
@@ -182,7 +184,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 - Scripting language, runs in Python interpreter
 - Dynamically typed, garbage collection
 - Perceived as easy to learn
-- Not very performant (unless actual work is done by C/Fortran)
+- Not very efficient (unless actual work is done by C/Fortran)
 - Popular in scientific computing, including machine learning ^[The heavy computational lifting is usually *not* done in Python]
 
 ## R
@@ -229,7 +231,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 
 - Knowing multiple languages is useful
   - Allows you to use the right tool for the right job
-  - For example, C for computationally-intensive parts, Python for postprocessing
+  - For example, C for computationally-intensive parts, Python for post processing
 - Select a few languages in which you become an expert
 - Look beyond intrinsic properties, the ecosystem and support is important
 
@@ -244,6 +246,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 
 ## What you will **not** learn in this course ^[Do not worry if you currently do not understand all terminology, we will come back to this at the end of the course]
 
+::: {.incremental}
 - How to do HPC => [HPC intro](https://hpcleuven.github.io/HPC-intro) and [Linux for HPC](https://hpcleuven.github.io/Linux-for-HPC/)
 - Build systems => [CMake intro](https://hpcleuven.github.io/CMake-intro/) and [Makefile intro](https://hpcleuven.github.io/Makefile-intro/)
 - Version control => [Version control with git](https://github.com/gjbex/Version-control-with-git)
@@ -251,12 +254,13 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 - Debugging code => [Defensive programming and debugging](https://gjbex.github.io/Defensive_programming_and_debugging/)
 - Parallel programming => [Parallel programming](https://github.com/gjbex/Parallel-programming)
 - Setting up an Integrated Development Environment (IDE)
+:::
 
 ## What you will **not** learn in this course ^[Do not worry if you currently do not understand all terminology, we will come back to this at the end of the course]
 
 ::: {.callout-tip}
-The calendar of VSC Trainings can be found at [https://www.vscentrum.be/vsctraining](https://www.vscentrum.be/vsctraining).
-Learning paths that show connections between trainings can be found at [https://gjbex.github.io/](https://gjbex.github.io/).
+The calendar of VSC Training sessions can be found at [https://www.vscentrum.be/vsctraining](https://www.vscentrum.be/vsctraining).
+Learning paths that show connections between training sessions can be found at [https://gjbex.github.io/Training-sessions](https://gjbex.github.io/Training-sessions).
 :::
 
 {{< include outline.qmd >}}

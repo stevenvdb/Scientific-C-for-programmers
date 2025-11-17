@@ -20,8 +20,9 @@ for $r$, this system can show chaotic behavior.
 ## Instructions
 
 - Implement the `update_population` function. Compile and run to code and
-  check your implementation is correct. You can plot the output (if gnuplot
-  is available) by running `gnuplot -p plot.plt`.
+  check your implementation is correct. You can plot the output
+  by running `gnuplot -p plot.plt`, if gnuplot is available.
+  VSC users can use `module load gnuplot` to make it available on the cluster.
 - Instead of writing the initial population in the code, ask a user to
   provide it at runtime.
 - [Bonus]: find a value of $r$ that should show chaotic behavior. Compare two
