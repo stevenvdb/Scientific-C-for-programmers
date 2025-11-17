@@ -6,6 +6,12 @@
 
 **Learning outcome:** Compile and run a C program
 
+**Instructions:**
+
+- Open the Visual Studio Code app via [https://ondemand.hpc.kuleuven.be](https://ondemand.hpc.kuleuven.be) if you have a VSC account
+- Use a C environment on your local machine if available
+- Create an app on [https://replit.com/languages/c](https://replit.com/languages/c) otherwise
+
 ---
 
 Create a text file called `hello.c` containing:
@@ -137,8 +143,7 @@ double update_population(double current_population, double growth_rate) {
 
 - Comparison of two populations with slightly different initial populations ($r=3.8$)
 - Initially, two populations stay relatively close
-- After a certain time they completely decorrelate
-  - Example of a chaotic system
+- After a certain time they completely decorrelate => example of a chaotic system
 
-![](images/logistic_map_populations.png)
+<div style="text-align: center;"><img src="images/logistic_map_populations.png" width="60%"/></div>
 

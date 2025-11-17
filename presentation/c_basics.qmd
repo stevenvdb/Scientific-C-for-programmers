@@ -51,7 +51,7 @@ if (a > 0) {
 ## Conventions for names
 
 - variables, functions: start with lowercase
-- constants, type names: start with uppercase
+- constants, type names: start with uppercase or fully capitalized
 - names reflect semantics of entity!
   - variables with very small scope have a short name
 - camelCase (e.g., `nrOfRuns`) or underscores `nr_of_runs`
@@ -94,14 +94,20 @@ try to stick to a generally accepted code style, e.g. the
 ## Strings?
 
 - C does not have a basic string type
-- An array of characters is very similar to a string
+- There are two ways to declare a string constant:
+  - An array of characters:
 
 ```{.c}
 char amessage[] = "My first string";
+```
+
+  - A character pointer: ^[pointers are discussed later on]
+```{.c}
 char *pmessage = "My second string";
 ```
 
-- The second example is a character pointer, we discuss pointers later on
+## Strings?
+
 - String constants are terminated with `\0` internally
   - Allows to know where string ends
   - You do not need to know this if you use functions from the standard library to work with strings
@@ -170,7 +176,7 @@ If you need a fixed range:
 
 ::::
 
-## Other floating-point representations
+## Basic floating-point representations
 
 - `double`: most often used in science
 - `float`: half the number of bits compared to `double`, usually 7 *decimal* digit precision
@@ -202,7 +208,8 @@ enum Pieces myPiece = Bishop; // myPiece will be 'B'
 
 - In constants, use suffix, e.g. `123456789L` is a `long int`
 - In expressions, automatic conversion to largest type, e.g. `5/9.0` is interpreted as `5.0/9.0`
-- Explicit casting with brackets, e.g. `(int) 5.3` becomes the `int` 5 (information is lost)
+- Explicit casting with brackets, e.g. `(int) 5.3`
+  - this evaluates to the integer 5, so information is lost
 
 ## Accidental type conversion
 
@@ -268,7 +275,7 @@ else {
 
 - The original C89 standard does not have a boolean type
   - true: non-zero integer, non-NULL pointer
-  - flase: zero, NULL pointer
+  - false: zero, NULL pointer
 - The C99 standard adds the `bool` type and `true/false` keywords (after including `<stdbool.h>`)
 - The C23 standard provides booleans by default
 - You can get by with the C89 approach, dedicated `bool` type might be somewhat more efficient in some cases
