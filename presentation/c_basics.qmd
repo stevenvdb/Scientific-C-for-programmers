@@ -95,16 +95,15 @@ try to stick to a generally accepted code style, e.g. the
 
 - C does not have a basic string type
 - There are two ways to declare a string constant:
-  - An array of characters:
-
-```{.c}
-char amessage[] = "My first string";
-```
+  - An array of characters: ^[arrays are discussed later on]
+    ```{.c}
+    char amessage[] = "My first string";
+    ```
 
   - A character pointer: ^[pointers are discussed later on]
-```{.c}
-char *pmessage = "My second string";
-```
+    ```{.c}
+    char *pmessage = "My second string";
+    ```
 
 ## Strings?
 
@@ -143,7 +142,7 @@ If you need a fixed range:
 ::: {.column width="60%"}
 
 - Real numbers are represented in a computer in a format very similar to
-  exponential notation^[not part of the C standard, but quite universal]:
+  exponential notation^[not part of the C standard, but quite universal]
 - Computer uses binary representation, e.g., the IEEE SP standard:
   - Exponent determines range
   - Mantissa determines precision
@@ -152,6 +151,7 @@ If you need a fixed range:
 ::: {.column width="40%"}
 ![](images/float_mantissa_exponent.png)
 ![](images/single_precision.jpg)
+![](images/ieee_single.png)
 :::
 ::::
 
@@ -337,7 +337,7 @@ The number of digits is 15
 ```
 
 - Exponent has 11 bits -> in range [-1023,1024] -> $2^{1024} \approx 10^{308}$
-- Significant has 52 bits -> 52 significant digits in binary -> $52 \log_{10} 2 \approx 15.6$
+- Mantissa has 52 bits -> 52 significant digits in binary -> $52 \log_{10} 2 \approx 15.6$
 
 # Operators
 
@@ -493,17 +493,17 @@ int isLeapYear(int year) {
 ## Exercise: operators solution
 
 ```{.c}
-    // Multiply i by 8 and store it in j, but without making use of the * operator
-    // Hint: use a bitwise operator
-    int i = 5;
-    int j = i << 3;
-    assert(j == 40);
+// Multiply i by 8 and store it in j, but without making use of the * operator
+// Hint: use a bitwise operator
+int i = 5;
+int j = i << 3;
+assert(j == 40);
 
-    // Compute c as the minimal value of a and b without using an if-else statement
-    int a = 126;
-    int b = 45;
-    int c = (a < b) ? a : b;
-    assert(c == b);
+// Compute c as the minimal value of a and b without using an if-else statement
+int a = 126;
+int b = 45;
+int c = (a < b) ? a : b;
+assert(c == b);
 ```
 
 # Control flow
@@ -622,7 +622,7 @@ flowchart LR
 ## Switch example
 
 ```{.c code-line-numbers="false"}
-// Count occurence of odd and even digits in a string
+// Count occurrence of odd and even digits in a string
 switch (c) {
 case '0': case '2': case '4': case '6': case '8':
     neven++;
@@ -772,6 +772,41 @@ int returnInt() {
   - use pointers (see Day 3) to pass out values
   - external variables (usually a bad idea)
 
+## Return code of main function {background-color="lightgrey"}
+
+- The return code of `main` is passed as exit code to calling process
+- Convention is to return `0` in case of success, non-zero otherwise
+- Allows chaining dependent commands, for example in bash:
+  - `&&` only executes next command if previous one had exit code `0`
+  ```{.bash}
+  compile && execute
+  ```
+
+## Return code of main function {background-color="lightgrey"}
+
+- `stdlib.h` defines some macros
+
+```{.c style="font-size:70%" code-line-numbers="10,17"}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    FILE* fp = fopen("data.txt", "r");
+    if (fp == NULL)
+    {
+       fprintf(stderr, "fopen() failed in file %s at line #%d", __FILE__, __LINE__);
+       exit(EXIT_FAILURE);
+    }
+
+    /* Normal processing continues here. */
+    fclose(fp);
+    printf("Normal Return\n");
+
+    return EXIT_SUCCESS;
+}
+```
+
 ## External variables
 
 - internal variable: defined *inside* function
@@ -832,7 +867,7 @@ The *scope* of a variable or function is the part of the program where the varia
   - Difficult to remember compilation commands (linking and flags)
   - Editing one file does not require recompiling entirely
 
-## Header files and build systems {background-color="lightgrey"}
+## Header files and build systems {background-color="lightgrey" .smaller}
  
 - Use header files:
   - `.h` files containing shared definitions and declarations
@@ -953,7 +988,32 @@ Conditional inclusion gives control over preprocessor statements
 
 ## Variadic functions
 
-TODO
+- C allows variable-length argument lists (variadic functions)
+- The `printf` function is an example we already encountered
+- `stdarg.h` header provides utilities like `va_list,va_start,va_arg,va_end`
+
+::: {.callout-tip}
+Use sparingly, variadic functions are somewhat unconventional
+:::
+
+## Variadic functions
+
+- Example: add variable number of integers:
+```{.c .small-code}
+#include <stdarg.h>
+
+int add_integers(int count, ...)
+{
+    int result = 0;
+    va_list args;
+    va_start(args, count); // count can be omitted since C23
+    for (int i = 0; i < count; ++i) {
+        result += va_arg(args, int);
+    }
+    va_end(args);
+    return result;
+}
+```
 
 # Exercises
 
@@ -973,7 +1033,36 @@ TODO
 area by generating uniformly distributed points in $[0,1] \times [0,1]$ (`get_random_double` is provided) and selecting
 points inside a unit circle
 - How does the estimate converge with the number of samples?
-- See `exercices/06_mc_pi`.
+- See `exercises/06_mc_pi`.
+
+## Compute $\pi$ using Monte Carlo {.smaller}
+
+![](images/mc_pi.png)
+
+## Compiler optimization {background-color="lightgrey"}
+
+- Most compilers have flags to control to which extent executable is optimized
+- Examples of optimizations
+  - Function inlining
+  - Eliminating common subexpressions
+  - Vectorization
+  - Statements of source code are reordered, for example
+  - Loop reordering
+
+## GCC optimization levels {background-color="lightgrey" .smaller}
+
+- `-O0`:
+  - No optimization, machine code stays close to source code
+  - Fast compilation, but slow at runtime
+  - Good for debugging, **never** use for production runs!
+- `-O2` or `-O3`:
+  - Optimize, but comply with standards
+  - Slower compilation, but fast at runtime
+  - Usually the best option for production runs
+- `-Ofast`:
+  - Optimize and possibly ignore standards compliance
+  - In principle the fastest execution
+  - **Never** use without checking results!
 
 ## Fibonacci {.smaller}
 

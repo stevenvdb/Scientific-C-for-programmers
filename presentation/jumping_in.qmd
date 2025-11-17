@@ -51,7 +51,7 @@ You can use another compiler such as `clang` if you prefer, some options can be 
 
 **Instructions:**
 
-- The training repository contains files needed for the exercices
+- The training repository contains files needed for the exercises
   - Download the repository with
     ```{.bash}
     git clone https://github.com/stevenvdb/Scientific-C-for-programmers/
@@ -117,7 +117,7 @@ $$
 
 - Implement the `update_population` function
 - Read the initial population from input
-- Check README.md in `exercices/02_logistic_map`
+- Check README.md in `exercises/02_logistic_map`
 
 ## Logistic map: solution
 

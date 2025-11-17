@@ -129,7 +129,7 @@ char *pmessage = "My second string";
 
 - The C89 standard does not allow variable length arrays
   - Array size must be known at compile time
-  - `size_t len = 5; int a[len];` is stricly speaking invalid
+  - `size_t len = 5; int a[len];` is strictly speaking invalid
   - Since C99 it is supported and many compilers allow it by default
 - Even if you can have VLAs, there are some downsides
   - Allocated on stack, so limited in size
