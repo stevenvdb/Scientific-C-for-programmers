@@ -74,25 +74,25 @@ if (status == GSL_SUCCESS) {
 gsl_min_fminimizer_free(minimizer);
 ```
 
-## BLAS & LAPACK: High-Performance Linear Algebra {.smaller}
+## BLAS: Basic Linear Algebra Subprograms
 
-- **BLAS** (Basic Linear Algebra Subprograms)
-  - Low-level routines for vector and matrix operations
-  - Levels:
-    - Level 1: Vector-vector (e.g., dot product)
-    - Level 2: Matrix-vector (e.g., solving triangular systems)
-    - Level 3: Matrix-matrix (e.g., multiplication)
+- Low-level routines for vector and matrix operations
+- Levels:
+  - Level 1: Vector-vector (e.g., dot product)
+  - Level 2: Matrix-vector (e.g., solving triangular systems)
+  - Level 3: Matrix-matrix (e.g., multiplication)
 
-- **LAPACK** (Linear Algebra PACKage)
-  - Built on top of BLAS
-  - High-level routines for:
-    - Solving linear systems
-    - Eigenvalue problems
-    - Singular value decomposition
+## LAPACK: Linear Algebra PACKage
+
+- Built on top of BLAS
+- High-level routines for:
+  - Solving linear systems
+  - Eigenvalue problems
+  - Singular value decomposition
 
 ## BLAS & LAPACK {.smaller}
 
-- **Why use them?**
+- Why use them?
   - Highly optimized for performance
   - Portable across platforms
   - Widely used in scientific and engineering applications
@@ -120,19 +120,17 @@ int main() {
 
 ## HDF5: Managing Scientific Data in C {.smaller}
 
-- **HDF5** (Hierarchical Data Format v5)
+- HDF5 (Hierarchical Data Format v5)
   - Designed for storing and organizing large, complex datasets
   - Supports n-dimensional arrays, tables, images, and metadata
   - Common in physics, climate modeling, bioinformatics, and engineering
 
-- **Features**
+- Features
   - Portable and self-describing binary format
   - Hierarchical structure: groups and datasets (like folders and files)
   - Supports compression, parallel I/O, and chunking
 
-### HDF5: writing a dataset
-
-- **Simple Example: Writing a Dataset**
+## HDF5: writing a dataset
 
 ```{.c}
 #include "hdf5.h"
@@ -158,56 +156,96 @@ int main() {
 
 ## Solve a linear system of equations with GSL {.smaller}
 
-## Training a neural network for handwriting recognition {.smaller}
+**Goal:**
+
+- Write a program that balances a chemical equation by solving a linear system
+of equations using GSL.
+
+**Learning outcomes:**
+
+- Learn how to call functions in GSL.
+
+**Instructions:**
+
+- Consider the chemical equation $a C_3H_8 + b O_2 \leftrightarrow c CO_2 + d H_2O$.
+  Write a program that determines values for a,b,c,d such that the equation is
+  balanced (i.e., each element appears as often on the left hand side as on the right
+  hand side). Make use of [GSL linear algebra functions](http://gnu.ist.utl.pt/software/gsl/manual/html_node/Linear-Algebra-Examples.html)
+  to do this.
+- Bonus: Find a way to make sure the coefficients are integer
+
+## Handwriting recognition {.smaller}
+
+**Goal:**
+
+- Train a model that can recognize handwritten digits
+
+**Learning outcomes:**
+
+- Work with HDF5 and BLAS libraries
+
+**Instructions:**
+
+- Use https://github.com/AndrewCarterUK/mnist-neural-network-plain-c/ as a
+  starting point.
+- Add checkpointing: allow storing parameters at the end of training in HDF5
+  format. Also allow reading them back in as initial guess to resume training.
+- Replace the linear algebra operations by calls to BLAS. Compare the performance
+  with the original implementation.
 
 # Segmentation faults
 
 ## Segmentation faults
 
-TODO
+- A **segmentation fault** occurs when a program accesses memory it **does not own**.
+- Common causes:
+  - Dereferencing **NULL** or **uninitialized pointers**
+  - Accessing memory **out of bounds** (arrays, strings)
+  - Writing to **read-only memory**
 
-## Segmentation fault example
+## Segmentation fault example {.smaller}
 
-```{.c}
-#include <stdio.h>
-
+```{.c .small-code}
 int main(void) {
     int n = 4;
     int A[n];
-    for (int i = 0; i <= n; i++) {
-        printf("A[%5d] = %12d\n", i, A[i]);
-        printf("A[%5d] = %12d\n", i * 3000, A[i*3000]);
-    }
+    for (int i = 0; i <= n; i++) printf("A[%5d] = %12d\n", i, A[i]);
+    for (int i = 1; i <= n; i++) printf("A[%5d] = %12d\n", i * 30000, A[i * 30000]);
     return 0;
 }
 ```
 
 What will happen when you compile and run this program?
 
-## Segmentation fault example
+- The program will not compile
+- The program will crash when accessing `A[0]` since its value is not initialized
+- The program will crash when accessing `A[4]` since it is outside of the array
+- The program *might* crash when accessing any element outside of the array
+- The program will always run to completion
+
+## Segmentation fault example {.smaller}
 
 Invalid array access gives undefined behavior, the result can depend on the system
 
 ```{.bash}
-$ ./segmentation_fault
-A[    0] =            0
 A[    0] =            0
 A[    1] =            0
-A[ 3000] =   1815048801
-A[    2] =      4198989
-A[ 6000] =   2034381655
+A[    2] =      4199005
 A[    3] =            0
+A[    4] =  -2103564768
+A[30000] =   1818850658
+A[60000] =    774974819
 Segmentation fault (core dumped)
 ```
 
-- Some true elements (`A[2]`) have a *garbage* value
+- Some elements of the array (`A[2]`) have a *garbage* value
   - Makes sense, elements were not initialized
-- Some elements outside of array (`A[3000]`) have a garbage value
-  - Makes sense, it is not checked if this is actually a memory argument, you just get what happens to be in memory at `(A + 3000)`
-- The access of `A[9000]` gives a segmentation fault
+- Some elements outside of array (`A[30000]`) have a garbage value
+  - Makes sense, you just get what happens to be in memory at `(A + 3000)`
+- The access of `A[90000]` gives a segmentation fault
   - ???
 
-## Virtual vs physical memory {background-color="lightgrey"} {.smaller}
+## Virtual vs physical memory {background-color="lightgrey" .smaller}
 
 :::: {.columns}
 ::: {.column width=65%}
@@ -225,7 +263,31 @@ Segmentation fault (core dumped)
 :::
 :::: 
 
-## Handling segmentation faults {background-color="lightgrey"}
+## Segmentation fault example {.smaller}
+
+Invalid array access gives undefined behavior, the result can depend on the system
+
+```{.bash}
+A[    0] =            0
+A[    1] =            0
+A[    2] =      4199005
+A[    3] =            0
+A[    4] =  -2103564768
+A[30000] =   1818850658
+A[60000] =    774974819
+Segmentation fault (core dumped)
+```
+
+- Some elements of the array (`A[2]`) have a *garbage* value
+  - Makes sense, elements were not initialized
+- Some elements outside of array (`A[30000]`) have a garbage value
+  - Makes sense, you just get what happens to be in memory at `(A + 3000)`
+- The access of `A[90000]` gives a segmentation fault
+  - This virtual address corresponds to a physical address that is not part of the process
+  - The operating system reports this as a segmentation fault
+
+
+## Handling segmentation faults
 
 - Do not make coding mistakes :)
 - Ask the compiler to instrument executable to 
@@ -398,5 +460,3 @@ The `_Generic` Keyword
 The calendar of VSC Trainings can be found at [https://www.vscentrum.be/vsctraining](https://www.vscentrum.be/vsctraining).
 Learning paths that show connections between trainings can be found at [https://gjbex.github.io/](https://gjbex.github.io/).
 :::
-
-

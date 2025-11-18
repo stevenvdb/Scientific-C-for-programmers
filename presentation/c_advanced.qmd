@@ -4,9 +4,15 @@
 
 ## Pointers and arrays ^[Kernighan and Ritchie, Chapter 5, Pointers and arrays] ^[Adapted from https://github.com/gjbex/Scientific-C]
 
-- A pointer is a variable that contains the address of a variable
-- The `&` operator gives the address of an object
-- The `*` operator dereferences a pointer
+- C arrays store multiple values of the same type in a single variable
+- Pointers and arrays are closely related in C
+
+## Pointer basics
+
+- A pointer is a variable that contains the memory location (address) of another variable
+- The `&` operator gives the memory address of a variable
+- The `*` operator gives the value of the variable a pointer points to (dereferencing)
+- There are different types of pointers, depending on which type they point to
 - Declarations like `int *px` indicate that `px` is a pointer and `*px` is an `int`
 
 ## Virtual memory layout {.smaller}
@@ -18,9 +24,10 @@
   - Value column in decimal format
   - Remember that internally it's all binary
   - Some variables take up more than one address
-  - The *Variable* column is just for mnemonics
+  - The *Variable* column is just present to make it easier to read
 :::
 ::: {.column width="45%"}
+
 | Variable | Address | Value   |
 | ---------- | ------- | ------- |
 | `int x`    | `0x0000`  | `42`      |
@@ -28,6 +35,7 @@
 | `double a` | `0x0008`  | `12.6e10` |
 | `double a` | `0x000c`  |         |
 | `float b`  | `0x0010`  | `3.14`    |
+
 :::
 ::::
 
@@ -47,19 +55,17 @@
 
 - A pointer is a variable that contains the address of a variable
 - Pointer arguments allow modifying object in the calling function
-- There are different pointer types, depending on the object they point to
-  - `int *px;`
-  - `double *pa;`
+- There are different pointer types, depending on the variable they point to, for example, `int *px;` or `double *pa;`
 
 ::: {.callout-tip}
-Mnemonic: read `int *px` as `*px` is of type `int`. Sometimes people also use
+Mnemonic: read `int *px` as "`*px` is of type `int`". Sometimes people also use
 `int* px` to declare an integer pointer.
 :::
 
 ## Pointer basics
 
-- The `&` operator gives the address of an object
-- The `*` operator dereferences a pointer
+- The `&` operator gives the address of a variable
+- The `*` operator dereferences a pointer, i.e., gives the value of the variable that is pointed to
 
 ```{.c}
 int x = 1, y;
@@ -72,7 +78,7 @@ y = *px; // y now holds the value of the object px points to, i.e. y = 1
 
 {{< include code_examples/swap_pointers.qmd >}}
 
-## Pointers and arrays
+## Arrays
 
 - An array is a block of consecutive objects of a specified type
   - `int a[10];` declares 10 consecutive `int` objects
@@ -96,20 +102,40 @@ irrespective of the object type!
 - In C, the name of an array is a synonym for the location of the initial element
   - `int *pa = &a[0]` is identical to `int *pa = a`
 - Access to the i-th element `a[i]` is translated to `*(a+i)`
-- Because integer addition is `a[i]` is identical to `i[a]`!
+- Because integer addition is commutative, `a[i]` is identical to `i[a]`!
 
 ## Arrays as function arguments
 
 - When passing an array to a function, the location of the initial element is passed
 - Within the called function, the corresponding local variable is a pointer
 - You can pass a part of an array to a function
-  - `f(&a[2])` pass the subarray that starts at `a[2]`
+  - `f(&a[2])` passes the subarray that starts at `a[2]`
 
 ::: {.callout-warning}
 You cannot pass a *slice* of an array, the called function is responsible to
 respect the bounds of the array. This is one of the reasons why C programs are
 often considered at risk for unsafe memory management.
 :::
+
+## Array decay {background-color="lightgrey"}
+
+- When passed to a function, an array decays into a pointer to its first element
+- `sizeof(arr)` inside function gives size of pointer, not array
+- Array length information is lost.
+
+```{.c .small-code}
+#include <stdio.h>
+
+void foo(int arr[]) {
+    printf("sizeof(arr) = %zu\n", sizeof(arr)); // prints size of pointer
+}
+
+int main() {
+    int arr[10];
+    printf("sizeof(arr) = %zu\n", sizeof(arr)); // prints size of array
+    foo(arr);
+}
+```
 
 ## Character pointers
 
@@ -161,6 +187,7 @@ int main(int argc, char **argv) {
     double *pa = (double *) malloc(len * sizeof(double));
     if (pa == NULL) { return 1;}
     free(pa);
+    return 0;
 }
 ```
 
@@ -217,7 +244,7 @@ for (int i=0; i<n; i++) {
 }
 ```
 
-## Pointers to function
+## Pointers to functions
 
 - Example
   - When $a$ and $b$ are close, the integral $\int_a^{b} f(x) dx \approx \frac{1}{2} \frac{f(a) + f(a)}{b-a}$
@@ -389,7 +416,43 @@ TODO
 
 ## DNA sequencing {.smaller}
 
-TODO
+**Goal:**
+
+- Write a program to detect motifs in a DNA sequence associated with an increased
+risk of a hypothetical disease
+
+**Learning Outcomes:**
+
+- Define and use `struct`s for organizing biological data
+- Work with arrays of structs
+- Implement string search algorithms in C
+
+## DNA sequencing {.smaller}
+
+- Consider the following hypothetical DNA sequences:
+
+  | ID  |  Name | Sequence |
+  | --- | ----- | -------- |
+  | seq1 | Alice | ATCGGGTAATCG |
+  | seq2 | Bob  | GGTAATCGGGTA |
+  | seq3 | Carol | ATCGATCGGGTA |
+  | seq4 | Dave | GGGGATCGATCG |
+  | seq5 | Eve | ATCGGGGGGGTA |
+
+  Imagine that the number of times one of the following motifs is present,
+  increases the risk to carry a certain disease:
+
+  | Motif | Disease |
+  | ----- | ------- |
+  | ATCG  | Disease1 |
+  | GGTA  | Disease2 |
+
+## DNA sequencing {.smaller}
+
+- Construct `struct`s to represent DNA sequences and motifs
+- Compute for each sequence and for each disease the risk factor
+
+See `exercises/11_dna_sequencing`
 
 # Input and output
 

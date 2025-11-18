@@ -2,7 +2,47 @@
 
 :::: {.columns}
 ::: {.column width="50%"}
-```{.c}
+```{.c code-line-numbers="10"}
+{{< include /code_examples/swap_pointers.c >}}
+```
+:::
+::: {.column width="50%"}
+
+| **Variable** | Address | Value   |
+|----------|---------|---------|
+| `x`      | `0x100` | `5`     |
+| `y`      | `0x104` | `10`    |
+| &nbsp;  |  |  |
+| &nbsp;  |  |  |
+| &nbsp;  |  |  |
+:::
+::::
+
+## Swapping variables: pointers
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.c code-line-numbers="10,11,3"}
+{{< include /code_examples/swap_pointers.c >}}
+```
+:::
+::: {.column width="50%"}
+
+| **Variable** | Address | Value   |
+|----------|---------|---------|
+| `x`      | `0x100` | `5`     |
+| `y`      | `0x104` | `10`    |
+| `a`      | `0x108` | `0x100` |
+| `b`      | `0x10C` | `0x104` |
+| &nbsp;  |  |  |
+:::
+::::
+
+## Swapping variables: pointers
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.c code-line-numbers="10,11,3-4"}
 {{< include /code_examples/swap_pointers.c >}}
 ```
 :::
@@ -15,5 +55,69 @@
 | `a`      | `0x108` | `0x100` |
 | `b`      | `0x10C` | `0x104` |
 | `temp`   | `0x110` | `5`     |
+:::
+::::
+
+## Swapping variables: pointers
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.c code-line-numbers="10,11,3-5"}
+{{< include /code_examples/swap_pointers.c >}}
+```
+:::
+::: {.column width="50%"}
+
+| **Variable** | Address | Value   |
+|----------|---------|---------|
+| `x`      | `0x100` | `10`     |
+| `y`      | `0x104` | `10`    |
+| `a`      | `0x108` | `0x100` |
+| `b`      | `0x10C` | `0x104` |
+| `temp`   | `0x110` | `5`     |
+:::
+::::
+
+## Swapping variables: pointers
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.c code-line-numbers="10,3-6"}
+{{< include /code_examples/swap_pointers.c >}}
+```
+:::
+::: {.column width="50%"}
+
+| **Variable** | Address | Value   |
+|----------|---------|---------|
+| `x`      | `0x100` | `10`     |
+| `y`      | `0x104` | `5`    |
+| `a`      | `0x108` | `0x100` |
+| `b`      | `0x10C` | `0x104` |
+| `temp`   | `0x110` | `5`     |
+:::
+::::
+
+## Swapping variables: pointers
+
+:::: {.columns}
+::: {.column width="50%"}
+```{.c code-line-numbers="10-12"}
+{{< include /code_examples/swap_pointers.c >}}
+```
+Output:
+```{.bash}
+x = 10, y = 5
+```
+:::
+::: {.column width="50%"}
+
+| **Variable** | Address | Value   |
+|----------|---------|---------|
+| `x`      | `0x100` | `10`     |
+| `y`      | `0x104` | `5`    |
+| &nbsp; |  |  |
+| &nbsp; |  |  |
+| &nbsp; |  |  |
 :::
 ::::
