@@ -8,7 +8,7 @@ evolves according to the heat equation
 ($\frac{\partial T(x,t)}{\partial t} = \frac{\partial^2 T(x,t)}{\partial x^2}$)
 until it reaches equilibrium. The program searches for equilibrium by updating
 each interior point’s temperature as the average of its neighbors:
-$T^*(i) \leftarrow \frac{1}{2}\left( T^*(i-1) + T^*(i+1)) \right)$.
+$T^{i} \leftarrow \frac{1}{2}\left( T^{i-1} + T^{i+1} \right)$.
 
 ## Learning Outcomes
 

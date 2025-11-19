@@ -135,7 +135,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 
 <img src="images/cpp.png" width="20%"/>
 
-## Rust
+## Rust {.smaller}
 
 - "Modern" version of C/C++
 - Very different approach to memory management:
@@ -143,6 +143,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
   - Rust is proposed as an alternative, see [DARPA: Translating all C to Rust](https://www.darpa.mil/research/programs/translating-all-c-to-rust)
   - Not as problematic for programs you run locally
 - Ecosystem for scientific computing not as advanced as <span style="white-space:nowrap">C/C++</span>, but efforts are under way
+  - Example of a project for high-performance data manipulation: [Polars dataframes](https://pola.rs/)
 
 ![](images/rust.png)
 
@@ -153,6 +154,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 - Object-oriented features added in 2003 standard
 - Still a lot of Fortran compilers produce fast code
 - Good fit for mathematical applications
+- Since the 2008 standard: [coarrays](https://docs.nersc.gov/development/programming-models/coarrays/) as a built-in parallel programming model
 
 ![](images/fortran.png)
 

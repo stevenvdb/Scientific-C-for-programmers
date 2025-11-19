@@ -12,9 +12,30 @@ int main() {
     double current_population;
 
     printf("Please enter the growth rate: ");
-    scanf("%lf", &growth_rate);
+    int nread = scanf("%lf", &growth_rate);
+    // Check input was read correctly
+    if (nread != 1) {
+        printf("Failed to read input!\n");
+        return 1;
+    }
+    // Check input value makes sense
+    if (growth_rate < 0.0 || growth_rate >= 4.0) {
+        printf("The growth rate has to be in the interval [0, 4[\n");
+        return 1;
+    }
+
     printf("Please enter the initial population: ");
-    scanf("%lf", &current_population);
+    nread = scanf("%lf", &current_population);
+    // Check input was read correctly
+    if (nread != 1) {
+        printf("Failed to read input!\n");
+        return 1;
+    }
+    // Check input value makes sense
+    if (current_population < 0.0 || current_population > 1.0) {
+        printf("The initial population has to be in the interval [0, 1]\n");
+        return 1;
+    }
 
     FILE *outputfile = fopen("population.txt", "w");
 

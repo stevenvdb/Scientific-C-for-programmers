@@ -1,11 +1,11 @@
 CC ?= gcc
 CFLAGS = -g -O0 -Wall -Wextra
 
-all: hello
+all: operators
 
-hello: hello.c
+operators: operators.c
 	$(CC) $(CFLAGS) -o $@ $<
 
 clean:
-	$(RM) hello $(wildcard *.o)
+	$(RM) operators $(wildcard *.o)
 	$(RM) $(wildcard core.*) core
