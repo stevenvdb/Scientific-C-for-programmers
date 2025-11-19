@@ -265,7 +265,7 @@ else {
 ## Variable declaration
 
 - C is statically typed, each variable has to be declared with type information: `int a, b;`
-- Can be combined with an assignmnent, but no automatic initalization:
+- Can be combined with an assignment, but no automatic initalization:
   - `double x = 3.2, y;`
   - `double z = sqrt(2.0);`
 - Constants cannot be modified during runtime, *must* be assigned on declaration: `const int MINUTESPERHOUR = 60;`
@@ -402,7 +402,7 @@ The name C++ can be interpreted as "incremented C"
 :::
 :::
 
-## Bitwise operators
+## Bitwise operators {.smaller}
 
 Manipulate bits of integers (signed and unsigned `char`, `int`, `long`, ...)
 
@@ -1046,7 +1046,7 @@ points inside a unit circle
   - Function inlining
   - Eliminating common subexpressions
   - Vectorization
-  - Statements of source code are reordered, for example
+  - Statements of source code are reordered
   - Loop reordering
 
 ## GCC optimization levels {background-color="lightgrey" .smaller}
