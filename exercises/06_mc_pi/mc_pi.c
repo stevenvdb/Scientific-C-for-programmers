@@ -17,14 +17,6 @@ int main() {
     srand(0);
 
     // FIXME Write the Monte Carlo loop
-    for (unsigned long i = 0; i < N; i++) {
-        x = get_random_double();
-        y = get_random_double();
-        if ( x*x + y*y < 1 ) {
-            hits++;
-        }
-        if (i % 1000000 == 0) printf("Estimated after %lu: pi = %12.8f\n", i, 4.0 * hits / ( i + 1));
-    }
 
     // FIXME Estimate pi based on the Monte Carlo result
 
