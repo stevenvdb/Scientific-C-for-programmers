@@ -1,0 +1,268 @@
+# Introduction
+
+## Who am I?
+
+Main lecturer: Steven Vandenbrande
+ 
+- Member of the HPC Support Team of ICTS
+- HPC (High Performance Computing):<br>
+  KU Leuven offers Tier-2 cluster to researchers,<br>
+  part of the Vlaams Supercomputer Centrum (VSC ^[[https://www.vscentrum.be](https://www.vscentrum.be/)])
+- Background in molecular modeling
+
+Support during hands-on sessions from Jan De Laet
+
+## Who are you?
+
+Please present yourself:
+
+- Your name
+- Your scientific background
+- Your programming background
+- Why you want to learn scientific C
+
+## Practical aspects
+
+- Four sessions of 3 hours (with a break)
+- Course website:<br><https://stevenvdb.github.io/Scientific-C-for-programmers/>
+- Hands on: make sure you have a working C environment
+
+::: {.fragment}
+::: {.callout-tip}
+First run of this course, feedback is much appreciated.
+:::
+:::
+::: {.fragment}
+::: {.callout-warning}
+These slides are not intended as a reference manual, but to accompany a talk.
+A book like [The C programming language](https://en.wikipedia.org/wiki/The_C_Programming_Language)
+is better suited as a reference.
+:::
+:::
+
+{{< include outline.qmd >}}
+
+# Motivation
+
+## Why learn to program in C?
+
+---
+
+## Why learn to program ~~in C~~?
+
+Didn't AI agents take over programming? In my opinion:
+
+- AI agents are invaluable assistants
+- Still benefit greatly from a prompter with expertise because:
+  - They will confidently write code that is wrong
+  - They will often produce sub-optimal code (speed, maintainability, ...)
+
+<div class="fragment">
+::: {.callout-warning}
+This opinion might be outdated very soon.
+:::
+</div>
+
+---
+
+## Why learn to program ~~in C~~? {.slide}
+
+I encourage you to use AI assistance during this course
+
+- You will use it in real-life coding
+- You need to learn how to use it
+
+with two caveats:
+
+- The exercises are educational,<br>AI might perform better than for your real problems
+- Don't cheat on yourself,<br>try to understand the answers to learn something
+
+---
+
+## Why learn to program in C?
+
+::: {.incremental}
+- Relatively low level, close to hardware
+  - Popular to write system software (OS for example)
+  - Gives insight into computer architecture
+- Potentially gives good performance
+  - Fairly popular in scientific computing
+- Small and stable language, syntax can be learned quickly
+- Good basis to learn other programming languages
+- You inherited a project written in C
+  - Not a good intrinsic motivation, but a reality
+:::
+
+# Context:<br>the landscape of<br>scientific programming
+
+## Scientific programming landscape
+
+![](images/scientific_programming_languages_landscape.png)
+
+## Assembly
+
+
+- Very low level, essentially machine code in readable format
+- Machine dependent, specific to each architecture
+- Used in performance-critical parts of low-level libraries
+- If you are not sure you need it, you don't
+
+<img src="images/assembly.jpg" width="20%"/>
+
+<div class="fragment">
+::: {.callout-tip}
+The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks like.
+:::
+</div>
+
+## C
+
+- First appeared in 1972, successor of B
+- First standard in 1989, four revisions since
+- Compiled language with static typing
+- Small language and standard library
+- Gives a lot of low-level control (e.g., memory management)
+
+<img src="images/c.png" width="20%"/>
+
+## C++
+
+- Extension of C, adding object-oriented features
+- Compiled language with static typing
+- Allows better and more complex project constructs
+- More syntax and much larger standard library
+- In principle retains all benefits from C,<br>in practice you program differently
+
+<img src="images/cpp.png" width="20%"/>
+
+## Rust {.smaller}
+
+- "Modern" version of C/C++
+- Very different approach to memory management:
+  - C/C++ are prone to bugs causing safety issues
+  - Rust is proposed as an alternative, see [DARPA: Translating all C to Rust](https://www.darpa.mil/research/programs/translating-all-c-to-rust)
+  - Not as problematic for programs you run locally
+- Ecosystem for scientific computing not as advanced as <span style="white-space:nowrap">C/C++</span>, but efforts are under way
+  - Example of a project for high-performance data manipulation: [Polars dataframes](https://pola.rs/)
+
+![](images/rust.png)
+
+## Fortran
+
+- Fortran (Formula Translating System) appeared in 1957
+- Compiled language with static typing
+- Object-oriented features added in 2003 standard
+- Still a lot of Fortran compilers produce fast code
+- Good fit for mathematical applications
+- Since the 2008 standard: [coarrays](https://docs.nersc.gov/development/programming-models/coarrays/) as a built-in parallel programming model
+
+![](images/fortran.png)
+
+## Java
+
+- Syntax influenced by C/C++, supports object orientation
+- Source code compiled to Java bytecode which runs in virtual machine
+  - in principle slower code execution
+- Memory safety and automatic garbage collection
+- Quite often used in bio informatics
+
+![](images/java.png)
+
+## Scientific programming landscape ^[The line between compiled and interpreted is not as clear as indicated in this picture]
+
+![](images/scientific_programming_languages_landscape.png)
+
+## Julia
+
+- Designed for technical and numerical computing
+- Dynamically typed, supports multiple paradigms
+- Scripted language with some support for compiling
+- Designed for parallel computing
+
+![](images/julia.png)
+
+## Python
+
+- Scripting language, runs in Python interpreter
+- Dynamically typed, garbage collection
+- Perceived as easy to learn
+- Not very efficient (unless actual work is done by C/Fortran)
+- Popular in scientific computing, including machine learning ^[The heavy computational lifting is usually *not* done in Python]
+
+## R
+
+- Aimed at statistical computing and visualization
+- Interpreted language, runs in R interpreter
+- Similar in many aspects to Python
+- Popular in some fields such as social sciences and economics
+
+![](images/R.png)
+
+## Matlab
+
+- Proprietary numeric computing environment
+- Extensive built-in functions for linear algebra, signal processing, optimization, and statistics
+
+![](images/matlab.png)
+
+## Scientific programming landscape
+
+![](images/scientific_programming_languages_landscape.png)
+
+## Programming accelerators
+
+- Thus far: general-purpose programming languages for CPUs
+- GPUs (originally for visualization) are well suited for scientific computing
+  - Require dedicated programming languages
+  - CUDA for NVIDIA GPUs
+  - ROCm for AMD GPUs
+  - OpenCL/OpenMP/... support multiple devices
+
+## Parallelization
+
+- High performance computing (HPC) is all about parallelization
+- Nearly all programming languages are inherently serial,<br>parallelization has to be added
+- Several paradigms:
+  - pthreads (OS level)
+  - OpenMP: shared-memory parallel programming in C/C++ and Fortran
+  - MPI: message passing interface for communication between processes
+
+## Scientific programming landscape
+
+**Conclusions**:
+
+- Knowing multiple languages is useful
+  - Allows you to use the right tool for the right job
+  - For example, C for computationally-intensive parts, Python for post processing
+- Select a few languages in which you become an expert
+- Look beyond intrinsic properties, the ecosystem and support is important
+
+# Course overview
+
+## What you will learn in this course
+
+- the place of C in the landscape of scientific programming languages
+- learn (most of) the C syntax ^[Based on "The C Programming Language" second edition by Kernighan and Ritchie]
+- write and run basic C programs with a focus on programming concepts encountered in science 
+- how to use external libraries when writing C code
+
+## What you will **not** learn in this course ^[Do not worry if you currently do not understand all terminology, we will come back to this at the end of the course]
+
+::: {.incremental}
+- How to do HPC => [HPC intro](https://hpcleuven.github.io/HPC-intro) and [Linux for HPC](https://hpcleuven.github.io/Linux-for-HPC/)
+- Build systems => [CMake intro](https://hpcleuven.github.io/CMake-intro/) and [Makefile intro](https://hpcleuven.github.io/Makefile-intro/)
+- Version control => [Version control with git](https://github.com/gjbex/Version-control-with-git)
+- Optimizing code => [Code optimization](https://gjbex.github.io/Code-optimization/)
+- Debugging code => [Defensive programming and debugging](https://gjbex.github.io/Defensive_programming_and_debugging/)
+- Parallel programming => [Parallel programming](https://github.com/gjbex/Parallel-programming)
+- Setting up an Integrated Development Environment (IDE)
+:::
+
+## What you will **not** learn in this course ^[Do not worry if you currently do not understand all terminology, we will come back to this at the end of the course]
+
+::: {.callout-tip}
+The calendar of VSC Training sessions can be found at [https://www.vscentrum.be/vsctraining](https://www.vscentrum.be/vsctraining).
+Learning paths that show connections between training sessions can be found at [https://gjbex.github.io/Training-sessions](https://gjbex.github.io/Training-sessions).
+:::
+
+{{< include outline.qmd >}}
