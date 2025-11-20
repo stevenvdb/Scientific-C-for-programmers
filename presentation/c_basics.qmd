@@ -216,22 +216,22 @@ enum Pieces myPiece = Bishop; // myPiece will be 'B'
 - What do you expect the following code will do?
 
 ```{.c}
-double a = -1.6e5;
-if (abs(a) >= 0) {
-    printf("a is positive\n");
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    double a = -1.6e12;
+    if (abs(a) > 0) printf("abs(a) is greater than 0\n");
+    else printf("abs(a) is smaller or equal to 0\n");
 }
-else {
-    printf("a is strictly negative\n");
-}    
 ```
 
 ::: {.fragment}
 - Behaviour is unexpected?
 
 ```{.bash}
-$ gcc main.c -o main
-$ ./main
-a is positive
+$ gcc conversion.c -o conversion && ./conversion
+abs(a) is smaller or equal to 0
 ```
 :::
 
@@ -240,10 +240,10 @@ a is positive
 - Compilation with `-Wconversion` flags provide a hint
 
 ```{.bash .small-code}
-$ gcc -Wconversion main.c -o main
-main.c: In function ‘main’:
-main.c:6:13: warning: conversion from ‘double’ to ‘int’ may change value [-Wfloat-conversion]
-    6 |     if (abs(a) >= 0) {
+$ gcc -Wconversion conversion.c  -o conversion
+conversion.c: In function ‘main’:
+conversion.c:6:13: warning: conversion from ‘double’ to ‘int’ may change value [-Wfloat-conversion]
+    6 |     if (abs(a) > 0) printf("abs(a) is greater than 0\n");
 ```
 
 ::: {.fragment}
@@ -251,12 +251,13 @@ main.c:6:13: warning: conversion from ‘double’ to ‘int’ may change value
 - Solution: use the `fabs` function
 
 ```{.c .small-code}
-double a = -1.6e5;
-if (fabs(a) >= 0) {
-    printf("a is positive\n");
-}
-else {
-    printf("a is strictly negative\n");
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+    double a = -1.6e12;
+    if (fabs(a) > 0) printf("abs(a) is greater than 0\n");
+    else printf("abs(a) is smaller or equal to 0\n");
 }
 ```
 
@@ -394,7 +395,7 @@ Be careful when comparing doubles, e.g. `pow(sqrt(5.0), 2) == 5.0` is false!
   - decrement: `i = i - 1;` is the same as `i--;` or `--i;`
 - post/pre increment matters when value is used, for example in assignment:
   - `int j = ++i;`: first increment `i`, then assign it to `j`
-  - `int j = i++;`: first assign `i` to `j`, then increment `j`
+  - `int j = i++;`: first assign `i` to `j`, then increment `i`
 
 ::: {.fragment}
 ::: {.callout-note}
@@ -602,14 +603,6 @@ switch (expression) {
 ```
 :::
 ::: {.column width="55%"}
-```{mermaid}
-flowchart LR
-    B{e == const-expr1} -->|true| C[statements1]
-    B -->|false| E{e == const-expr2}
-    E -->|true| F[statement2]
-    E -->|false| G[statement3]
-    C --> E
-```
 :::
 ::::
 
