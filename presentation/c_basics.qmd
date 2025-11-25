@@ -1057,6 +1057,22 @@ points inside a unit circle
   - In principle the fastest execution
   - **Never** use without checking results!
 
+## Monte Carlo $\pi$ timings {background-color="lightgrey"}
+
+- Compilation without optimizations:
+  ```{.bash}
+  $ gcc -O0 -o mc_pi mc_pi.c && ./mc_pi
+  Walltime =    2.490s,      4.0e+07 iterations/s
+  Nsamples = 100000000 Estimated pi =   3.14169792 Error =   1.0527e-04
+  ```
+- Compilation with optimizations:
+  ```{.bash}
+  $ gcc -O2 -o mc_pi mc_pi.c && ./mc_pi
+  Walltime =    1.768s,      5.7e+07 iterations/s
+  Nsamples = 100000000 Estimated pi =   3.14169792 Error =   1.0527e-04
+  ```
+- Main optimization in this case is probably inlining `get_random_double`
+
 ## Fibonacci {.smaller}
 
 **Goal:** 
