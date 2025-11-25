@@ -9,7 +9,7 @@ risk of a hypothetical disease
 
 - Define and use `struct`s for organizing biological data
 - Work with arrays of structs
-- Implement string search algorithms in C
+- Work with string functions from the string header (hint: https://cplusplus.com/reference/cstring/strncmp/)
 
 ## Instructions
 
