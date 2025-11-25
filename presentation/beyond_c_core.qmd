@@ -1,17 +1,40 @@
+{{< include outline.qmd >}}
+
 # External libraries
 
-## External libraries
+## External libraries overview {.smaller}
 
-- External libraries extend C's capabilities — especially useful in scientific computing (e.g., linear algebra, FFT, plotting).
+::: {.fragment}
+- External libraries extend C's capabilities — especially useful in scientific computing (e.g., linear algebra, FFT, plotting)
+:::
+::: {.fragment}
 - Common scientific libraries:
   - **GSL** (GNU Scientific Library)
   - **BLAS/LAPACK** (Linear Algebra)
   - **FFTW** (Fast Fourier Transforms)
   - **HDF5** (Hierarchical data format)
+:::
+::: {.fragment}
 - Benefits:
   - Avoid reinventing the wheel
   - Leverage optimized, tested code
   - Improve performance and portability
+:::
+
+## External libraries
+
+::: {.incremental}
+- There are literally hundreds of potentially useful scientific libraries
+- The ones discussed here are by no means exhaustive or representative for your case
+- The intention is to get a feel for how you can proceed to use libraries in general
+:::
+
+## Using external libraries
+
+- Before you can include calls to external libraries in your code, you typically need to include relevant header files
+  - Header files define signatures of functions, structs, constants
+- To compile code relying on an external library into an executable, you need to link that library
+  - Typically `-l<libname>`, check library documentation
 
 ## Static vs Dynamic Libraries {.smaller}
 
@@ -23,8 +46,12 @@
 | Updates              | Recompile to update              | Can update without recompiling     |
 | Performance          | Slightly faster (no indirection) | May have overhead at runtime       |
 
-> Use `gcc -static` for static linking, or `-l<libname>` with `-L<path>` for dynamic linking.
-> Details differ from library to library: check the documentation
+::: {.fragment .callout-tip}
+Use `gcc -static` for static linking, or `-l<libname>` with `-L<path>` for dynamic linking
+:::
+::: {.fragment .callout-tip}
+Details differ from library to library: check the specific documentation
+:::
 
 ## GNU Scientific Library {.smaller}
 
@@ -36,42 +63,64 @@
   - Include the relevant headers in your code
   - Find relevant link flags with `pkg-config --libs gsl` for example
 
+::: {.callout-tip .fragment}
+By loading a module on the cluster, some variables are set to make it easier to use libraries.
+For instance `CPATH` will include the path of the header files, `LD_LIBRARY_PATH` will include the path of the libraries.
+:::
+
 ## Minimizing a function with GSL
 
+See [https://www.gnu.org/software/gsl/doc/html/min.html](https://www.gnu.org/software/gsl/doc/html/min.html) for documentation about one dimensional minimization
+
 ```{.c}
-double f(double x, void *params) {
-    Params *p = (Params *) params;
-    return exp(-p->sigma*x*x)*sin(p->a + p->b*x);
-}
+#include <stdio.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_min.h>
+#include <gsl/gsl_math.h>
+
 typedef struct {
     double a, b, sigma;
 } Params;
 
-Params params = {0.3, 1.0, 0.05};
+// Define a function f according to the GSL rules
+double f(double x, void *params) {
+    Params *p = (Params *) params;
+    return exp(-p->sigma*x*x)*sin(p->a + p->b*x);
+}
 ```
 
----
+## Minimizing a function with GSL {.smaller}
 
 ```{.c}
-double minimum = -1.0, lower = -3.0, upper = 0.0;
-int iter = 0, maxIter = 100, status;
-const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
-gsl_min_fminimizer *minimizer = gsl_min_fminimizer_alloc(T);
-gsl_function F;
-F.function = &f;
-F.params = (void *) &params;
-gsl_min_fminimizer_set(minimizer, &F, minimum, lower, upper);
-do {
-    gsl_min_fminimizer_iterate(minimizer);
-    lower = gsl_min_fminimizer_x_lower(minimizer);
-    upper = gsl_min_fminimizer_x_upper(minimizer);
-    status = gsl_min_test_interval(lower, upper, 1.0e-6, 0.0);
-} while (status == GSL_CONTINUE && ++iter < maxIter);
-if (status == GSL_SUCCESS) {
-    minimum = gsl_min_fminimizer_x_minimum(minimizer);
-    …
+int main() {
+    Params params = {0.3, 1.0, 0.05};
+
+    double minimum = -2.5, lower = -3.0, upper = 0.0;
+    int iter = 0, maxIter = 100, status;
+
+    const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
+    gsl_min_fminimizer *minimizer = gsl_min_fminimizer_alloc(T);
+    gsl_function F;
+    F.function = &f;
+    F.params = (void *) &params;
+
+    gsl_min_fminimizer_set(minimizer, &F, minimum, lower, upper);
+
+    do {
+        gsl_min_fminimizer_iterate(minimizer);
+        lower = gsl_min_fminimizer_x_lower(minimizer);
+        upper = gsl_min_fminimizer_x_upper(minimizer);
+        status = gsl_min_test_interval(lower, upper, 1.0e-6, 0.0);
+    } while (status == GSL_CONTINUE && ++iter < maxIter);
+
+    if (status == GSL_SUCCESS) {
+        minimum = gsl_min_fminimizer_x_minimum(minimizer);
+        printf("f reached the minimum %.6f at %.6f after %d iterations\n", f(minimum, F.params), minimum, iter);
+    }
+
+    gsl_min_fminimizer_free(minimizer);
+    return 0;
 }
-gsl_min_fminimizer_free(minimizer);
 ```
 
 ## BLAS: Basic Linear Algebra Subprograms
@@ -92,18 +141,26 @@ gsl_min_fminimizer_free(minimizer);
 
 ## BLAS & LAPACK {.smaller}
 
+::: {.fragment}
 - Why use them?
   - Highly optimized for performance
   - Portable across platforms
   - Widely used in scientific and engineering applications
+:::
+::: {.fragment}
 - Many implementations are available
-  - OpenBLAS
-  - Intel MKL
-  - ATLAS
+  - OpenBLAS - Intel MKL - ATLAS
+:::
+::: {.fragment}
+- Often implemented (partially) in Fortran and assembly
+  - C bindings nearly always available though
+:::
 
-> Link with `-lblas -llapack` or use optimized implementations like OpenBLAS, Intel MKL, or ATLAS.
+::: {.fragment .callout-tip}
+Link typically happens with `-lblas -llapack`, but this can be different for optimized implementations like OpenBLAS, Intel MKL, or ATLAS.
+:::
 
-## Dot product in BLAS
+## Dot product in BLAS {.smaller}
 
 ```{.c}
 #include <stdio.h>
@@ -117,6 +174,15 @@ int main() {
     return 0;
 }
 ```
+
+```{.c}
+$ gcc dotproduct.c -o dotproduct -lblas && ./dotproduct
+Dot product: 32.000000
+```
+
+::: {.fragment .callout-tip}
+On the cluster, use `module load OpenBLAS/0.3.27-GCC-13.3.0` and link with `-lopenblas`
+:::
 
 ## HDF5: Managing Scientific Data in C {.smaller}
 
