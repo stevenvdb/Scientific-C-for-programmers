@@ -19,5 +19,6 @@ heat_equation_2D
 struct_basics
 dna_sequencing
 balancing_equations
-handwriting_recognition
+inference
+training
 regression
