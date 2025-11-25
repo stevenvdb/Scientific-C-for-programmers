@@ -12,7 +12,7 @@ int main() {
            sizeof(int), INT_MIN, INT_MAX);
     printf("The size of unsigned long int is %zu bytes; its max is %lu\n",
            sizeof(unsigned long int), ULONG_MAX);
-    printf("The size of uint32_t is %zu bytes\n", sizeof(int16_t));
+    printf("The size of uint32_t is %zu bytes\n", sizeof(uint32_t));
 
     printf("The largest double that can be represented is %6.1e\n", DBL_MAX);
     printf("The smallest positive double that can be represented is %6.1e\n", DBL_MIN);

@@ -1,11 +1,24 @@
 # Advanced C
 
+{{< include outline.qmd >}}
+
 # Pointers and arrays
 
 ## Pointers and arrays ^[Kernighan and Ritchie, Chapter 5, Pointers and arrays] ^[Adapted from https://github.com/gjbex/Scientific-C]
 
-- C arrays store multiple values of the same type in a single variable
+- C **arrays** store multiple values of the same type in a single variable
+- C **pointers** contain a memory address of a variable
 - Pointers and arrays are closely related in C
+
+## Memory management
+
+::: {.incremental}
+- Memory is one of the fundamental building blocks of current computer architectures (see von Neumann model)
+- In many programming languages, memory management is transparent to programmer
+  - A variable is stored somewhere in memory, but the programmer does not know where
+  - Variables are referenced symbolically by programmer, program figures out memory location
+- C does allow managing memory yourself, so it needs a concept to allow working with memory addresses
+:::
 
 ## Pointer basics
 
@@ -15,16 +28,17 @@
 - There are different types of pointers, depending on which type they point to
 - Declarations like `int *px` indicate that `px` is a pointer and `*px` is an `int`
 
-## Virtual memory layout {.smaller}
+## Virtual memory layout {.smaller background-color="lightgrey"}
 
 :::: {.columns}
 ::: {.column width="55%"}
-- Virtual memory looks like a table with two columns
+- I represent virtual memory as a table with three columns
   - Address column in hexadecimal format
   - Value column in decimal format
+  - Variable column makes it easier to read, not present in actual implementation
   - Remember that internally it's all binary
   - Some variables take up more than one address
-  - The *Variable* column is just present to make it easier to read
+
 :::
 ::: {.column width="45%"}
 
@@ -43,6 +57,7 @@
 
 ## Working with large arrays
 
+::: {.incremental}
 - Suppose you construct vectors using a `struct` (see later)
 - You want a function `double innerProduct(struct vector v1, struct vector v2)` that
   computes the inner product
@@ -50,11 +65,12 @@
 - Memory access is slow, this would give bad performance for large cases
 
 => This is also addressed by pointers
+:::
 
 ## Pointer basics
 
 - A pointer is a variable that contains the address of a variable
-- Pointer arguments allow modifying object in the calling function
+- Pointer arguments allow modifying object in the called function
 - There are different pointer types, depending on the variable they point to, for example, `int *px;` or `double *pa;`
 
 ::: {.callout-tip}
@@ -99,10 +115,12 @@ irrespective of the object type!
 
 ## Array indexing sourcery
 
-- In C, the name of an array is a synonym for the location of the initial element
+::: {.incremental}
+- In C, the name of an array is a synonym for the memory address of the initial element
   - `int *pa = &a[0]` is identical to `int *pa = a`
 - Access to the i-th element `a[i]` is translated to `*(a+i)`
 - Because integer addition is commutative, `a[i]` is identical to `i[a]`!
+:::
 
 ## Arrays as function arguments
 
@@ -117,11 +135,11 @@ respect the bounds of the array. This is one of the reasons why C programs are
 often considered at risk for unsafe memory management.
 :::
 
-## Array decay {background-color="lightgrey"}
+## Array decay {.smaller}
 
 - When passed to a function, an array decays into a pointer to its first element
 - `sizeof(arr)` inside function gives size of pointer, not array
-- Array length information is lost.
+- Array length information is lost
 
 ```{.c .small-code}
 #include <stdio.h>
@@ -135,6 +153,11 @@ int main() {
     printf("sizeof(arr) = %zu\n", sizeof(arr)); // prints size of array
     foo(arr);
 }
+```
+Output:
+```{.bash .small-code}
+sizeof(arr) = 40
+sizeof(arr) = 8
 ```
 
 ## Character pointers
@@ -167,8 +190,9 @@ Variable length refers to the fact that length is only known at runtime,
 a variable length array remains of the same size during its lifetime.
 :::
 
-## Dynamic memory allocation
+## Dynamic memory allocation {.smaller}
 
+::: {.incremental}
 - Memory for arrays can be dynamically allocated on the heap
   - Heap is a large area of memory used at runtime
   - Signature: `void *malloc(size_t size);`
@@ -177,6 +201,7 @@ a variable length array remains of the same size during its lifetime.
   - if memory cannot be allocated, null pointer is returned
   - *always* `free()` the memory *exactly* once!
   - `calloc`: includes initializing to zero (so slower than `malloc`)
+:::
 
 ## Dynamic memory allocation
 
@@ -289,11 +314,20 @@ double trap = trapezoidRule(cos, 0, M_PI);
 
 - See `exercises/09_heat_equation`
 
+## Heat equation memory leak
+
+- The provided code allocated memory at **each** iteration without ever freeing
+  it
+- This is a memory leak: for larger grids and/or more steps, you would run out
+  of memory
+- Make sure to **always** free memory you allocated with `malloc/calloc`
+- In this case the allocation only has to be done once (outside of the loop)
+
 # Structures
 
 ## Structures ^[Kernighan and Ritchie, Chapter 6, Structures] ^[Adapted from https://github.com/gjbex/Scientific-C]
 
-- A structure is a collection of one or more variables
+- A structure is a collection of one or more variables, possibly of different types
 - Makes it convenient to organize and handle complicated data
 - A very lightweight class (but do not call C object-oriented):
   - No inheritance
@@ -309,6 +343,7 @@ struct particle {
     double y;
     double z;
     double mass;
+    char symbol;
 }
 ```
 
@@ -323,9 +358,16 @@ struct particle p1;
 p1.x = 1.0;
 p1.y = 2.0;
 p1.z = 3.0;
-p1.m = 1.000784;
-struct particle p2 = {2.0, 4.0, 5.0, 4.002602};
+p1.mass = 1.000784;
+p1.symbol = 'H';
+struct particle p2 = {2.0, 4.0, 5.0, 12.011, 'C'};
 ```
+
+::: {.fragment}
+::: {.callout-tip}
+Initializing member-by-member is a bit more robust when the `struct` definition changes
+:::
+:::
 
 ## Structures and functions
 
@@ -352,9 +394,11 @@ struct particle centerOfMass(struct particle p1, struct particle p2) {
 struct particle particles[n];
 ```
 
+::: {.fragment}
 - Defined in this way, accessing all `x` coordinates would give strided memory access
   - Having a struct with arrays can be more efficient than an array of structs
   - Depends on the specific application 
+:::
 
 ## Structures and pointers
 
@@ -366,6 +410,7 @@ void translateX(struct particle *p, double distance) {
 }
 ```
 
+::: {.fragment}
 - A member of a pointer can be accessed with `->`
   - If `p` is a pointer to a `struct particle`, `(*p).x` is the same as `p->x`
 
@@ -374,6 +419,7 @@ void translateX(struct particle *p, double distance) {
     p->x += distance;
 }
 ```
+:::
 
 ## Structures and pointers
 
@@ -381,18 +427,67 @@ void translateX(struct particle *p, double distance) {
   - `*p.x` would be interpreted as `*(p.x)` (unwanted in our example)
   - use brackets to make your intention clear
 
-## Self-referencing structures: linked list
+## Common data structures {.smaller}
 
-- A member can have the same type as the structure it is a member of
-- Self-referencing structures are quite common: linked list, tree, ...
+::: {.incremental}
+- Multidimensional arrays
+  - Regular and fixed structure, only members of a single type
+- Linked lists
+  - Allow dynamic lengths and make insertion easy
+- Trees
+  - Represent hierarchical data
+- Graph
+  - More general than trees, allow more complicated topologies
+:::
 
-## Linked list
+## Typedef {.smaller}
 
-TODO
+The `typedef` keyword creates an alias for an existing data type
 
-## Typedef
+::: {.incremental}
+- To abbreviate a long type name:
+  ```{.c}
+  typedef unsigned long int ULINT;
+  ULINT i; // Equivalent to unsigned long int i;
+  ```
+- To facilitate switching between precisions or improve portability:
+  ```{.c}
+  #ifdef REDUCED_PRECISION
+  typedef float MYFLOAT;
+  #else
+  typedef double MYFLOAT;
+  #endif
+  ```
+- To have a type name closer to its semantical meaning
+  ```{.c}
+  typedef struct Item * Item;
+  typedef struct Item * List;
+  ```
+  [look up linked-list implementation to better understand this one]
+:::
 
-TODO
+## Unions {.smaller background-color="lightgrey"}
+
+- A `union` can hold objects of different types, but only one at a time
+  - Only the last assigned member is guaranteed to hold a valid value
+- Similar to a `struct`, but in a union, members share the same memory
+- Can be used to have some pseudo-polymorphism in C
+  ```{.c}
+  union MyUnion {int myInt; double myDouble;};
+  union MyUnion u;
+  u.myInt = 1;
+  u.myDouble = 2.0; // From here, u.myInt has invalid value
+  ```
+- Sometimes used to make low-level access easier, for instance interpret a 4-byte int as 4 1-byte chars
+  ```{.c}
+  typedef union
+  {
+    struct {
+        unsigned char byte1, byte2, byte3, byte4;
+    } bytes;
+    unsigned int dword;
+  } HW_Register;
+  ```
 
 # Exercises
 
@@ -404,14 +499,14 @@ TODO
 
 **Learning outcomes:**
 
-- Define a structure and functions operating ont
+- Define a structure and functions operating on it
 - Think about memory alignment
 
 **Instructions:**
 
 - Create a `Person` structure with members height, weight, year of birth, and first letter of name
-- Write a function that computes the total weight of a group of persons
 - Check the size of the structure in memory and explain the result
+- Write a function that computes the total weight of a group of persons [hint: see variadic functions]
 - See `exercises/10_struct_basics`
 
 ## DNA sequencing {.smaller}
@@ -458,11 +553,13 @@ See `exercises/11_dna_sequencing`
 
 ## Input and output ^[Kernighan and Ritchie, Chapter 7, Input and Output] ^[Adapted from https://github.com/gjbex/Scientific-C]
 
+::: {.incremental}
 - Input/output is not part of C, but of standard library => need for `#include <stdio.h>`
 - Converting input/output can be tedious (use AI assistant?)
 - Make use of dedicated libraries/formats such as HDF5, NetCDF, Zarr
-- Annotate input/output with metadata (units, meaning, etc...)
+- Annotate data with metadata (units, meaning, etc...)
 - Limited coverage in this course, see K&R Appendix B
+:::
 
 ## Writing to standard out (stdout)
 
@@ -534,7 +631,7 @@ Command-line argument 2 is World
   - `FILE *fp; fp = fopen(name, mode);`
 - `mode` can be read `r`, append `a`, or write `w`
 - Make sure to check if `fopen` was succesful by comparing with `NULL` pointer
-- Make for to close file again with `fclose(fp)`;
+- Make sure to close file again with `fclose(fp)`;
 
 ## File access example
 
@@ -545,9 +642,9 @@ Command-line argument 2 is World
         return 1;
     }
     char line[256];
-    while (fgets(line, sizeof(line), fp)) {
+    while (fgets(line, sizeof(line), values)) {
         double value;
-        if (sscanf(line, "%lf", &value) == 2) {
+        if (sscanf(line, "%lf", &value) == 1) {
             printf("Read value %f\n", value);
         }
     }

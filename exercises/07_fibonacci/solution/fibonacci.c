@@ -29,9 +29,15 @@ unsigned long fibonacci_loop(unsigned long N) {
     }
 }
 
+void recurse(int depth) {
+    printf("Recursion depth: %d\n", depth);
+    recurse(++depth);
+}
+
 int main() {
     unsigned long N = 10;
     assert(fibonacci_recursive(N) == 55);
     assert(fibonacci_loop(N) == 55);
+    recurse(0);
     return 0;
 }
