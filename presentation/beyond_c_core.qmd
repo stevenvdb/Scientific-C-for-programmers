@@ -248,16 +248,137 @@ of equations using GSL.
 
 **Learning outcomes:**
 
+- Learn how to read "production" C code without understanding all details
 - Work with HDF5 and BLAS libraries
+
+::: {.fragment .callout-tip}
+It is not necessary or even wanted to fully understand the mathematics of the model.
+The following slides present the essential things you need.
+:::
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+Supervised machine learning models:
+
+- Propose a model $y = f(x; A)$ that relates the input $x$ to the output $y$ 
+  with a function $f$ that depends on (currently unknown) parameters $A$
+- Collect a training set of known input-output pairs of $\{x, y\}$ and
+  determine the parameters $A$ such that the model predicts the expected
+  outputs for the training set
+  - Technically: minimize a cost function using gradient descent
+- Use the estimated parameters to compute output for new inputs (inference)
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+- Input $\mathbf{x}$: vector of size $784$ representing grayscale values of an image of $28 \times 28$ pixels
+- Output $\mathbf{y}$: vector of size $10$, representing probabilities that image is classified as integer $\{ 0, 1, ..., 9\}$
+- Model $\mathbf{y} = \sigma \left( W \mathbf{x} + \mathbf{B} \right)$
+  - Perceptron: neuron whose activation depends on weights, biases and inputs
+  - $\sigma$ is an activation function, in this case a softmax
+- Parameters: $W$ ($782 \times 10$) matrix and $\mathbf{B}$ (vector of size 10)
+
+::: {.fragment .callout-tip}
+This is not a state-of-the art model, but does demonstrate the essence of even very modern machine learning.
+:::
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+An excellent tutorial is available at [https://www.3blue1brown.com/lessons/neural-networks](https://www.3blue1brown.com/lessons/neural-networks)
+(it uses multiple layers, so more parameters than in our case)
+
+![](images/neural-network-function.png)
+
+## Handwriting recognition {.smaller}
 
 **Instructions:**
 
-- Use https://github.com/AndrewCarterUK/mnist-neural-network-plain-c/ as a
-  starting point.
+- Use [https://github.com/AndrewCarterUK/mnist-neural-network-plain-c](https://github.com/AndrewCarterUK/mnist-neural-network-plain-c) as a
+  starting point
+- Go through the code and try to get a high-level overview, without getting lost in the implementation details
 - Add checkpointing: allow storing parameters at the end of training in HDF5
-  format. Also allow reading them back in as initial guess to resume training.
+  format. Also allow reading them back in as initial guess to resume training
 - Replace the linear algebra operations by calls to BLAS. Compare the performance
-  with the original implementation.
+  with the original implementation
+- Write a companion program that does inference by using precalculated parameters
+- Implement your own feature that you think would improve the code
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitA_3.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.00%
+P(1) =   0.01%
+P(2) =   0.11%
+P(3) =  99.81%
+P(4) =   0.00%
+P(5) =   0.02%
+P(6) =   0.00%
+P(7) =   0.00%
+P(8) =   0.05%
+P(9) =   0.00%
+Digit prediction: 3
+```
+:::
+::::
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitB_6.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.05%
+P(1) =   0.00%
+P(2) =   0.01%
+P(3) =  96.88%
+P(4) =   0.00%
+P(5) =   3.06%
+P(6) =   0.00%
+P(7) =   0.00%
+P(8) =   0.00%
+P(9) =   0.00%
+Digit prediction: 3
+```
+:::
+::::
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitC_6.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.00%
+P(1) =   0.08%
+P(2) =   0.68%
+P(3) =   0.01%
+P(4) =   0.00%
+P(5) =   0.00%
+P(6) =  99.08%
+P(7) =   0.00%
+P(8) =   0.14%
+P(9) =   0.00%
+Digit prediction: 6
+```
+:::
+::::
 
 # Segmentation faults
 
@@ -272,6 +393,8 @@ of equations using GSL.
 ## Segmentation fault example {.smaller}
 
 ```{.c .small-code}
+#include <stdio.h>
+ 
 int main(void) {
     int n = 4;
     int A[n];
@@ -307,7 +430,7 @@ Segmentation fault (core dumped)
 - Some elements of the array (`A[2]`) have a *garbage* value
   - Makes sense, elements were not initialized
 - Some elements outside of array (`A[30000]`) have a garbage value
-  - Makes sense, you just get what happens to be in memory at `(A + 3000)`
+  - Makes sense, you just get what happens to be in memory at `(A + 30000)`
 - The access of `A[90000]` gives a segmentation fault
   - ???
 
@@ -320,14 +443,17 @@ Segmentation fault (core dumped)
   - Hides fragmentation of physical memory
   - Delegates managing memory hierarchy (caches, RAM, disk) to OS
   - Provides safety mechanism to isolate process' address space
-- Mapping to phyical memory in page table
-  - Out-of-bound memory access can pick up garbage mapping address
-  - You might be accessing another process' memory, even on read access the CPU throws a segmentation fault
 :::
 ::: {.column width=35%}
 ![](images/virtual_memory.svg) 
 :::
 :::: 
+
+::: {.fragment}
+- Mapping to phyical memory in page table
+  - Out-of-bound memory access can pick up garbage mapping address
+  - You might be accessing another process' memory, even on read access the CPU throws a segmentation fault
+:::
 
 ## Segmentation fault example {.smaller}
 
@@ -484,7 +610,7 @@ The `_Generic` Keyword
 
 ## Syntax changes in C23
 
-- `nullptr`` (keyword) rather than `NULL` (macro)
+- `nullptr` (keyword) rather than `NULL` (macro)
 - `true/false` keywords, `stdbool.h` not required
 - Unnamed function parameters
 - `stdbit.h`: bit manipulation functions
