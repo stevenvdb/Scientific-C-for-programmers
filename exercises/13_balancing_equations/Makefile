@@ -1,11 +1,12 @@
 CC ?= gcc
 CFLAGS = -g -O0 -Wall -Wextra
+CLIBS= -lgsl -lgslcblas
 
-all: dna_sequencing
+all: balancing_equations
 
-dna_sequencing: dna_sequencing.c
-	$(CC) $(CFLAGS) -o $@ $<
+balancing_equations: balancing_equations.c
+	$(CC) $(CFLAGS) -o $@ $< $(CLIBS)
 
 clean:
-	$(RM) dna_sequencing $(wildcard *.o)
+	$(RM) balancing_equations $(wildcard *.o)
 	$(RM) $(wildcard core.*) core

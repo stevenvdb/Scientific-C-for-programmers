@@ -1,17 +1,40 @@
+{{< include outline.qmd >}}
+
 # External libraries
 
-## External libraries
+## External libraries overview {.smaller}
 
-- External libraries extend C's capabilities — especially useful in scientific computing (e.g., linear algebra, FFT, plotting).
+::: {.fragment}
+- External libraries extend C's capabilities — especially useful in scientific computing (e.g., linear algebra, FFT, plotting)
+:::
+::: {.fragment}
 - Common scientific libraries:
   - **GSL** (GNU Scientific Library)
   - **BLAS/LAPACK** (Linear Algebra)
   - **FFTW** (Fast Fourier Transforms)
   - **HDF5** (Hierarchical data format)
+:::
+::: {.fragment}
 - Benefits:
   - Avoid reinventing the wheel
   - Leverage optimized, tested code
   - Improve performance and portability
+:::
+
+## External libraries
+
+::: {.incremental}
+- There are literally hundreds of potentially useful scientific libraries
+- The ones discussed here are by no means exhaustive or representative for your case
+- The intention is to get a feel for how you can proceed to use libraries in general
+:::
+
+## Using external libraries
+
+- Before you can include calls to external libraries in your code, you typically need to include relevant header files
+  - Header files define signatures of functions, structs, constants
+- To compile code relying on an external library into an executable, you need to link that library
+  - Typically `-l<libname>`, check library documentation
 
 ## Static vs Dynamic Libraries {.smaller}
 
@@ -23,8 +46,12 @@
 | Updates              | Recompile to update              | Can update without recompiling     |
 | Performance          | Slightly faster (no indirection) | May have overhead at runtime       |
 
-> Use `gcc -static` for static linking, or `-l<libname>` with `-L<path>` for dynamic linking.
-> Details differ from library to library: check the documentation
+::: {.fragment .callout-tip}
+Use `gcc -static` for static linking, or `-l<libname>` with `-L<path>` for dynamic linking
+:::
+::: {.fragment .callout-tip}
+Details differ from library to library: check the specific documentation
+:::
 
 ## GNU Scientific Library {.smaller}
 
@@ -36,42 +63,64 @@
   - Include the relevant headers in your code
   - Find relevant link flags with `pkg-config --libs gsl` for example
 
+::: {.callout-tip .fragment}
+By loading a module on the cluster, some variables are set to make it easier to use libraries.
+For instance `CPATH` will include the path of the header files, `LD_LIBRARY_PATH` will include the path of the libraries.
+:::
+
 ## Minimizing a function with GSL
 
+See [https://www.gnu.org/software/gsl/doc/html/min.html](https://www.gnu.org/software/gsl/doc/html/min.html) for documentation about one dimensional minimization
+
 ```{.c}
-double f(double x, void *params) {
-    Params *p = (Params *) params;
-    return exp(-p->sigma*x*x)*sin(p->a + p->b*x);
-}
+#include <stdio.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_min.h>
+#include <gsl/gsl_math.h>
+
 typedef struct {
     double a, b, sigma;
 } Params;
 
-Params params = {0.3, 1.0, 0.05};
+// Define a function f according to the GSL rules
+double f(double x, void *params) {
+    Params *p = (Params *) params;
+    return exp(-p->sigma*x*x)*sin(p->a + p->b*x);
+}
 ```
 
----
+## Minimizing a function with GSL {.smaller}
 
 ```{.c}
-double minimum = -1.0, lower = -3.0, upper = 0.0;
-int iter = 0, maxIter = 100, status;
-const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
-gsl_min_fminimizer *minimizer = gsl_min_fminimizer_alloc(T);
-gsl_function F;
-F.function = &f;
-F.params = (void *) &params;
-gsl_min_fminimizer_set(minimizer, &F, minimum, lower, upper);
-do {
-    gsl_min_fminimizer_iterate(minimizer);
-    lower = gsl_min_fminimizer_x_lower(minimizer);
-    upper = gsl_min_fminimizer_x_upper(minimizer);
-    status = gsl_min_test_interval(lower, upper, 1.0e-6, 0.0);
-} while (status == GSL_CONTINUE && ++iter < maxIter);
-if (status == GSL_SUCCESS) {
-    minimum = gsl_min_fminimizer_x_minimum(minimizer);
-    …
+int main() {
+    Params params = {0.3, 1.0, 0.05};
+
+    double minimum = -2.5, lower = -3.0, upper = 0.0;
+    int iter = 0, maxIter = 100, status;
+
+    const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
+    gsl_min_fminimizer *minimizer = gsl_min_fminimizer_alloc(T);
+    gsl_function F;
+    F.function = &f;
+    F.params = (void *) &params;
+
+    gsl_min_fminimizer_set(minimizer, &F, minimum, lower, upper);
+
+    do {
+        gsl_min_fminimizer_iterate(minimizer);
+        lower = gsl_min_fminimizer_x_lower(minimizer);
+        upper = gsl_min_fminimizer_x_upper(minimizer);
+        status = gsl_min_test_interval(lower, upper, 1.0e-6, 0.0);
+    } while (status == GSL_CONTINUE && ++iter < maxIter);
+
+    if (status == GSL_SUCCESS) {
+        minimum = gsl_min_fminimizer_x_minimum(minimizer);
+        printf("f reached the minimum %.6f at %.6f after %d iterations\n", f(minimum, F.params), minimum, iter);
+    }
+
+    gsl_min_fminimizer_free(minimizer);
+    return 0;
 }
-gsl_min_fminimizer_free(minimizer);
 ```
 
 ## BLAS: Basic Linear Algebra Subprograms
@@ -92,18 +141,26 @@ gsl_min_fminimizer_free(minimizer);
 
 ## BLAS & LAPACK {.smaller}
 
+::: {.fragment}
 - Why use them?
   - Highly optimized for performance
   - Portable across platforms
   - Widely used in scientific and engineering applications
+:::
+::: {.fragment}
 - Many implementations are available
-  - OpenBLAS
-  - Intel MKL
-  - ATLAS
+  - OpenBLAS - Intel MKL - ATLAS
+:::
+::: {.fragment}
+- Often implemented (partially) in Fortran and assembly
+  - C bindings nearly always available though
+:::
 
-> Link with `-lblas -llapack` or use optimized implementations like OpenBLAS, Intel MKL, or ATLAS.
+::: {.fragment .callout-tip}
+Link typically happens with `-lblas -llapack`, but this can be different for optimized implementations like OpenBLAS, Intel MKL, or ATLAS.
+:::
 
-## Dot product in BLAS
+## Dot product in BLAS {.smaller}
 
 ```{.c}
 #include <stdio.h>
@@ -117,6 +174,15 @@ int main() {
     return 0;
 }
 ```
+
+```{.c}
+$ gcc dotproduct.c -o dotproduct -lblas && ./dotproduct
+Dot product: 32.000000
+```
+
+::: {.fragment .callout-tip}
+On the cluster, use `module load OpenBLAS/0.3.27-GCC-13.3.0` and link with `-lopenblas`
+:::
 
 ## HDF5: Managing Scientific Data in C {.smaller}
 
@@ -182,16 +248,137 @@ of equations using GSL.
 
 **Learning outcomes:**
 
+- Learn how to read "production" C code without understanding all details
 - Work with HDF5 and BLAS libraries
+
+::: {.fragment .callout-tip}
+It is not necessary or even wanted to fully understand the mathematics of the model.
+The following slides present the essential things you need.
+:::
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+Supervised machine learning models:
+
+- Propose a model $y = f(x; A)$ that relates the input $x$ to the output $y$ 
+  with a function $f$ that depends on (currently unknown) parameters $A$
+- Collect a training set of known input-output pairs of $\{x, y\}$ and
+  determine the parameters $A$ such that the model predicts the expected
+  outputs for the training set
+  - Technically: minimize a cost function using gradient descent
+- Use the estimated parameters to compute output for new inputs (inference)
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+- Input $\mathbf{x}$: vector of size $784$ representing grayscale values of an image of $28 \times 28$ pixels
+- Output $\mathbf{y}$: vector of size $10$, representing probabilities that image is classified as integer $\{ 0, 1, ..., 9\}$
+- Model $\mathbf{y} = \sigma \left( W \mathbf{x} + \mathbf{B} \right)$
+  - Perceptron: neuron whose activation depends on weights, biases and inputs
+  - $\sigma$ is an activation function, in this case a softmax
+- Parameters: $W$ ($782 \times 10$) matrix and $\mathbf{B}$ (vector of size 10)
+
+::: {.fragment .callout-tip}
+This is not a state-of-the art model, but does demonstrate the essence of even very modern machine learning.
+:::
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+An excellent tutorial is available at [https://www.3blue1brown.com/lessons/neural-networks](https://www.3blue1brown.com/lessons/neural-networks)
+(it uses multiple layers, so more parameters than in our case)
+
+![](images/neural-network-function.png)
+
+## Handwriting recognition {.smaller}
 
 **Instructions:**
 
-- Use https://github.com/AndrewCarterUK/mnist-neural-network-plain-c/ as a
-  starting point.
+- Use [https://github.com/AndrewCarterUK/mnist-neural-network-plain-c](https://github.com/AndrewCarterUK/mnist-neural-network-plain-c) as a
+  starting point
+- Go through the code and try to get a high-level overview, without getting lost in the implementation details
 - Add checkpointing: allow storing parameters at the end of training in HDF5
-  format. Also allow reading them back in as initial guess to resume training.
+  format. Also allow reading them back in as initial guess to resume training
 - Replace the linear algebra operations by calls to BLAS. Compare the performance
-  with the original implementation.
+  with the original implementation
+- Write a companion program that does inference by using precalculated parameters
+- Implement your own feature that you think would improve the code
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitA_3.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.00%
+P(1) =   0.01%
+P(2) =   0.11%
+P(3) =  99.81%
+P(4) =   0.00%
+P(5) =   0.02%
+P(6) =   0.00%
+P(7) =   0.00%
+P(8) =   0.05%
+P(9) =   0.00%
+Digit prediction: 3
+```
+:::
+::::
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitB_6.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.05%
+P(1) =   0.00%
+P(2) =   0.01%
+P(3) =  96.88%
+P(4) =   0.00%
+P(5) =   3.06%
+P(6) =   0.00%
+P(7) =   0.00%
+P(8) =   0.00%
+P(9) =   0.00%
+Digit prediction: 3
+```
+:::
+::::
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitC_6.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.00%
+P(1) =   0.08%
+P(2) =   0.68%
+P(3) =   0.01%
+P(4) =   0.00%
+P(5) =   0.00%
+P(6) =  99.08%
+P(7) =   0.00%
+P(8) =   0.14%
+P(9) =   0.00%
+Digit prediction: 6
+```
+:::
+::::
 
 # Segmentation faults
 
@@ -206,6 +393,8 @@ of equations using GSL.
 ## Segmentation fault example {.smaller}
 
 ```{.c .small-code}
+#include <stdio.h>
+ 
 int main(void) {
     int n = 4;
     int A[n];
@@ -241,7 +430,7 @@ Segmentation fault (core dumped)
 - Some elements of the array (`A[2]`) have a *garbage* value
   - Makes sense, elements were not initialized
 - Some elements outside of array (`A[30000]`) have a garbage value
-  - Makes sense, you just get what happens to be in memory at `(A + 3000)`
+  - Makes sense, you just get what happens to be in memory at `(A + 30000)`
 - The access of `A[90000]` gives a segmentation fault
   - ???
 
@@ -254,14 +443,17 @@ Segmentation fault (core dumped)
   - Hides fragmentation of physical memory
   - Delegates managing memory hierarchy (caches, RAM, disk) to OS
   - Provides safety mechanism to isolate process' address space
-- Mapping to phyical memory in page table
-  - Out-of-bound memory access can pick up garbage mapping address
-  - You might be accessing another process' memory, even on read access the CPU throws a segmentation fault
 :::
 ::: {.column width=35%}
 ![](images/virtual_memory.svg) 
 :::
 :::: 
+
+::: {.fragment}
+- Mapping to phyical memory in page table
+  - Out-of-bound memory access can pick up garbage mapping address
+  - You might be accessing another process' memory, even on read access the CPU throws a segmentation fault
+:::
 
 ## Segmentation fault example {.smaller}
 
@@ -418,7 +610,7 @@ The `_Generic` Keyword
 
 ## Syntax changes in C23
 
-- `nullptr`` (keyword) rather than `NULL` (macro)
+- `nullptr` (keyword) rather than `NULL` (macro)
 - `true/false` keywords, `stdbool.h` not required
 - Unnamed function parameters
 - `stdbit.h`: bit manipulation functions

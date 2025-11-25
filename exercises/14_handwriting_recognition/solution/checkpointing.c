@@ -3,19 +3,26 @@
 #include <stdint.h>
 #include <math.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "hdf5.h"
 #include "include/neural_network.h"
 
 void write_to_hdf5(neural_network_t *network, int step) {
     
-    // Create HDF5 file
+    // Create or open HDF5 file
     char *fn = "parameters.h5";
     hid_t file_id;
-    file_id = H5Fopen(fn, H5F_ACC_RDWR, H5P_DEFAULT);
-    if (file_id < 0) {
+    if (access(fn, F_OK) != 0) {
         // File does not exist, create it
         file_id = H5Fcreate(fn, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    }
+    else {
+        file_id = H5Fopen(fn, H5F_ACC_RDWR, H5P_DEFAULT);
+        if (file_id < 0) {
+            // File does not exist, create it
+            printf("Error opening file %s\n", fn);
+        }
     }
 
     // Create/open group
@@ -27,8 +34,6 @@ void write_to_hdf5(neural_network_t *network, int step) {
     } else {
         group_id = H5Gcreate(file_id, groupname, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
     }
-
-
 
     // Weights:
     // Define dataspace for 2D array
@@ -71,7 +76,6 @@ void write_to_hdf5(neural_network_t *network, int step) {
     H5Fclose(file_id);
 
     printf("Data written to %s\n", fn);
-
 }
 
 
@@ -83,7 +87,6 @@ herr_t list_groups(hid_t loc_id, const char *name, const H5L_info_t *info, void 
     }
     return 0;
 }
-
 
 typedef struct {
     int count;
@@ -105,8 +108,6 @@ herr_t collect_names(hid_t loc_id, const char *name, const H5L_info_t *info, voi
     return 0;
 }
 
-
-
 // Extract numeric suffix from "step_XXXXX"
 int extract_number(const char *name) {
     const char *underscore = strrchr(name, '_');
@@ -120,17 +121,16 @@ int compare_names(const void *a, const void *b) {
     return extract_number(nameA) - extract_number(nameB);
 }
 
-
 int read_latest_parameters(neural_network_t *network) {
     char *fn = "parameters.h5";
+
+    if (access(fn, F_OK) != 0) { return -1;}
     
     hid_t file_id = H5Fopen(fn, H5F_ACC_RDONLY, H5P_DEFAULT);
     if (file_id < 0) {
         printf("Failed to open file\n");
         return -1;
     }
-
-   
 
     // First pass: count groups
     int count = 0;
@@ -146,7 +146,6 @@ int read_latest_parameters(neural_network_t *network) {
     // Allocate memory for names
     char **names = malloc(count * sizeof(char *));
     iter_data data = {0, names};
-
 
     // Second pass: collect names
     idx = 0;
@@ -172,7 +171,6 @@ int read_latest_parameters(neural_network_t *network) {
     status = H5Dread(dataset_id, H5T_NATIVE_FLOAT, H5S_ALL, H5S_ALL,
                             H5P_DEFAULT, network->b);
     H5Dclose(dataset_id);
-    
 
     // Cleanup
     for (int i = 0; i < count; i++) free(names[i]);
