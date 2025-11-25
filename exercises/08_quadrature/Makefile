@@ -5,7 +5,7 @@ CLIBS = -lm
 all: quadrature
 
 quadrature: quadrature.c
-	$(CC) $(CFLAGS) $(CLIBS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $< $(CLIBS)
 
 clean:
 	$(RM) quadrature $(wildcard *.o)

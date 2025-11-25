@@ -5,12 +5,13 @@ double trapezoidRule (double (*f)(double), double a, double b) {
     return (b-a)*(f(a) + f(b))/2;
 }
 
-
 double quadrature (double (*f)(double), double x0, double xN, long int N) {
+    // Set up an equidistant grid
     double x[N];
     for (long int i=0; i < N; i++) {
         x[i] = x0 + (xN - x0) * i / (N - 1);
     }
+    // Numerically integrate by applying trapezoid rule to each segment
     double integral = 0;
     for (long int i=0; i < N-1; i++) {
         integral += trapezoidRule(f, x[i], x[i+1]);
@@ -18,15 +19,15 @@ double quadrature (double (*f)(double), double x0, double xN, long int N) {
     return integral;
 }
 
-
 double cos_square(double x) {
     return cos(x) * cos(x);
 }
 
-
 int main(void) {
+    // Number of grid points
     long int N = 100;
     double x0, xN, integral;
+    // Integration interval
     x0 = 0.0;
     xN = M_PI / 2;
 
