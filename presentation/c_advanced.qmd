@@ -394,9 +394,11 @@ struct particle centerOfMass(struct particle p1, struct particle p2) {
 struct particle particles[n];
 ```
 
+::: {.fragment}
 - Defined in this way, accessing all `x` coordinates would give strided memory access
   - Having a struct with arrays can be more efficient than an array of structs
   - Depends on the specific application 
+:::
 
 ## Structures and pointers
 
@@ -408,6 +410,7 @@ void translateX(struct particle *p, double distance) {
 }
 ```
 
+::: {.fragment}
 - A member of a pointer can be accessed with `->`
   - If `p` is a pointer to a `struct particle`, `(*p).x` is the same as `p->x`
 
@@ -416,6 +419,7 @@ void translateX(struct particle *p, double distance) {
     p->x += distance;
 }
 ```
+:::
 
 ## Structures and pointers
 
@@ -549,11 +553,13 @@ See `exercises/11_dna_sequencing`
 
 ## Input and output ^[Kernighan and Ritchie, Chapter 7, Input and Output] ^[Adapted from https://github.com/gjbex/Scientific-C]
 
+::: {.incremental}
 - Input/output is not part of C, but of standard library => need for `#include <stdio.h>`
 - Converting input/output can be tedious (use AI assistant?)
 - Make use of dedicated libraries/formats such as HDF5, NetCDF, Zarr
-- Annotate input/output with metadata (units, meaning, etc...)
+- Annotate data with metadata (units, meaning, etc...)
 - Limited coverage in this course, see K&R Appendix B
+:::
 
 ## Writing to standard out (stdout)
 
@@ -625,7 +631,7 @@ Command-line argument 2 is World
   - `FILE *fp; fp = fopen(name, mode);`
 - `mode` can be read `r`, append `a`, or write `w`
 - Make sure to check if `fopen` was succesful by comparing with `NULL` pointer
-- Make for to close file again with `fclose(fp)`;
+- Make sure to close file again with `fclose(fp)`;
 
 ## File access example
 
@@ -636,9 +642,9 @@ Command-line argument 2 is World
         return 1;
     }
     char line[256];
-    while (fgets(line, sizeof(line), fp)) {
+    while (fgets(line, sizeof(line), values)) {
         double value;
-        if (sscanf(line, "%lf", &value) == 2) {
+        if (sscanf(line, "%lf", &value) == 1) {
             printf("Read value %f\n", value);
         }
     }
