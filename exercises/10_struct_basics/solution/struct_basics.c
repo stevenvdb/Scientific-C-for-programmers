@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-
 struct Person {
     double height;
     double weight;
     int year_of_birth;
     char initial;
 };
-
 
 double sumWeights(int n, ...) {
     va_list persons;
@@ -23,8 +21,6 @@ double sumWeights(int n, ...) {
 }
 
 int main(void) {
-
-
     printf("The size of struct Person is %zu bytes\n", sizeof(struct Person));
 
     // Explicitly initialize all members
