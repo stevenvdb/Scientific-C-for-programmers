@@ -314,11 +314,20 @@ double trap = trapezoidRule(cos, 0, M_PI);
 
 - See `exercises/09_heat_equation`
 
+## Heat equation memory leak
+
+- The provided code allocated memory at **each** iteration without ever freeing
+  it
+- This is a memory leak: for larger grids and/or more steps, you would run out
+  of memory
+- Make sure to **always** free memory you allocated with `malloc/calloc`
+- In this case the allocation only has to be done once (outside of the loop)
+
 # Structures
 
 ## Structures ^[Kernighan and Ritchie, Chapter 6, Structures] ^[Adapted from https://github.com/gjbex/Scientific-C]
 
-- A structure is a collection of one or more variables
+- A structure is a collection of one or more variables, possibly of different types
 - Makes it convenient to organize and handle complicated data
 - A very lightweight class (but do not call C object-oriented):
   - No inheritance
@@ -334,6 +343,7 @@ struct particle {
     double y;
     double z;
     double mass;
+    char symbol;
 }
 ```
 
@@ -348,9 +358,16 @@ struct particle p1;
 p1.x = 1.0;
 p1.y = 2.0;
 p1.z = 3.0;
-p1.m = 1.000784;
-struct particle p2 = {2.0, 4.0, 5.0, 4.002602};
+p1.mass = 1.000784;
+p1.symbol = 'H';
+struct particle p2 = {2.0, 4.0, 5.0, 12.011, 'C'};
 ```
+
+::: {.fragment}
+::: {.callout-tip}
+Initializing member-by-member is a bit more robust when the `struct` definition changes
+:::
+:::
 
 ## Structures and functions
 
@@ -406,18 +423,67 @@ void translateX(struct particle *p, double distance) {
   - `*p.x` would be interpreted as `*(p.x)` (unwanted in our example)
   - use brackets to make your intention clear
 
-## Self-referencing structures: linked list
+## Common data structures {.smaller}
 
-- A member can have the same type as the structure it is a member of
-- Self-referencing structures are quite common: linked list, tree, ...
+::: {.incremental}
+- Multidimensional arrays
+  - Regular and fixed structure, only members of a single type
+- Linked lists
+  - Allow dynamic lengths and make insertion easy
+- Trees
+  - Represent hierarchical data
+- Graph
+  - More general than trees, allow more complicated topologies
+:::
 
-## Linked list
+## Typedef {.smaller}
 
-TODO
+The `typedef` keyword creates an alias for an existing data type
 
-## Typedef
+::: {.incremental}
+- To abbreviate a long type name:
+  ```{.c}
+  typedef unsigned long int ULINT;
+  ULINT i; // Equivalent to unsigned long int i;
+  ```
+- To facilitate switching between precisions or improve portability:
+  ```{.c}
+  #ifdef REDUCED_PRECISION
+  typedef float MYFLOAT;
+  #else
+  typedef double MYFLOAT;
+  #endif
+  ```
+- To have a type name closer to its semantical meaning
+  ```{.c}
+  typedef struct Item * Item;
+  typedef struct Item * List;
+  ```
+  [look up linked-list implementation to better understand this one]
+:::
 
-TODO
+## Unions {.smaller background-color="lightgrey"}
+
+- A `union` can hold objects of different types, but only one at a time
+  - Only the last assigned member is guaranteed to hold a valid value
+- Similar to a `struct`, but in a union, members share the same memory
+- Can be used to have some pseudo-polymorphism in C
+  ```{.c}
+  union MyUnion {int myInt; double myDouble;};
+  union MyUnion u;
+  u.myInt = 1;
+  u.myDouble = 2.0; // From here, u.myInt has invalid value
+  ```
+- Sometimes used to make low-level access easier, for instance interpret a 4-byte int as 4 1-byte chars
+  ```{.c}
+  typedef union
+  {
+    struct {
+        unsigned char byte1, byte2, byte3, byte4;
+    } bytes;
+    unsigned int dword;
+  } HW_Register;
+  ```
 
 # Exercises
 
@@ -429,14 +495,14 @@ TODO
 
 **Learning outcomes:**
 
-- Define a structure and functions operating ont
+- Define a structure and functions operating on it
 - Think about memory alignment
 
 **Instructions:**
 
 - Create a `Person` structure with members height, weight, year of birth, and first letter of name
-- Write a function that computes the total weight of a group of persons
 - Check the size of the structure in memory and explain the result
+- Write a function that computes the total weight of a group of persons [hint: see variadic functions]
 - See `exercises/10_struct_basics`
 
 ## DNA sequencing {.smaller}
