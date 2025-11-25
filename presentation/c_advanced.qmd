@@ -1,11 +1,24 @@
 # Advanced C
 
+{{< include outline.qmd >}}
+
 # Pointers and arrays
 
 ## Pointers and arrays ^[Kernighan and Ritchie, Chapter 5, Pointers and arrays] ^[Adapted from https://github.com/gjbex/Scientific-C]
 
-- C arrays store multiple values of the same type in a single variable
+- C **arrays** store multiple values of the same type in a single variable
+- C **pointers** contain a memory address of a variable
 - Pointers and arrays are closely related in C
+
+## Memory management
+
+::: {.incremental}
+- Memory is one of the fundamental building blocks of current computer architectures (see von Neumann model)
+- In many programming languages, memory management is transparent to programmer
+  - A variable is stored somewhere in memory, but the programmer does not know where
+  - Variables are referenced symbolically by programmer, program figures out memory location
+- C does allow managing memory yourself, so it needs a concept to allow working with memory addresses
+:::
 
 ## Pointer basics
 
@@ -15,16 +28,17 @@
 - There are different types of pointers, depending on which type they point to
 - Declarations like `int *px` indicate that `px` is a pointer and `*px` is an `int`
 
-## Virtual memory layout {.smaller}
+## Virtual memory layout {.smaller background-color="lightgrey"}
 
 :::: {.columns}
 ::: {.column width="55%"}
-- Virtual memory looks like a table with two columns
+- I represent virtual memory as a table with three columns
   - Address column in hexadecimal format
   - Value column in decimal format
+  - Variable column makes it easier to read, not present in actual implementation
   - Remember that internally it's all binary
   - Some variables take up more than one address
-  - The *Variable* column is just present to make it easier to read
+
 :::
 ::: {.column width="45%"}
 
@@ -43,6 +57,7 @@
 
 ## Working with large arrays
 
+::: {.incremental}
 - Suppose you construct vectors using a `struct` (see later)
 - You want a function `double innerProduct(struct vector v1, struct vector v2)` that
   computes the inner product
@@ -50,11 +65,12 @@
 - Memory access is slow, this would give bad performance for large cases
 
 => This is also addressed by pointers
+:::
 
 ## Pointer basics
 
 - A pointer is a variable that contains the address of a variable
-- Pointer arguments allow modifying object in the calling function
+- Pointer arguments allow modifying object in the called function
 - There are different pointer types, depending on the variable they point to, for example, `int *px;` or `double *pa;`
 
 ::: {.callout-tip}
@@ -99,10 +115,12 @@ irrespective of the object type!
 
 ## Array indexing sourcery
 
-- In C, the name of an array is a synonym for the location of the initial element
+::: {.incremental}
+- In C, the name of an array is a synonym for the memory address of the initial element
   - `int *pa = &a[0]` is identical to `int *pa = a`
 - Access to the i-th element `a[i]` is translated to `*(a+i)`
 - Because integer addition is commutative, `a[i]` is identical to `i[a]`!
+:::
 
 ## Arrays as function arguments
 
@@ -117,11 +135,11 @@ respect the bounds of the array. This is one of the reasons why C programs are
 often considered at risk for unsafe memory management.
 :::
 
-## Array decay {background-color="lightgrey"}
+## Array decay {.smaller}
 
 - When passed to a function, an array decays into a pointer to its first element
 - `sizeof(arr)` inside function gives size of pointer, not array
-- Array length information is lost.
+- Array length information is lost
 
 ```{.c .small-code}
 #include <stdio.h>
@@ -135,6 +153,11 @@ int main() {
     printf("sizeof(arr) = %zu\n", sizeof(arr)); // prints size of array
     foo(arr);
 }
+```
+Output:
+```{.bash .small-code}
+sizeof(arr) = 40
+sizeof(arr) = 8
 ```
 
 ## Character pointers
@@ -167,8 +190,9 @@ Variable length refers to the fact that length is only known at runtime,
 a variable length array remains of the same size during its lifetime.
 :::
 
-## Dynamic memory allocation
+## Dynamic memory allocation {.smaller}
 
+::: {.incremental}
 - Memory for arrays can be dynamically allocated on the heap
   - Heap is a large area of memory used at runtime
   - Signature: `void *malloc(size_t size);`
@@ -177,6 +201,7 @@ a variable length array remains of the same size during its lifetime.
   - if memory cannot be allocated, null pointer is returned
   - *always* `free()` the memory *exactly* once!
   - `calloc`: includes initializing to zero (so slower than `malloc`)
+:::
 
 ## Dynamic memory allocation
 
