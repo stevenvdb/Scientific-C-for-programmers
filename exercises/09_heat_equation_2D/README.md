@@ -24,7 +24,8 @@
   that it contains some (nasty) bugs!
 - Run the program in order to generate binary files containing the field at
   selected timesteps. You can generate a movie using the supplied `make_movie.py`
-  python script. Does the visualization match your physical intuition?
+  python script (on the cluster, use `module load matplotlib/3.9.2-gfbf-2024a` to
+  make matplotlib available). Does the visualization match your physical intuition?
 - [Bonus] The time integration currently uses the so-called forward Euler
   method. Look up a different method with some benefits and implement it as
   well.
