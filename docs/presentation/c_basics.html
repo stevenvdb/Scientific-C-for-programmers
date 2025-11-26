@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>c_basics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-6172778a27b0bfa6b3b3f65992e46a92.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8fd1faf6fd93e4e6d207ae0f9db51d78.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="basics-of-c" class="level1">
+<h1>Basics of C</h1>
+<section id="outline" class="level2">
+<h2 class="anchored" data-anchor-id="outline">Outline</h2>
+<div style="display: flex; gap: 1em; flex-wrap: wrap;">
+<div style="flex: 1 1 45%;">
+<h3 class="anchored">
+Day 1
+</h3>
+<details>
+<summary>
+Introduction
+</summary>
+<ul>
+<li>
+Motivation
+</li>
+<li>
+Context
+</li>
+<li>
+Course overview
+</li>
+</ul>
+</details>
+<details>
+<summary>
+Jumping in
+</summary>
+<ul>
+<li>
+Hello, world
+</li>
+<li>
+Temperature conversion
+</li>
+<li>
+Logistic map
+</li>
+</ul>
+</details>
+<h3 class="anchored">
+Day 2
+</h3>
+<details>
+<summary>
+Basics of C
+</summary>
+<ul>
+<li>
+Types and operators
+</li>
+<li>
+Control flow
+</li>
+<li>
+Functions
+</li>
+</ul>
+</details>
+</div>
+<div style="flex: 1 1 45%;">
+<h3 class="anchored">
+Day 3
+</h3>
+<details>
+<summary>
+Advanced C
+</summary>
+<ul>
+<li>
+Arrays and pointers
+</li>
+<li>
+Structures
+</li>
+<li>
+Input and output
+</li>
+</ul>
+</details>
+<h3 class="anchored">
+Day 4
+</h3>
+<details>
+<summary>
+Beyond the core of C
+</summary>
+<ul>
+<li>
+External libraries
+</li>
+<li>
+Segmentation faults
+</li>
+<li>
+C standards
+</li>
+</ul>
+</details>
+<details>
+<summary>
+Wrapping up
+</summary>
+</details>
+</div>
+</div>
+</section>
+</section>
+<section id="data-types-operators-and-expressions" class="level1">
+<h1>Data types, operators and expressions</h1>
+<section id="data-types-operators-and-expressions-1" class="level2">
+<h2 class="anchored" data-anchor-id="data-types-operators-and-expressions-1">Data types, operators and expressions <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></h2>
+<ul>
+<li>Variables are the basic data objects manipulated in a C program</li>
+<li>C is <em>statically</em> typed: a variable is of a specific type defined at compile time</li>
+<li>C allows manipulation of variables by expressions with operators</li>
+</ul>
+</section>
+<section id="the-very-basics" class="level2">
+<h2 class="anchored" data-anchor-id="the-very-basics">The very basics</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>C statements <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> end with a semicolon</li>
+<li>Braces <code>{}</code> are used to group statements into a code block</li>
+<li>Whitespace is mostly ignored, allows to improve readability</li>
+<li>Compiler ignores what comes after <code>//</code> and between <code>/*</code> and <code>*/</code></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>a <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> <span class="co">// Single-line comment</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">/* Multi-line</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">   comment */</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</section>
+<section id="names-of-data-objects-in-c" class="level2">
+<h2 class="anchored" data-anchor-id="names-of-data-objects-in-c">Names of data objects in C</h2>
+<ul>
+<li>are case sensitive</li>
+<li>consist of <code>{A,...,Z,a,...,z,_,0,...,9}</code></li>
+<li>start with <code>{A,...,Z,a,...,z,_}</code></li>
+<li>can have any length, but at most:
+<ul>
+<li>variables: 31 significant, 64 for C99+</li>
+<li>functions: 6 significant<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, 32 for C99+</li>
+</ul></li>
+<li>cannot be reserved words such as <code>if</code>, <code>while</code>, <code>char</code>, <code>int</code>, …</li>
+</ul>
+</section>
+<section id="conventions-for-names" class="level2">
+<h2 class="anchored" data-anchor-id="conventions-for-names">Conventions for names</h2>
+<ul>
+<li>variables, functions: start with lowercase</li>
+<li>constants, type names: start with uppercase or fully capitalized</li>
+<li>names reflect semantics of entity!
+<ul>
+<li>variables with very small scope have a short name</li>
+</ul></li>
+<li>camelCase (e.g., <code>nrOfRuns</code>) or underscores <code>nr_of_runs</code></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Try to be consistent within a project. If you might share code with others, try to stick to a generally accepted code style, e.g.&nbsp;the <a href="https://www.gnu.org/prep/standards/html_node/Writing-C.html">GNU coding standard</a></p>
+</div>
+</div>
+</section>
+<section id="overview-of-data-types" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-data-types">Overview of data types</h2>
+<ul>
+<li><code>char</code>: single character</li>
+<li><code>int</code>: integer, allows qualifiers (<code>signed</code>, <code>long</code>, …)</li>
+<li><code>float</code>/<code>double</code>/<code>long double</code>: real numbers</li>
+<li><code>enum</code>: list of constants</li>
+<li><code>struct</code>: structure, group of related variables</li>
+</ul>
+</section>
+<section id="characters" class="level2">
+<h2 class="anchored" data-anchor-id="characters">Characters</h2>
+<ul>
+<li>a <code>char</code> holds 1 character of the local character set</li>
+<li>usually 1 byte, check with the <code>sizeof</code> operator</li>
+<li>limits are defined in <code>limits.h</code> header as <code>CHAR_MIN</code> and <code>CHAR_MAX</code></li>
+<li><code>char</code> can be signed or unsigned
+<ul>
+<li>almost always irrelevant, just use <code>char</code></li>
+</ul></li>
+<li>Example: <code>char myChar = 'b';</code>
+<ul>
+<li><code>"b"</code> is a string (=array of chars)!</li>
+</ul></li>
+</ul>
+</section>
+<section id="special-characters-are-escaped-with" class="level2">
+<h2 class="anchored" data-anchor-id="special-characters-are-escaped-with">Special characters are escaped with <code>\</code></h2>
+<ul>
+<li><code>'\a'</code>: bell</li>
+<li><code>'\n'</code>: new line</li>
+<li><code>'\r'</code>: carriage return</li>
+<li><code>'\t'</code>: horizontal tab</li>
+<li><code>'\\'</code>: backslash</li>
+<li><code>'\''</code>: single quote</li>
+<li><code>'\"'</code>: double quote</li>
+<li><code>'\0'</code>: null character (terminates strings)</li>
+</ul>
+</section>
+<section id="strings" class="level2">
+<h2 class="anchored" data-anchor-id="strings">Strings?</h2>
+<ul>
+<li>C does not have a basic string type</li>
+<li>There are two ways to declare a string constant:
+<ul>
+<li><p>An array of characters: <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> amessage<span class="op">[]</span> <span class="op">=</span> <span class="st">"My first string"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>A character pointer: <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>pmessage <span class="op">=</span> <span class="st">"My second string"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul></li>
+</ul>
+</section>
+<section id="strings-1" class="level2">
+<h2 class="anchored" data-anchor-id="strings-1">Strings?</h2>
+<ul>
+<li>String constants are terminated with <code>\0</code> internally
+<ul>
+<li>Allows to know where string ends</li>
+<li>You do not need to know this if you use functions from the standard library to work with strings</li>
+</ul></li>
+</ul>
+</section>
+<section id="integers" class="level2">
+<h2 class="anchored" data-anchor-id="integers">Integers</h2>
+<ul>
+<li><code>int</code>: typically 4 bytes, offers <span class="math inline">\(2^{32}\)</span> distinct values</li>
+<li>modifiers:
+<ul>
+<li><code>unsigned int</code>: only non-negative integers, natural for array indices</li>
+<li><code>short int</code>/<code>long int</code>/<code>long long int</code>: different ranges compared to <em>plain</em> <code>int</code>, can be combined with <code>unsigned</code></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The range of <code>int</code> can be a limitation in practice, think about the range you need and choose the appropriate type.</p>
+</div>
+</div>
+</section>
+<section id="fixed-size-integers" class="level2">
+<h2 class="anchored" data-anchor-id="fixed-size-integers">Fixed-size integers</h2>
+<p>The C standard only imposes a minimal range for integers:</p>
+<ul>
+<li>For example, <code>int</code> should at least cover <span class="math inline">\([−32767, +32767]\)</span></li>
+<li>Some platforms provide larger range =&gt; code is potentially platform dependent</li>
+</ul>
+<p>If you need a fixed range:</p>
+<ul>
+<li>Include the <code>stdint.h</code> header</li>
+<li>Use <code>uint8_t</code>, <code>int16_t</code>, …, which provide exactly the specified number of <em>bits</em></li>
+</ul>
+</section>
+<section id="real-numbers" class="level2">
+<h2 class="anchored" data-anchor-id="real-numbers">Real numbers</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>Real numbers are represented in a computer in a format very similar to exponential notation<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></li>
+<li>Computer uses binary representation, e.g., the IEEE SP standard:
+<ul>
+<li>Exponent determines range</li>
+<li>Mantissa determines precision</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:40%;">
+<p><img src="images/float_mantissa_exponent.png" class="img-fluid"> <img src="images/single_precision.jpg" class="img-fluid"> <img src="images/ieee_single.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="double-precision" class="level2">
+<h2 class="anchored" data-anchor-id="double-precision">Double precision</h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<p><img src="images/double_precision_axis.png" class="img-fluid"></p>
+</div><div class="column" style="width:75%;">
+<ul>
+<li>a <code>double</code> is usually 8 bytes and gives about 15 <em>decimal</em> digit precision</li>
+<li>the <code>float.h</code> header provides:
+<ul>
+<li><code>DBL_MAX</code>: largest positive <code>double</code></li>
+<li><code>DBL_MIN</code>: smallest positive <code>double</code></li>
+<li><code>DBL_EPSILON</code>: difference between <code>1.0</code> and next representable value (<span class="math inline">\(\approx\)</span> machine precision)</li>
+<li><code>BLD_DIG</code>: number of significant decimal digits</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="basic-floating-point-representations" class="level2">
+<h2 class="anchored" data-anchor-id="basic-floating-point-representations">Basic floating-point representations</h2>
+<ul>
+<li><code>double</code>: most often used in science</li>
+<li><code>float</code>: half the number of bits compared to <code>double</code>, usually 7 <em>decimal</em> digit precision</li>
+<li><code>long double</code>: usually larger range than <code>double</code>, not used often</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In deep learning, reduced-precision formats (FP16, FP8) are often used. Only dedicated devices like GPUs give hardware support.</p>
+</div>
+</div>
+</section>
+<section id="enumeration" class="level2">
+<h2 class="anchored" data-anchor-id="enumeration">Enumeration</h2>
+<ul>
+<li><code>enum</code> makes it convenient to refer to constants symbolically</li>
+<li>Using automatic integer numbering:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> Level <span class="op">=</span> <span class="op">{</span>LOW<span class="op">,</span> MEDIUM<span class="op">,</span> HIGH<span class="op">};</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> Level myLevel <span class="op">=</span> MEDIUM<span class="op">;</span> <span class="co">// myLevel will be 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Using custom values:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> Pieces <span class="op">=</span> <span class="op">{</span>King <span class="op">=</span> <span class="ch">'K'</span><span class="op">,</span> Queen <span class="op">=</span> <span class="ch">'Q'</span><span class="op">,</span> Rook <span class="op">=</span> <span class="ch">'R'</span><span class="op">,</span> Bishop <span class="op">=</span> <span class="ch">'B'</span><span class="op">,</span> Knight <span class="op">=</span> <span class="ch">'N'</span><span class="op">};</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> Pieces myPiece <span class="op">=</span> Bishop<span class="op">;</span> <span class="co">// myPiece will be 'B'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="type-conversion" class="level2">
+<h2 class="anchored" data-anchor-id="type-conversion">Type conversion</h2>
+<ul>
+<li>In constants, use suffix, e.g.&nbsp;<code>123456789L</code> is a <code>long int</code></li>
+<li>In expressions, automatic conversion to largest type, e.g.&nbsp;<code>5/9.0</code> is interpreted as <code>5.0/9.0</code></li>
+<li>Explicit casting with brackets, e.g.&nbsp;<code>(int) 5.3</code>
+<ul>
+<li>this evaluates to the integer 5, so information is lost</li>
+</ul></li>
+</ul>
+</section>
+<section id="accidental-type-conversion" class="level2">
+<h2 class="anchored" data-anchor-id="accidental-type-conversion">Accidental type conversion</h2>
+<ul>
+<li>What do you expect the following code will do?</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> a <span class="op">=</span> <span class="op">-</span><span class="fl">1.6e12</span><span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>abs<span class="op">(</span>a<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> printf<span class="op">(</span><span class="st">"abs(a) is greater than 0</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> printf<span class="op">(</span><span class="st">"abs(a) is smaller or equal to 0</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li>Behaviour is unexpected?</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gcc conversion.c <span class="at">-o</span> conversion <span class="kw">&amp;&amp;</span> <span class="ex">./conversion</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">abs</span><span class="er">(</span><span class="ex">a</span><span class="kw">)</span> <span class="ex">is</span> smaller or equal to 0</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="accidental-type-conversion-1" class="level2">
+<h2 class="anchored" data-anchor-id="accidental-type-conversion-1">Accidental type conversion</h2>
+<ul>
+<li>Compilation with <code>-Wconversion</code> flags provide a hint</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash small-code code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gcc <span class="at">-Wconversion</span> conversion.c  <span class="at">-o</span> conversion</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conversion.c:</span> In function ‘main’:</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conversion.c:6:13:</span> warning: conversion from ‘double’ to ‘int’ may change value <span class="pp">[-</span><span class="ss">Wfloat</span><span class="pp">-</span><span class="ss">conversion</span><span class="pp">]</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">6</span> <span class="kw">|</span>     <span class="cf">if</span> <span class="kw">(</span><span class="ex">abs</span><span class="er">(</span><span class="ex">a</span><span class="kw">)</span> <span class="op">&gt;</span> 0<span class="kw">)</span> <span class="bu">printf</span><span class="er">(</span><span class="st">"abs(a) is greater than 0\n"</span><span class="kw">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li>The <code>abs</code> function is for <code>int</code>, <code>double a</code> was silently converted</li>
+<li>Solution: use the <code>fabs</code> function</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode c small-code code-with-copy"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;math.h&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> a <span class="op">=</span> <span class="op">-</span><span class="fl">1.6e12</span><span class="op">;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>fabs<span class="op">(</span>a<span class="op">)</span> <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> printf<span class="op">(</span><span class="st">"abs(a) is greater than 0</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> printf<span class="op">(</span><span class="st">"abs(a) is smaller or equal to 0</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="variable-declaration" class="level2">
+<h2 class="anchored" data-anchor-id="variable-declaration">Variable declaration</h2>
+<ul>
+<li>C is statically typed, each variable has to be declared with type information: <code>int a, b;</code></li>
+<li>Can be combined with an assignment, but no automatic initalization:
+<ul>
+<li><code>double x = 3.2, y;</code></li>
+<li><code>double z = sqrt(2.0);</code></li>
+</ul></li>
+<li>Constants cannot be modified during runtime, <em>must</em> be assigned on declaration: <code>const int MINUTESPERHOUR = 60;</code>
+<ul>
+<li>Convention: names of constants are capitalized</li>
+</ul></li>
+</ul>
+</section>
+<section id="booleans" class="level2">
+<h2 class="anchored" data-anchor-id="booleans">Booleans</h2>
+<ul>
+<li>The original C89 standard does not have a boolean type
+<ul>
+<li>true: non-zero integer, non-NULL pointer</li>
+<li>false: zero, NULL pointer</li>
+</ul></li>
+<li>The C99 standard adds the <code>bool</code> type and <code>true/false</code> keywords (after including <code>&lt;stdbool.h&gt;</code>)</li>
+<li>The C23 standard provides booleans by default</li>
+<li>You can get by with the C89 approach, dedicated <code>bool</code> type might be somewhat more efficient in some cases</li>
+</ul>
+</section>
+<section id="exercise-data-type-sizes" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="exercise-data-type-sizes">Exercise: data type sizes</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Print information about sizes and ranges of several types</li>
+</ul>
+<p><strong>Learning outcomes:</strong></p>
+<ul>
+<li>Understand C data types</li>
+</ul>
+<p><strong>Instructions:</strong></p>
+<ul>
+<li>Extend the program provided in <code>exercises/04_data_type_sizes</code> to print information about more types and ranges</li>
+<li>Explain the relation between sizes and ranges</li>
+</ul>
+</section>
+<section id="exercise-data-type-sizes-solution" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-data-type-sizes-solution">Exercise: data type sizes solution</h2>
+<p>Code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"The size of int is </span><span class="sc">%zu</span><span class="st"> bytes; it ranges from </span><span class="sc">%d</span><span class="st"> to </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>       <span class="kw">sizeof</span><span class="op">(</span><span class="dt">int</span><span class="op">),</span> INT_MIN<span class="op">,</span> INT_MAX<span class="op">);</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"The size of unsigned long int is </span><span class="sc">%zu</span><span class="st"> bytes; its max is </span><span class="sc">%lu\n</span><span class="st">"</span><span class="op">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>       <span class="kw">sizeof</span><span class="op">(</span><span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">int</span><span class="op">),</span> ULONG_MAX<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> size of int is 4 bytes<span class="kw">;</span> <span class="ex">it</span> ranges from <span class="at">-2147483648</span> to 2147483647</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> size of unsigned long int is 8 bytes<span class="kw">;</span> <span class="ex">its</span> max is 18446744073709551615</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>4 bytes = 32 bits: <code>int</code> is in <span class="math inline">\([-2^{31}, 2^{31}-1]\)</span></li>
+<li>8 bytes = 64 bits: <code>unsigned long int</code> is in <span class="math inline">\([0, 2^{64}-1]\)</span></li>
+</ul>
+</section>
+<section id="exercise-data-type-sizes-solution-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-data-type-sizes-solution-1">Exercise: data type sizes solution</h2>
+<p>Code:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"The largest double that can be represented is </span><span class="sc">%6.1e\n</span><span class="st">"</span><span class="op">,</span> DBL_MAX<span class="op">);</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"The smallest positive double that can be represented is </span><span class="sc">%6.1e\n</span><span class="st">"</span><span class="op">,</span> DBL_MIN<span class="op">);</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"The machine epsilon is </span><span class="sc">%6.1e\n</span><span class="st">"</span><span class="op">,</span> DBL_EPSILON<span class="op">);</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"The number of digits is </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> DBL_DIG<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> largest double that can be represented is 1.8e+308</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> smallest positive double that can be represented is 2.2e-308</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> machine epsilon is 2.2e-16</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> number of digits is 15</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Exponent has 11 bits -&gt; in range [-1023,1024] -&gt; <span class="math inline">\(2^{1024} \approx 10^{308}\)</span></li>
+<li>Mantissa has 52 bits -&gt; 52 significant digits in binary -&gt; <span class="math inline">\(52 \log_{10} 2 \approx 15.6\)</span></li>
+</ul>
+</section>
+</section>
+<section id="operators" class="level1">
+<h1>Operators</h1>
+<section id="overview-of-operators" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-operators">Overview of operators</h2>
+<ul>
+<li>arithmetic operators</li>
+<li>relational operators</li>
+<li>logical operators</li>
+<li>bitwise operators</li>
+<li>assignment operators</li>
+<li>incremental operators</li>
+<li>conditional operator</li>
+</ul>
+</section>
+<section id="arithmetic-operators" class="level2">
+<h2 class="anchored" data-anchor-id="arithmetic-operators">Arithmetic operators</h2>
+<ul>
+<li>addition, subtraction: <code>+</code>, <code>-</code></li>
+<li>multiplication, division: <code>*</code>, <code>/</code>
+<ul>
+<li>integer division truncates fractional part, <code>5/9</code> equals <code>0</code></li>
+</ul></li>
+<li>modulo (only for integers): <code>%</code></li>
+<li><code>*</code>, <code>/</code>, <code>%</code> take precedence over <code>+</code> and <code>-</code></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use brackets for clarity instead of relying on precedence rules</p>
+</div>
+</div>
+</div>
+</section>
+<section id="relational-operators" class="level2">
+<h2 class="anchored" data-anchor-id="relational-operators">Relational operators</h2>
+<ul>
+<li>order:
+<ul>
+<li>smaller, smaller or equal: <code>&lt;</code>, <code>&lt;=</code></li>
+<li>larger, larger or equal: <code>&gt;</code>, <code>&gt;=</code></li>
+</ul></li>
+<li>equality:
+<ul>
+<li>equal to, not equal to: <code>==</code>, <code>!=</code></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Be careful when comparing doubles, e.g.&nbsp;<code>pow(sqrt(5.0), 2) == 5.0</code> is false!</p>
+</div>
+</div>
+</div>
+</section>
+<section id="logical-operators" class="level2">
+<h2 class="anchored" data-anchor-id="logical-operators">Logical operators</h2>
+<ul>
+<li>logical and, logical or: <code>&amp;&amp;</code>, <code>||</code>
+<ul>
+<li>evaluated left to right with early stopping,<br> <code>(i &lt; N) &amp;&amp; (a[i] &gt; 0)</code> will not access <code>a[i]</code> unless <code>i &lt; N</code></li>
+</ul></li>
+<li>unary negation <code>!</code>
+<ul>
+<li>converts non-zero operand into 0 and zero operand into 1</li>
+<li>zero is false, non-zero is true</li>
+</ul></li>
+</ul>
+</section>
+<section id="incrementdecrement-operators" class="level2">
+<h2 class="anchored" data-anchor-id="incrementdecrement-operators">Increment/decrement operators</h2>
+<ul>
+<li>C specific shorthand notation
+<ul>
+<li>increment: <code>i = i + 1;</code> is the same as <code>i++;</code> or <code>++i;</code></li>
+<li>decrement: <code>i = i - 1;</code> is the same as <code>i--;</code> or <code>--i;</code></li>
+</ul></li>
+<li>post/pre increment matters when value is used, for example in assignment:
+<ul>
+<li><code>int j = ++i;</code>: first increment <code>i</code>, then assign it to <code>j</code></li>
+<li><code>int j = i++;</code>: first assign <code>i</code> to <code>j</code>, then increment <code>i</code></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The name C++ can be interpreted as “incremented C”</p>
+</div>
+</div>
+</div>
+</section>
+<section id="bitwise-operators" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="bitwise-operators">Bitwise operators</h2>
+<p>Manipulate bits of integers (signed and unsigned <code>char</code>, <code>int</code>, <code>long</code>, …)</p>
+<ul>
+<li>Bitwise and, or, xor: <code>&amp;</code>, <code>|</code>, <code>^</code>
+<ul>
+<li><code>0011 &amp; 0101</code> -&gt; <code>0001</code></li>
+</ul></li>
+<li>Shift bits left, right: <code>&lt;&lt;</code>, <code>&gt;&gt;</code>
+<ul>
+<li><code>0111 1000 &gt;&gt; 2</code> -&gt; <code>xx01 1110</code></li>
+<li>x is zero if unsigned, undefined otherwise</li>
+</ul></li>
+<li>One’s complement: <code>~</code>
+<ul>
+<li><code>~1101</code> -&gt; <code>0010</code></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Bitwise operators are powerful, but also tedious. Use with care!</p>
+</div>
+</div>
+</div>
+</section>
+<section id="assignment-operators" class="level2">
+<h2 class="anchored" data-anchor-id="assignment-operators">Assignment operators</h2>
+<ul>
+<li>Simple assignment is done with <code>=</code> (do not confuse with comparison <code>==</code>)</li>
+<li>Assignment operators allow to compress statements:
+<ul>
+<li><code>i = i + 2;</code> is the same as <code>i += 2;</code></li>
+<li>Most binary operators have a corresponding assignment operator</li>
+<li>More concise, but often more intuitive as well</li>
+</ul></li>
+</ul>
+</section>
+<section id="conditional-expression" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-expression">Conditional expression</h2>
+<p>Conditional expression is a ternary operator <code>condition ? expr_true : expr_false</code></p>
+<ul>
+<li>Evaluate the <code>condition</code>
+<ul>
+<li>If true, evaluate <code>expr_true</code> as the result</li>
+<li>If false, evaluate <code>expr_false</code> as the result</li>
+</ul></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">// z = max(a, b)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>a <span class="op">&gt;</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co">// same thing but shorter</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> <span class="op">(</span>a <span class="op">&gt;</span> b<span class="op">)</span> <span class="op">?</span> a <span class="op">:</span> b<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="precedence-and-associativity" class="level2">
+<h2 class="anchored" data-anchor-id="precedence-and-associativity">Precedence and associativity</h2>
+<ul>
+<li>K&amp;R provide a table with precedence rules (2.12)
+<ul>
+<li>Make your code readable and maintable by using brackets</li>
+</ul></li>
+<li>C does not specify order of evaluation for most operators:
+<ul>
+<li>order can even depend on compiler options</li>
+<li><code>x = f() + g();</code> might evaluate <code>g</code> before <code>f</code>
+<ul>
+<li>important if <code>g</code> alters variable used by <code>f</code></li>
+</ul></li>
+<li><code>a + b + c;</code> could be <code>(a + b) + c</code> or <code>a + (b + c)</code>
+<ul>
+<li>floating-point arithmetic does not preserve mathematical associativity</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="exercise-operators" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-operators">Exercise: operators</h2>
+<p><strong>Goal:</strong> Solve a few operator-related programming questions <strong>Learning outcome:</strong> Understand the basics of C operators <strong>Instructions:</strong> See <code>exercises/05_operators</code></p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This exercise uses the <code>assert()</code> function to check your solution. This function can be useful for debugging, but should not be used in production code.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can easily “cheat” the <code>assert()</code> statements, but that is not the intention of course.</p>
+</div>
+</div>
+</section>
+<section id="exercise-operators-solution" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-operators-solution">Exercise: operators solution</h2>
+<p>Implement a function that returns if a year is a leap year: easy to achieve by combining modulo and logical operators.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> isLeapYear<span class="op">(</span><span class="dt">int</span> year<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Return 1 if year is a leap year and return 0 otherwise</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">       A year is a leap year if:</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">       - it is divisible by 4 but not by 100 OR</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">       - it is disisible by 400</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">    */</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span> <span class="op">(</span>year <span class="op">%</span> <span class="dv">4</span> <span class="op">==</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> year <span class="op">%</span> <span class="dv">100</span> <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">||</span> <span class="op">(</span>year <span class="op">%</span> <span class="dv">400</span><span class="op">)</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="exercise-operators-solution-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-operators-solution-1">Exercise: operators solution</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Multiply i by 8 and store it in j, but without making use of the * operator</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">// Hint: use a bitwise operator</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> i <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> j <span class="op">=</span> i <span class="op">&lt;&lt;</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>assert<span class="op">(</span>j <span class="op">==</span> <span class="dv">40</span><span class="op">);</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Compute c as the minimal value of a and b without using an if-else statement</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a <span class="op">=</span> <span class="dv">126</span><span class="op">;</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> b <span class="op">=</span> <span class="dv">45</span><span class="op">;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> c <span class="op">=</span> <span class="op">(</span>a <span class="op">&lt;</span> b<span class="op">)</span> <span class="op">?</span> a <span class="op">:</span> b<span class="op">;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>assert<span class="op">(</span>c <span class="op">==</span> b<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="control-flow" class="level1">
+<h1>Control flow</h1>
+<section id="control-flow-1" class="level2">
+<h2 class="anchored" data-anchor-id="control-flow-1">Control flow <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></h2>
+<ul>
+<li>Control flow statements specify order in which computations are performed</li>
+<li>Often multiple ways to achieve the same end result
+<ul>
+<li>Involves an element of personal preference</li>
+<li>One way might provide faster code than another</li>
+</ul></li>
+</ul>
+</section>
+<section id="statements-and-blocks" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="statements-and-blocks">Statements and blocks</h2>
+<ul>
+<li>Use <code>;</code> to terminate a statement</li>
+<li>Group multiple statements in blocks with braces <code>{}</code>
+<ul>
+<li><p>blocks can be nested</p></li>
+<li><p>variables can be redeclared and have block scope</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode c small-code code-with-copy"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>   <span class="dt">int</span> i <span class="op">=</span> <span class="dv">3</span><span class="op">;</span> <span class="co">// from here, i is 3</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>   <span class="op">{</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">int</span> i <span class="op">=</span> <span class="dv">5</span><span class="op">;</span> <span class="co">//from here, i is 5</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>   <span class="op">}</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>   <span class="co">// from here, i is 3 again</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use blocks to make your code <em>more</em> readable, unless you want to participate in the <a href="https://www.ioccc.org/">The International Obfuscated C Code Contest</a></p>
+</div>
+</div>
+</section>
+<section id="if-else-statement" class="level2">
+<h2 class="anchored" data-anchor-id="if-else-statement">if-else statement</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>expression <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    statement_true<span class="op">;</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    statement_false<span class="op">;</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:60%;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B{expression != 0} --&gt;|true| C[statement_true]
+    B --&gt;|false| E[statement_false]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>The <code>else</code> clause is optional</li>
+<li>For a single-line statement, braces are optional</li>
+<li>Indentation is only for style, but helps for readability</li>
+<li><code>if (expression)</code> is the same as <code>if (expression != 0)</code></li>
+</ul>
+</section>
+<section id="else-if-statement" class="level2">
+<h2 class="anchored" data-anchor-id="else-if-statement">else-if statement</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="op">(</span>expression1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    statement1<span class="op">;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>expression2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    statement2<span class="op">;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    statement3<span class="op">;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:60%;">
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    B{expression1} --&gt;|true| C[statement1]
+    B --&gt;|false| E{expression2}
+    E --&gt;|true| F[statement2]
+    E --&gt;|false| G[statement3]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>General way to write a multi-way decision</li>
+<li>The <code>else</code> clause is optional</li>
+</ul>
+</section>
+<section id="switch" class="level2">
+<h2 class="anchored" data-anchor-id="switch">Switch</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> <span class="op">(</span>expression<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="dt">const</span><span class="op">-</span>expr1<span class="op">:</span> statements1</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="dt">const</span><span class="op">-</span>expr2<span class="op">:</span> statements2</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">default</span><span class="op">:</span> statements3</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:55%;">
+
+</div>
+</div>
+<ul>
+<li>Multi-way decision to branch based on comparison with constant integer values</li>
+<li>Fall through: execution goes to next case
+<ul>
+<li>You can leave a <code>switch</code> with <code>break</code> or <code>return</code></li>
+</ul></li>
+<li>Case expressions must be constant and unique</li>
+<li><code>default</code> is optional</li>
+</ul>
+</section>
+<section id="switch-example" class="level2">
+<h2 class="anchored" data-anchor-id="switch-example">Switch example</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Count occurrence of odd and even digits in a string</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">switch</span> <span class="op">(</span>c<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="ch">'0'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'2'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'4'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'6'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'8'</span><span class="op">:</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    neven<span class="op">++;</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="ch">'1'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'3'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'5'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'7'</span><span class="op">:</span> <span class="cf">case</span> <span class="ch">'9'</span><span class="op">:</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    nodd<span class="op">++;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="for-loop" class="level2">
+<h2 class="anchored" data-anchor-id="for-loop">For loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">// General for loop</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span>expr1<span class="op">;</span> expr2<span class="op">;</span> expr3<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    statements<span class="op">;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Most common usage</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    statements<span class="op">;</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>expr1</code>: executed once at start, typically for initialization</li>
+<li><code>expr2</code>: evaluated at start of each iteration, for loop stops if false</li>
+<li><code>expr3</code>: evaluated at end of each iteration</li>
+</ul>
+</section>
+<section id="for-loop-1" class="level2">
+<h2 class="anchored" data-anchor-id="for-loop-1">For loop</h2>
+<ul>
+<li><em>Should</em> be used when number of repetitions is known or computed</li>
+<li>Each expression is optional, <code>for (;;) {}</code> is an infinite loop</li>
+<li><code>break</code> in loop body terminates loop</li>
+<li><code>continue</code> in loop body goes to next iteration</li>
+</ul>
+</section>
+<section id="while-loop" class="level2">
+<h2 class="anchored" data-anchor-id="while-loop">While loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">// General while loop</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>expression<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    statements<span class="op">;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Check if str contains c</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="op">(</span>i <span class="op">&lt;</span> strlen<span class="op">(</span>str<span class="op">)</span> <span class="op">&amp;&amp;</span> <span class="op">!</span>found<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>str<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> c<span class="op">)</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        found <span class="op">=</span> True<span class="op">;</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        i<span class="op">++;</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>statements</code> are executed zero or more times, as long as <code>expression</code> is true</li>
+<li><em>should</em> be used when number of repetitions is unknown</li>
+</ul>
+</section>
+<section id="do-while-loop" class="level2">
+<h2 class="anchored" data-anchor-id="do-while-loop">Do-While loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">// General while loop</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">do</span> <span class="op">{</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    statements<span class="op">;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">while</span> <span class="op">(</span>expression<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>statements</code> are executed at least once, until <code>expression</code> is false</li>
+<li>Similar to <code>while</code> loop, but <code>expression</code> is evaluated at end of iteration</li>
+</ul>
+</section>
+<section id="goto-and-labels" class="level2 x-slide">
+<h2 class="x-slide anchored" data-anchor-id="goto-and-labels">Goto and labels</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="cf">goto</span> label<span class="op">;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>label<span class="op">:</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    statements<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>goto</code> allows to branch to a specified <code>label</code></li>
+<li>never necessary, often makes code hard to read</li>
+<li>even C inventors discourage it, do do not use it</li>
+</ul>
+</section>
+</section>
+<section id="functions-and-program-structure" class="level1">
+<h1>Functions and Program Structure</h1>
+<section id="functions-and-program-structure-1" class="level2">
+<h2 class="anchored" data-anchor-id="functions-and-program-structure-1">Functions and Program Structure <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> <a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></h2>
+<ul>
+<li>Functions break large computing tasks into smaller ones</li>
+<li>Help to bring structure into code</li>
+<li>Hide implementations details</li>
+<li>Make it easier to reuse existing code</li>
+</ul>
+</section>
+<section id="basics-of-functions" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="basics-of-functions">Basics of functions</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">// General function definition</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span><span class="op">-</span>type function<span class="op">-</span>name<span class="op">(</span>type1 arg1<span class="op">,</span> type2 arg2<span class="op">,</span> <span class="op">...)</span> <span class="op">{</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    declarations and statements<span class="op">;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> expression<span class="op">;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>A function can have no arguments: <code>int myFunction(void);</code></li>
+<li>A function can return nothing: <code>void myFunction(int A);</code>
+<ul>
+<li>No <code>return</code> statement in body required</li>
+</ul></li>
+<li>The compiler requires a function to be <em>known</em> before it can process a call
+<ul>
+<li>Declare the function: <code>return-type function-name(type1 arg1, type2 arg2);</code></li>
+<li>Declaration is promise to provide implementation later</li>
+</ul></li>
+</ul>
+</section>
+<section id="function-examples" class="level2">
+<h2 class="anchored" data-anchor-id="function-examples">Function examples</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">// The most minimal (useless) function</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>dummy<span class="op">()</span> <span class="op">{}</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Compute the square of a floating-point number</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> square<span class="op">(</span><span class="dt">double</span> a<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a <span class="op">*</span> a<span class="op">;</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="return-statements" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="return-statements">Return statement(s)</h2>
+<ul>
+<li>A return statements returns a value (or nothing), but also returns control to the caller</li>
+<li>A function can have multiple return statements, but at most one is executed in each call</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode c small-code code-with-copy"><code class="sourceCode c"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> index<span class="op">(</span><span class="dt">char</span> c<span class="op">,</span> <span class="dt">char</span> s<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">unsigned</span> i<span class="op">;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> strlen<span class="op">(</span>s<span class="op">);</span> i<span class="op">++)</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>s<span class="op">[</span>i<span class="op">]</span> <span class="op">==</span> c<span class="op">)</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> i<span class="op">;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The returned expression is converted to function’s return type</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Valid, but dubious</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> returnInt<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> a <span class="op">=</span> <span class="fl">5.0</span><span class="op">;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> a<span class="op">;</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="more-on-functions" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="more-on-functions">More on functions</h2>
+<ul>
+<li><code>main</code> function is special: always the entry point of the program</li>
+<li>C passes arguments by value, inside the function a local copy is made
+<ul>
+<li>changes to values are invisible outside of function</li>
+<li>pointers (see Day 3) allow to circumvent limitations</li>
+</ul></li>
+<li>A function can only return one variable
+<ul>
+<li>pack multiple values in a <code>struct</code></li>
+<li>use pointers (see Day 3) to pass out values</li>
+<li>external variables (usually a bad idea)</li>
+</ul></li>
+</ul>
+</section>
+<section id="return-code-of-main-function" class="level2" data-background-color="lightgrey">
+<h2 data-background-color="lightgrey" class="anchored" data-anchor-id="return-code-of-main-function">Return code of main function</h2>
+<ul>
+<li>The return code of <code>main</code> is passed as exit code to calling process</li>
+<li>Convention is to return <code>0</code> in case of success, non-zero otherwise</li>
+<li>Allows chaining dependent commands, for example in bash:
+<ul>
+<li><code>&amp;&amp;</code> only executes next command if previous one had exit code <code>0</code></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">compile</span> <span class="kw">&amp;&amp;</span> <span class="ex">execute</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+<section id="return-code-of-main-function-1" class="level2" data-background-color="lightgrey">
+<h2 data-background-color="lightgrey" class="anchored" data-anchor-id="return-code-of-main-function-1">Return code of main function</h2>
+<ul>
+<li><code>stdlib.h</code> defines some macros</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31" style="font-size:70%"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb31-1"><a href="#cb31-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a></span>
+<span id="cb31-4"><a href="#cb31-4"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a><span class="op">{</span></span>
+<span id="cb31-6"><a href="#cb31-6"></a>    <span class="dt">FILE</span><span class="op">*</span> fp <span class="op">=</span> fopen<span class="op">(</span><span class="st">"data.txt"</span><span class="op">,</span> <span class="st">"r"</span><span class="op">);</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a>    <span class="cf">if</span> <span class="op">(</span>fp <span class="op">==</span> NULL<span class="op">)</span></span>
+<span id="cb31-8"><a href="#cb31-8"></a>    <span class="op">{</span></span>
+<span id="cb31-9"><a href="#cb31-9"></a>       fprintf<span class="op">(</span>stderr<span class="op">,</span> <span class="st">"fopen() failed in file </span><span class="sc">%s</span><span class="st"> at line #</span><span class="sc">%d</span><span class="st">"</span><span class="op">,</span> __FILE__<span class="op">,</span> __LINE__<span class="op">);</span></span>
+<span id="cb31-10"><a href="#cb31-10"></a>       exit<span class="op">(</span>EXIT_FAILURE<span class="op">);</span></span>
+<span id="cb31-11"><a href="#cb31-11"></a>    <span class="op">}</span></span>
+<span id="cb31-12"><a href="#cb31-12"></a></span>
+<span id="cb31-13"><a href="#cb31-13"></a>    <span class="co">/* Normal processing continues here. */</span></span>
+<span id="cb31-14"><a href="#cb31-14"></a>    fclose<span class="op">(</span>fp<span class="op">);</span></span>
+<span id="cb31-15"><a href="#cb31-15"></a>    printf<span class="op">(</span><span class="st">"Normal Return</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb31-16"><a href="#cb31-16"></a></span>
+<span id="cb31-17"><a href="#cb31-17"></a>    <span class="cf">return</span> EXIT_SUCCESS<span class="op">;</span></span>
+<span id="cb31-18"><a href="#cb31-18"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="external-variables" class="level2">
+<h2 class="anchored" data-anchor-id="external-variables">External variables</h2>
+<ul>
+<li>internal variable: defined <em>inside</em> function
+<ul>
+<li>lifetime and scope limited to function call</li>
+</ul></li>
+<li>external variable: defined <em>outside</em> function
+<ul>
+<li>bigger scope: globally accessible inside any function</li>
+<li>longer lifetime: keeps value between calls</li>
+<li>alternative for long list of function arguments</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>External variables typically make code less reusable, so generally they should be avoided</p>
+</div>
+</div>
+</section>
+<section id="external-variables-example" class="level2">
+<h2 class="anchored" data-anchor-id="external-variables-example">External variables example</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> external_variable<span class="op">;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> someFunction<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"In someFunction, external variable is </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> external_variable<span class="op">);</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    external_variable<span class="op">++;</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    external_variable <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    someFunction<span class="op">();</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"in main, external variable is </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> external_variable<span class="op">);</span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Value of <code>external_variable</code> persists:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./a.out</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">In</span> someFunction, external variable is 1</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="er">in</span> <span class="ex">main,</span> external variable is 2</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="scope" class="level2">
+<h2 class="anchored" data-anchor-id="scope">Scope</h2>
+<p>The <em>scope</em> of a variable or function is the part of the program where the variable of function can be used</p>
+<ul>
+<li>Local variables
+<ul>
+<li>From definition until end of block</li>
+<li>Includes function arguments</li>
+</ul></li>
+<li>External variables
+<ul>
+<li>From definition until end of file</li>
+<li>Can be used in multiple files by <em>declaring</em> with <code>extern</code> (not covered)</li>
+</ul></li>
+</ul>
+</section>
+<section id="header-files-and-build-systems" class="level2" data-background-color="lightgrey">
+<h2 data-background-color="lightgrey" class="anchored" data-anchor-id="header-files-and-build-systems">Header files and build systems</h2>
+<ul>
+<li>So far: small programs in one <code>.c</code> file: easy to compile</li>
+<li>Larger projects: many source files
+<ul>
+<li>Order of compilation can matter because of dependencies</li>
+<li>Difficult to remember compilation commands (linking and flags)</li>
+<li>Editing one file does not require recompiling entirely</li>
+</ul></li>
+</ul>
+</section>
+<section id="header-files-and-build-systems-1" class="level2 smaller" data-background-color="lightgrey">
+<h2 class="smaller anchored" data-background-color="lightgrey" data-anchor-id="header-files-and-build-systems-1">Header files and build systems</h2>
+<ul>
+<li>Use header files:
+<ul>
+<li><code>.h</code> files containing shared definitions and declarations</li>
+<li><code>#include "example.h"</code> or <code>#include &lt;stdio.h&gt;</code></li>
+</ul></li>
+<li>Use a build system (not covered here)
+<ul>
+<li>Makefile (<a href="https://github.com/hpcleuven/Makefile-intro">https://github.com/hpcleuven/Makefile-intro</a>]</li>
+<li>CMake (<a href="https://github.com/hpcleuven/CMake-intro">https://github.com/hpcleuven/CMake-intro</a>]</li>
+<li>Meson</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Most exercises can be compiled by running the <code>make</code> command in the exercise directory</p>
+</div>
+</div>
+</section>
+<section id="static-variables" class="level2">
+<h2 class="anchored" data-anchor-id="static-variables">Static variables</h2>
+<ul>
+<li>Internal variables with <code>static</code> declaration
+<ul>
+<li>Remain in existing across function calls</li>
+<li>Provide permanent private storage within a single function</li>
+</ul></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> uniqueIdentifier<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// id Indicates how many times the function has been called</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">static</span> <span class="dt">unsigned</span> id <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> id<span class="op">++;</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="static-functions" class="level2">
+<h2 class="anchored" data-anchor-id="static-functions">Static functions</h2>
+<ul>
+<li>Functions with <code>static</code> declaration
+<ul>
+<li>A static function is only visible within the file where it is declared</li>
+<li>A <em>normal</em> function is visible everywhere</li>
+</ul></li>
+<li>External variables with <code>static</code> declaration
+<ul>
+<li>Can only be used in file where they are declared</li>
+</ul></li>
+</ul>
+</section>
+<section id="initialization" class="level2">
+<h2 class="anchored" data-anchor-id="initialization">Initialization</h2>
+<ul>
+<li>Automatic internal variables
+<ul>
+<li>Without explicit initialization (such as <code>int x;</code>), values are “garbage”</li>
+<li>Initial value can come from expression: <code>double y = sqrt(6.0);</code></li>
+<li>Re-initialized each time the block is entered</li>
+<li>Compiler can warn about uninitialized variables
+<ul>
+<li>E.g., <code>-Wuninitialized</code> for gcc (not perfect)</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="initialization-1" class="level2">
+<h2 class="anchored" data-anchor-id="initialization-1">Initialization</h2>
+<ul>
+<li>Static internal variables
+<ul>
+<li>Guaranteed to initialize to zero</li>
+<li>Initialization first time it is encountered</li>
+<li>Expression or constant expression</li>
+</ul></li>
+<li>External variables
+<ul>
+<li>Guaranteed to initialize to zero</li>
+<li>Initialized at start of execution</li>
+<li>Constant expression</li>
+</ul></li>
+</ul>
+</section>
+<section id="recursion" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="recursion">Recursion</h2>
+<p>Functions can call themselves (i.e.&nbsp;recursion)</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="dt">unsigned</span> <span class="dt">long</span> fac<span class="op">(</span><span class="dt">unsigned</span> <span class="dt">long</span> n<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>n <span class="op">==</span> <span class="dv">0</span> <span class="op">||</span> n <span class="op">==</span> <span class="dv">1</span><span class="op">)</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> n<span class="op">*</span>fac<span class="op">(</span>n<span class="op">-</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Each function call has overhead (pushing frame on stack)</li>
+<li>Often not the fastest or lowest footprint
+<ul>
+<li>Deep recursion levels can even cause stack overflow</li>
+</ul></li>
+<li>Often closer to mathematical description</li>
+</ul>
+<div class="fragment callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When turning on compiler optimizations, recursive functions might be automatically converted to a loop, especially in case of tail recursion (where the recursive call is the last statement).</p>
+</div>
+</div>
+</section>
+<section id="the-c-preprocessor" class="level2">
+<h2 class="anchored" data-anchor-id="the-c-preprocessor">The C Preprocessor</h2>
+<p>A few statements are processed <em>before</em> compilation</p>
+<ul>
+<li><code>#include "filename"</code> or <code>include &lt;filename&gt;</code></li>
+<li><code>#define name replacement</code></li>
+<li>conditional inclusions with <code>#if</code>, <code>#elif</code>, <code>#else</code>, <code>#endif</code></li>
+</ul>
+<p>In your head, do not interpret these as C code, but imagine their impact on the code presented to compiler.</p>
+</section>
+<section id="the-c-preprocessor-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-c-preprocessor-1">The C Preprocessor</h2>
+<ul>
+<li><code>#include "myheader.h"</code>: includes content from <code>myheader.h</code> in current directory verbatim</li>
+<li><code>#include &lt;math.h&gt;</code>: includes content from <code>math.h</code> in include directory verbatim</li>
+<li>guarantees all source files have same definitions and variable declarations</li>
+</ul>
+</section>
+<section id="the-c-preprocessor-2" class="level2">
+<h2 class="anchored" data-anchor-id="the-c-preprocessor-2">The C Preprocessor</h2>
+<p>A macro substitution replaces each occurrence of a <code>name</code> with a <code>replacement</code>, for example <code>#define max(A, B) ((A) &gt; (B) ? (A) : (B))</code></p>
+<ul>
+<li>Every occurence of <code>max(x, y)</code> will be replaced</li>
+<li>Use with care, can make code more readable, but also obfuscate when reading code for the first time</li>
+<li>Macros avoid overhead associated with function call</li>
+</ul>
+</section>
+<section id="the-c-preprocessor-3" class="level2">
+<h2 class="anchored" data-anchor-id="the-c-preprocessor-3">The C Preprocessor</h2>
+<p>Conditional inclusion gives control over preprocessor statements</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Prevent redefinition</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifndef FOUR_PI</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#define FOUR_PI </span><span class="dv">4</span><span class="pp"> </span><span class="op">*</span><span class="pp"> M_PI</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Use SYSTEM to decide which header is included</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#if SYSTEM == SYSV</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="pp">#define HDR </span><span class="st">"sysv.h"</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#elif SYSTEM == MSDOS</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="pp">#define HDR </span><span class="st">"msdos.h"</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#else</span></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    <span class="pp">#define HDR </span><span class="st">"default.h"</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="variadic-functions" class="level2">
+<h2 class="anchored" data-anchor-id="variadic-functions">Variadic functions</h2>
+<ul>
+<li>C allows variable-length argument lists (variadic functions)</li>
+<li>The <code>printf</code> function is an example we already encountered</li>
+<li><code>stdarg.h</code> header provides utilities like <code>va_list,va_start,va_arg,va_end</code></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use sparingly, variadic functions are somewhat unconventional</p>
+</div>
+</div>
+</section>
+<section id="variadic-functions-1" class="level2">
+<h2 class="anchored" data-anchor-id="variadic-functions-1">Variadic functions</h2>
+<ul>
+<li>Example: add variable number of integers:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode c small-code code-with-copy"><code class="sourceCode c"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdarg.h&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> add_integers<span class="op">(</span><span class="dt">int</span> count<span class="op">,</span> <span class="op">...)</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> result <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">va_list</span> args<span class="op">;</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    va_start<span class="op">(</span>args<span class="op">,</span> count<span class="op">);</span> <span class="co">// count can be omitted since C23</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> count<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>        result <span class="op">+=</span> va_arg<span class="op">(</span>args<span class="op">,</span> <span class="dt">int</span><span class="op">);</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    va_end<span class="op">(</span>args<span class="op">);</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="exercises" class="level1">
+<h1>Exercises</h1>
+<section id="compute-pi-using-monte-carlo" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="compute-pi-using-monte-carlo">Compute <span class="math inline">\(\pi\)</span> using Monte Carlo</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Write a program that approximates <span class="math inline">\(\pi\)</span> by using a Monte Carlo algorithm</li>
+</ul>
+<p><strong>Learning outcomes:</strong></p>
+<ul>
+<li>Write a loop and use control flow</li>
+</ul>
+<p><strong>Instructions:</strong></p>
+<ul>
+<li>The quarter unit circle in the first quadrant has area <span class="math inline">\(\frac{\pi}{4}\)</span>. Approximate this area by generating uniformly distributed points in <span class="math inline">\([0,1] \times [0,1]\)</span> (<code>get_random_double</code> is provided) and selecting points inside a unit circle</li>
+<li>How does the estimate converge with the number of samples?</li>
+<li>See <code>exercises/06_mc_pi</code>.</li>
+</ul>
+</section>
+<section id="compute-pi-using-monte-carlo-1" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="compute-pi-using-monte-carlo-1">Compute <span class="math inline">\(\pi\)</span> using Monte Carlo</h2>
+<p><img src="images/mc_pi.png" class="img-fluid"></p>
+</section>
+<section id="compiler-optimization" class="level2" data-background-color="lightgrey">
+<h2 data-background-color="lightgrey" class="anchored" data-anchor-id="compiler-optimization">Compiler optimization</h2>
+<ul>
+<li>Most compilers have flags to control to which extent executable is optimized</li>
+<li>Examples of optimizations
+<ul>
+<li>Function inlining</li>
+<li>Eliminating common subexpressions</li>
+<li>Vectorization</li>
+<li>Statements of source code are reordered</li>
+<li>Loop reordering</li>
+</ul></li>
+</ul>
+</section>
+<section id="gcc-optimization-levels" class="level2 smaller" data-background-color="lightgrey">
+<h2 class="smaller anchored" data-background-color="lightgrey" data-anchor-id="gcc-optimization-levels">GCC optimization levels</h2>
+<ul>
+<li><code>-O0</code>:
+<ul>
+<li>No optimization, machine code stays close to source code</li>
+<li>Fast compilation, but slow at runtime</li>
+<li>Good for debugging, <strong>never</strong> use for production runs!</li>
+</ul></li>
+<li><code>-O2</code> or <code>-O3</code>:
+<ul>
+<li>Optimize, but comply with standards</li>
+<li>Slower compilation, but fast at runtime</li>
+<li>Usually the best option for production runs</li>
+</ul></li>
+<li><code>-Ofast</code>:
+<ul>
+<li>Optimize and possibly ignore standards compliance</li>
+<li>In principle the fastest execution</li>
+<li><strong>Never</strong> use without checking results!</li>
+</ul></li>
+</ul>
+</section>
+<section id="monte-carlo-pi-timings" class="level2" data-background-color="lightgrey">
+<h2 data-background-color="lightgrey" class="anchored" data-anchor-id="monte-carlo-pi-timings">Monte Carlo <span class="math inline">\(\pi\)</span> timings</h2>
+<ul>
+<li><p>Compilation without optimizations:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gcc <span class="at">-O0</span> <span class="at">-o</span> mc_pi mc_pi.c <span class="kw">&amp;&amp;</span> <span class="ex">./mc_pi</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Walltime</span> =    2.490s,      4.0e+07 iterations/s</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Nsamples</span> = 100000000 Estimated pi =   3.14169792 Error =   1.0527e-04</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Compilation with optimizations:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> gcc <span class="at">-O2</span> <span class="at">-o</span> mc_pi mc_pi.c <span class="kw">&amp;&amp;</span> <span class="ex">./mc_pi</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="ex">Walltime</span> =    1.768s,      5.7e+07 iterations/s</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="ex">Nsamples</span> = 100000000 Estimated pi =   3.14169792 Error =   1.0527e-04</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Main optimization in this case is probably inlining <code>get_random_double</code></p></li>
+</ul>
+</section>
+<section id="fibonacci" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="fibonacci">Fibonacci</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Write a program to compute the Fibonacci sequence</li>
+</ul>
+<p><strong>Learning outcome:</strong></p>
+<ul>
+<li>Write (recursive) functions</li>
+</ul>
+<p><strong>Instructions:</strong></p>
+<ul>
+<li>The Fibonacci sequence is defined by <span class="math inline">\({\displaystyle F_{n}=F_{n-1}+F_{n-2}}\)</span> and <span class="math inline">\(F_0=0, F_1=1\)</span></li>
+<li>Compute the nth element by using a recursive function</li>
+<li>Try to trigger a stack overflow for large n</li>
+<li>Write a function without recursion</li>
+<li>See <code>exercises/07_recursion</code></li>
+</ul>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Kernighan and Ritchie, Chapter 2, Types, operators and expressions<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Adapted from https://github.com/gjbex/Scientific-C<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>A statement is <em>roughly</em> a programming instruction, something to do<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>guaranteed by standard, nowadays most compilers allow longer lengths<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>arrays are discussed later on<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>pointers are discussed later on<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>not part of the C standard, but quite universal<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Kernighan and Ritchie, Chapter 3, Control Flow<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Adapted from https://github.com/gjbex/Scientific-C<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Kernighan and Ritchie, Chapter 4, Functions and Program Structure<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Adapted from https://github.com/gjbex/Scientific-C<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
