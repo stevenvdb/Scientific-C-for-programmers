@@ -272,7 +272,7 @@ for (int i=0; i<n; i++) {
 ## Pointers to functions
 
 - Example
-  - When $a$ and $b$ are close, the integral $\int_a^{b} f(x) dx \approx \frac{1}{2} \frac{f(a) + f(a)}{b-a}$
+  - When $a$ and $b$ are close, the integral $\int_a^{b} f(x) dx \approx \frac{1}{2} \frac{f(a) + f(b)}{b-a}$
   - This rule can be written for any $f(x)$ as:
 
 ```{.c}

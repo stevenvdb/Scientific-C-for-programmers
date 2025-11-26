@@ -916,7 +916,7 @@ unsigned uniqueIdentifier() {
   - Initialized at start of execution
   - Constant expression
 
-## Recursion
+## Recursion {.smaller}
 
 Functions can call themselves (i.e. recursion)
 
@@ -933,6 +933,11 @@ unsigned long fac(unsigned long n) {
 - Often not the fastest or lowest footprint
   - Deep recursion levels can even cause stack overflow
 - Often closer to mathematical description
+
+::: {.fragment .callout-tip}
+When turning on compiler optimizations, recursive functions might be automatically converted to a loop,
+especially in case of tail recursion (where the recursive call is the last statement).
+:::
 
 ## The C Preprocessor
 
