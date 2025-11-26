@@ -2,6 +2,14 @@
 
 # External libraries
 
+## External libraries
+
+::: {.incremental}
+- There are literally hundreds of potentially useful scientific libraries
+- The ones discussed here are by no means exhaustive or representative for your case
+- The intention is to get a feel for how you can proceed to use libraries in general
+:::
+
 ## External libraries overview {.smaller}
 
 ::: {.fragment}
@@ -19,14 +27,6 @@
   - Avoid reinventing the wheel
   - Leverage optimized, tested code
   - Improve performance and portability
-:::
-
-## External libraries
-
-::: {.incremental}
-- There are literally hundreds of potentially useful scientific libraries
-- The ones discussed here are by no means exhaustive or representative for your case
-- The intention is to get a feel for how you can proceed to use libraries in general
 :::
 
 ## Using external libraries
@@ -129,7 +129,7 @@ int main() {
 - Levels:
   - Level 1: Vector-vector (e.g., dot product)
   - Level 2: Matrix-vector (e.g., solving triangular systems)
-  - Level 3: Matrix-matrix (e.g., multiplication)
+  - Level 3: Matrix-matrix (e.g., matrix multiplication)
 
 ## LAPACK: Linear Algebra PACKage
 
@@ -196,6 +196,10 @@ On the cluster, use `module load OpenBLAS/0.3.27-GCC-13.3.0` and link with `-lop
   - Hierarchical structure: groups and datasets (like folders and files)
   - Supports compression, parallel I/O, and chunking
 
+## HDF5: schematic view of an HDF5 file
+
+![](images/hdf5_structure4.jpg)
+
 ## HDF5: writing a dataset
 
 ```{.c}
@@ -253,13 +257,14 @@ of equations using GSL.
 
 ::: {.fragment .callout-tip}
 It is not necessary or even wanted to fully understand the mathematics of the model.
-The following slides present the essential things you need.
+The following slides contain the essential things you need to know.
 :::
 
 ## Handwriting recognition {.smaller background-color="lightgrey"}
 
-Supervised machine learning models:
+### Supervised machine learning models:
 
+::: {.incremental}
 - Propose a model $y = f(x; A)$ that relates the input $x$ to the output $y$ 
   with a function $f$ that depends on (currently unknown) parameters $A$
 - Collect a training set of known input-output pairs of $\{x, y\}$ and
@@ -267,6 +272,7 @@ Supervised machine learning models:
   outputs for the training set
   - Technically: minimize a cost function using gradient descent
 - Use the estimated parameters to compute output for new inputs (inference)
+:::
 
 ## Handwriting recognition {.smaller background-color="lightgrey"}
 
@@ -490,6 +496,8 @@ Segmentation fault (core dumped)
 
 # Versions of C
 
+## Versions of C ^[Adapted from https://github.com/gjbex/Scientific-C]
+
 ## A brief history of C
 
 - C development starts in the early 1970s
@@ -504,7 +512,7 @@ Segmentation fault (core dumped)
 - The C89 standard is still considered the default
 - Compiler has to be instructed to use specific standard: `gcc -std=c11`
   - You need a recent compiler for the most recent standard
-- Compilers often to not stick *exactly* to standard
+- Compilers often do not stick *exactly* to standard
   - `gcc` provides some C99 constructions by default
   - Options like `-std=c89 -pedantic` make it more strict
 
@@ -518,7 +526,7 @@ Segmentation fault (core dumped)
 - Type-generic macros in `<tgmath.h>`
 - IEEE 754 floating point support
 
-## Inline functions
+## Inline functions {.smaller}
 
 - Function call: expensive
   - call stack must be maintained
@@ -536,15 +544,16 @@ inline double sqr(double x) {
 
 ## Restrict keyword for arrays
 
-- Arrays in C
-  - address of first element
+- Arrays in C:
+  - decay into pointers, just contain address of first element
   - no semantics for compiler
 - Multiple arrays as function arguments, do they overlap?
 - Help compiler, use `restrict`
   - programmer assures to compiler that arrays don't overlap
 
 ```{.c}
-void daxpy_r(double * restrict z, double a,                      double * restrict x, double * restrict y, int n);
+void daxpy_r(double * restrict z, double a, double * restrict x,
+             double * restrict y, int n);
 ```
 
 ## Complex numbers
