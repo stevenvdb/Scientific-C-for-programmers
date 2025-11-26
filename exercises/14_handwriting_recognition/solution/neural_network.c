@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#ifdef USE_BLAS
+#include <cblas.h>
+#endif
 
 #include "include/mnist_file.h"
 #include "include/neural_network.h"
@@ -59,6 +62,20 @@ void neural_network_softmax(float * activations, int length)
  */
 void neural_network_hypothesis(mnist_image_t * image, neural_network_t * network, float activations[MNIST_LABELS])
 {
+#ifdef USE_BLAS
+    // Store scaled pixels
+    float x[MNIST_IMAGE_SIZE];
+    for (int j = 0; j < MNIST_IMAGE_SIZE; j++) {
+        x[j] = PIXEL_SCALE(image->pixels[j]);
+    }
+    // Copy bias into activation, which BLAS will use as output
+    for (int i = 0; i < MNIST_LABELS; i++) {
+        activations[i] = network->b[i];
+    }
+
+    cblas_sgemv(CblasRowMajor, CblasNoTrans, MNIST_LABELS, MNIST_IMAGE_SIZE,
+                1.0f, &network->W[0][0], MNIST_IMAGE_SIZE, x, 1, 1.0f, activations, 1);
+#else
     int i, j;
 
     for (i = 0; i < MNIST_LABELS; i++) {
@@ -68,6 +85,7 @@ void neural_network_hypothesis(mnist_image_t * image, neural_network_t * network
             activations[i] += network->W[i][j] * PIXEL_SCALE(image->pixels[j]);
         }
     }
+#endif
 
     neural_network_softmax(activations, MNIST_LABELS);
 }
@@ -81,12 +99,32 @@ void neural_network_hypothesis(mnist_image_t * image, neural_network_t * network
 float neural_network_gradient_update(mnist_image_t * image, neural_network_t * network, neural_network_gradient_t * gradient, uint8_t label)
 {
     float activations[MNIST_LABELS];
-    float b_grad, W_grad;
-    int i, j;
 
     // First forward propagate through the network to calculate activations
     neural_network_hypothesis(image, network, activations);
 
+#ifdef USE_BLAS
+    // Compute b_grad vector
+    float b_grad[MNIST_LABELS];
+    for (int i = 0; i < MNIST_LABELS; i++) {
+        b_grad[i] = activations[i] - ((i == label) ? 1.0f : 0.0f);
+        gradient->b_grad[i] += b_grad[i];
+    }
+
+    // Compute scaled input vector x
+    float x[MNIST_IMAGE_SIZE];
+    for (int j = 0; j < MNIST_IMAGE_SIZE; j++) {
+        x[j] = PIXEL_SCALE(image->pixels[j]);
+    }
+
+
+    // Update W_grad using BLAS SGER (rank-1 update)
+    // W_grad += b_grad * x^T
+    cblas_sger(CblasRowMajor, MNIST_LABELS, MNIST_IMAGE_SIZE,
+               1.0f, b_grad, 1, x, 1, &gradient->W_grad[0][0], MNIST_IMAGE_SIZE);
+#else
+    int i, j;
+    float W_grad, b_grad;
     for (i = 0; i < MNIST_LABELS; i++) {
         // This is the gradient for a softmax bias input
         b_grad = (i == label) ? activations[i] - 1 : activations[i];
@@ -102,6 +140,7 @@ float neural_network_gradient_update(mnist_image_t * image, neural_network_t * n
         // Update the bias gradient
         gradient->b_grad[i] += b_grad;
     }
+#endif
 
     // Cross entropy loss
     return 0.0f - log(activations[label]);

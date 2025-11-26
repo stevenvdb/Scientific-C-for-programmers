@@ -1,6 +1,6 @@
 CC ?= gcc
-CFLAGS = -O2 -Wall
-CLIBS = -lm -lhdf5
+CFLAGS = -O2 -Wall -DUSE_BLAS
+CLIBS = -lm -lhdf5 -lblas
 DEPS = mnist_file.c checkpointing.c neural_network.c
 
 all: training inference
