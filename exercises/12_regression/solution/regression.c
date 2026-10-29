@@ -12,7 +12,7 @@ int main() {
     // Assumes no line is longer than 256 characters
     char line[256];
     int year;
-    double temp, mean_temp;
+    double temp, mean_temp = 0.0;
     int Nmeasurements = 0;
     double xsum = 0.0;
     double ysum = 0.0;

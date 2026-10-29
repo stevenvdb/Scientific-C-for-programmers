@@ -8,6 +8,8 @@
 
 **Instructions:**
 
+Use **one** of the following environments:
+
 - Open the Visual Studio Code app via [https://ondemand.hpc.kuleuven.be](https://ondemand.hpc.kuleuven.be) if you have a VSC account
 - Use a C environment on your local machine if available
 - Create an app on [https://replit.com/languages/c](https://replit.com/languages/c) otherwise
@@ -33,14 +35,14 @@ gcc hello.c -o hello
 ```
 
 ::: {.callout-tip}
-You can use another compiler such as `clang` if you prefer, some options can be different.
+You can use another compiler such as `clang` if you prefer, some options may differ.
 :::
 
 ## Temperature conversion
 
 **Goal:**
 
-- Print a table with temperatures in Fahrenheit and Celcius, the formula is $^\circ C= \frac{5}{9}(^\circ F - 32)$
+- Print a table with temperatures in Fahrenheit and Celsius, the formula is $^\circ C= \frac{5}{9}(^\circ F - 32)$
 
 **Learning outcome:**
 
@@ -57,7 +59,7 @@ You can use another compiler such as `clang` if you prefer, some options can be 
     git clone https://github.com/stevenvdb/Scientific-C-for-programmers/
     ```
   - Alternatively, visit [https://github.com/stevenvdb/Scientific-C-for-programmers/](https://github.com/stevenvdb/Scientific-C-for-programmers/) in a browser
-- This exercise is located in `exercises/01_temperature_conversion`
+- This exercise is located in `exercises/01_convert_temperatures`
 
 ---
 

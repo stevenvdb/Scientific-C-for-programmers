@@ -19,7 +19,7 @@
 
 - C statements ^[A statement is *roughly* a programming instruction, something to do] end with a semicolon
 - Braces `{}` are used to group statements into a code block
-- Whitespace is mostly ignored, allows to improve readability
+- Whitespace is mostly ignored and can be used to improve readability
 - Compiler ignores what comes after `//` and between `/*` and `*/`
 
 :::
@@ -171,7 +171,7 @@ If you need a fixed range:
   - `DBL_MIN`: smallest positive `double`
   - `DBL_EPSILON`: difference between `1.0` and next representable value
      ($\approx$ machine precision)
-  - `BLD_DIG`: number of significant decimal digits
+  - `DBL_DIG`: number of significant decimal digits
 :::
 
 ::::
@@ -237,7 +237,7 @@ abs(a) is smaller or equal to 0
 
 ## Accidental type conversion
 
-- Compilation with `-Wconversion` flags provide a hint
+- Compiling with the `-Wconversion` flags provide a hint
 
 ```{.bash .small-code}
 $ gcc -Wconversion conversion.c  -o conversion
@@ -266,7 +266,7 @@ int main() {
 ## Variable declaration
 
 - C is statically typed, each variable has to be declared with type information: `int a, b;`
-- Can be combined with an assignment, but no automatic initalization:
+- Can be combined with an assignment, but no automatic initialization:
   - `double x = 3.2, y;`
   - `double z = sqrt(2.0);`
 - Constants cannot be modified during runtime, *must* be assigned on declaration: `const int MINUTESPERHOUR = 60;`
@@ -451,7 +451,7 @@ z = (a > b) ? a : b;
 ## Precedence and associativity
 
 - K&R provide a table with precedence rules (2.12)
-  - Make your code readable and maintable by using brackets
+  - Make your code readable and maintainable by using brackets
 - C does not specify order of evaluation for most operators:
   - order can even depend on compiler options
   - `x = f() + g();` might evaluate `g` before `f`
@@ -484,7 +484,7 @@ int isLeapYear(int year) {
     /* Return 1 if year is a leap year and return 0 otherwise
        A year is a leap year if:
        - it is divisible by 4 but not by 100 OR
-       - it is disisible by 400
+       - it is divisible by 400
     */
     if ( (year % 4 == 0 && year % 100 != 0) || (year % 400) == 0) return 1;
     else return 0;
@@ -534,7 +534,7 @@ assert(c == b);
 
 ::: {.callout-tip}
 Use blocks to make your code *more* readable, unless you want to participate
-in the [The International Obfuscated C Code Contest](https://www.ioccc.org/)
+in [The International Obfuscated C Code Contest](https://www.ioccc.org/)
 :::
 
 ## if-else statement
@@ -688,9 +688,9 @@ label:
     statements;
 ```
 
-- `goto` allows to branch to a specified `label`
+- `goto` allows you to branch to a specified `label`
 - never necessary, often makes code hard to read
-- even C inventors discourage it, do do not use it
+- even C inventors discourage it, do not use it
 
 # Functions and Program Structure
 
@@ -698,7 +698,7 @@ label:
 
 - Functions break large computing tasks into smaller ones
 - Help to bring structure into code
-- Hide implementations details
+- Hide implementation details
 - Make it easier to reuse existing code
 
 ## Basics of functions {.smaller}
@@ -731,7 +731,7 @@ double square(double a) {
 
 ## Return statement(s) {.smaller}
 
-- A return statements returns a value (or nothing), but also returns control to the caller
+- A return statement returns a value (or nothing), but also returns control to the caller
 - A function can have multiple return statements, but at most one is executed in each call
 
 ```{.c .small-code}
@@ -843,7 +843,7 @@ in main, external variable is 2
 
 ## Scope
 
-The *scope* of a variable or function is the part of the program where the variable of function can be used
+The *scope* of a variable or function is the part of the program where the variable or function can be used
 
 - Local variables
   - From definition until end of block
@@ -877,7 +877,7 @@ Most exercises can be compiled by running the `make` command in the exercise dir
 ## Static variables
 
 - Internal variables with `static` declaration
-  - Remain in existing across function calls
+  - Remain in existence across function calls
   - Provide permanent private storage within a single function
 
 ```{.c}
@@ -943,7 +943,7 @@ especially in case of tail recursion (where the recursive call is the last state
 
 A few statements are processed *before* compilation
 
-- `#include "filename"` or `include <filename>`
+- `#include "filename"` or `#include <filename>`
 - `#define name replacement`
 - conditional inclusions with `#if`, `#elif`, `#else`, `#endif`
 
@@ -961,7 +961,7 @@ code presented to compiler.
 A macro substitution replaces each occurrence of a `name` with a `replacement`,
 for example `#define max(A, B) ((A) > (B) ? (A) : (B))`
 
-- Every occurence of `max(x, y)` will be replaced
+- Every occurrence of `max(x, y)` will be replaced
 - Use with care, can make code more readable, but also obfuscate when reading code for the first time
 - Macros avoid overhead associated with function call
 
@@ -1094,4 +1094,4 @@ points inside a unit circle
 - Compute the nth element by using a recursive function
 - Try to trigger a stack overflow for large n
 - Write a function without recursion
-- See `exercises/07_recursion`
+- See `exercises/07_fibonacci`

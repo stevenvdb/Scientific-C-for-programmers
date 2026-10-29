@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 
 double trapezoidRule (double (*f)(double), double a, double b) {
     return (b-a)*(f(a) + f(b))/2;
@@ -7,7 +8,11 @@ double trapezoidRule (double (*f)(double), double a, double b) {
 
 double quadrature (double (*f)(double), double x0, double xN, long int N) {
     // Set up an equidistant grid
-    double x[N];
+    double *x = (double *)malloc(N * sizeof(double));
+    if (x == NULL) {
+        printf("Failed to allocate x with size %ld\n", N);
+        exit(1);
+    }
     for (long int i=0; i < N; i++) {
         x[i] = x0 + (xN - x0) * i / (N - 1);
     }
@@ -16,6 +21,7 @@ double quadrature (double (*f)(double), double x0, double xN, long int N) {
     for (long int i=0; i < N-1; i++) {
         integral += trapezoidRule(f, x[i], x[i+1]);
     }
+    free(x);
     return integral;
 }
 
