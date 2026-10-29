@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>c_advanced</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-6172778a27b0bfa6b3b3f65992e46a92.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8fd1faf6fd93e4e6d207ae0f9db51d78.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="advanced-c" class="level1">
+<h1>Advanced C</h1>
+<section id="outline" class="level2">
+<h2 class="anchored" data-anchor-id="outline">Outline</h2>
+<div style="display: flex; gap: 1em; flex-wrap: wrap;">
+<div style="flex: 1 1 45%;">
+<h3 class="anchored">
+Day 1
+</h3>
+<details>
+<summary>
+Introduction
+</summary>
+<ul>
+<li>
+Motivation
+</li>
+<li>
+Context
+</li>
+<li>
+Course overview
+</li>
+</ul>
+</details>
+<details>
+<summary>
+Jumping in
+</summary>
+<ul>
+<li>
+Hello, world
+</li>
+<li>
+Temperature conversion
+</li>
+<li>
+Logistic map
+</li>
+</ul>
+</details>
+<h3 class="anchored">
+Day 2
+</h3>
+<details>
+<summary>
+Basics of C
+</summary>
+<ul>
+<li>
+Types and operators
+</li>
+<li>
+Control flow
+</li>
+<li>
+Functions
+</li>
+</ul>
+</details>
+</div>
+<div style="flex: 1 1 45%;">
+<h3 class="anchored">
+Day 3
+</h3>
+<details>
+<summary>
+Advanced C
+</summary>
+<ul>
+<li>
+Arrays and pointers
+</li>
+<li>
+Structures
+</li>
+<li>
+Input and output
+</li>
+</ul>
+</details>
+<h3 class="anchored">
+Day 4
+</h3>
+<details>
+<summary>
+Beyond the core of C
+</summary>
+<ul>
+<li>
+External libraries
+</li>
+<li>
+Segmentation faults
+</li>
+<li>
+C standards
+</li>
+</ul>
+</details>
+<details>
+<summary>
+Wrapping up
+</summary>
+</details>
+</div>
+</div>
+</section>
+</section>
+<section id="pointers-and-arrays" class="level1">
+<h1>Pointers and arrays</h1>
+<section id="pointers-and-arrays-1" class="level2">
+<h2 class="anchored" data-anchor-id="pointers-and-arrays-1">Pointers and arrays <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></h2>
+<ul>
+<li>C <strong>arrays</strong> store multiple values of the same type in a single variable</li>
+<li>C <strong>pointers</strong> contain a memory address of a variable</li>
+<li>Pointers and arrays are closely related in C</li>
+</ul>
+</section>
+<section id="memory-management" class="level2">
+<h2 class="anchored" data-anchor-id="memory-management">Memory management</h2>
+<div class="incremental">
+<ul class="incremental">
+<li>Memory is one of the fundamental building blocks of current computer architectures (see von Neumann model)</li>
+<li>In many programming languages, memory management is transparent to programmer
+<ul class="incremental">
+<li>A variable is stored somewhere in memory, but the programmer does not know where</li>
+<li>Variables are referenced symbolically by programmer, program figures out memory location</li>
+</ul></li>
+<li>C does allow managing memory yourself, so it needs a concept to allow working with memory addresses</li>
+</ul>
+</div>
+</section>
+<section id="pointer-basics" class="level2">
+<h2 class="anchored" data-anchor-id="pointer-basics">Pointer basics</h2>
+<ul>
+<li>A pointer is a variable that contains the memory location (address) of another variable</li>
+<li>The <code>&amp;</code> operator gives the memory address of a variable</li>
+<li>The <code>*</code> operator gives the value of the variable a pointer points to (dereferencing)</li>
+<li>There are different types of pointers, depending on which type they point to</li>
+<li>Declarations like <code>int *px</code> indicate that <code>px</code> is a pointer and <code>*px</code> is an <code>int</code></li>
+</ul>
+</section>
+<section id="virtual-memory-layout" class="level2 smaller" data-background-color="lightgrey">
+<h2 class="smaller anchored" data-background-color="lightgrey" data-anchor-id="virtual-memory-layout">Virtual memory layout</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>I represent virtual memory as a table with three columns
+<ul>
+<li>Address column in hexadecimal format</li>
+<li>Value column in decimal format</li>
+<li>Variable column makes it easier to read, not present in actual implementation</li>
+<li>Remember that internally it’s all binary</li>
+<li>Some variables take up more than one address</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>int x</code></td>
+<td><code>0x0000</code></td>
+<td><code>42</code></td>
+</tr>
+<tr class="even">
+<td><code>int y</code></td>
+<td><code>0x0004</code></td>
+<td><code>43</code></td>
+</tr>
+<tr class="odd">
+<td><code>double a</code></td>
+<td><code>0x0008</code></td>
+<td><code>12.6e10</code></td>
+</tr>
+<tr class="even">
+<td><code>double a</code></td>
+<td><code>0x000c</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>float b</code></td>
+<td><code>0x0010</code></td>
+<td><code>3.14</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-naive-approach" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-naive-approach">Swapping variables: naive approach</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>    a <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>    b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="op">}</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>    swap<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="op">}</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-naive-approach-1" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-naive-approach-1">Swapping variables: naive approach</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    a <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="op">}</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>    swap<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="op">}</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-naive-approach-2" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-naive-approach-2">Swapping variables: naive approach</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>    a <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="op">}</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>    swap<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="op">}</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>temp</code></td>
+<td><code>0x110</code></td>
+<td><code>5</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-naive-approach-3" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-naive-approach-3">Swapping variables: naive approach</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>    a <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>    b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="op">}</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>    swap<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="op">}</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>temp</code></td>
+<td><code>0x110</code></td>
+<td><code>5</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-naive-approach-4" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-naive-approach-4">Swapping variables: naive approach</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    a <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>    b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="op">}</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>    swap<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="odd">
+<td><code>temp</code></td>
+<td><code>0x110</code></td>
+<td><code>5</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-naive-approach-5" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-naive-approach-5">Swapping variables: naive approach</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> a<span class="op">,</span> <span class="dt">int</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> a<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>    a <span class="op">=</span> b<span class="op">;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>    b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="op">}</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>    swap<span class="op">(</span>x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="op">}</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">x</span> = 5, y = 10</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="working-with-large-arrays" class="level2">
+<h2 class="anchored" data-anchor-id="working-with-large-arrays">Working with large arrays</h2>
+<div class="incremental">
+<ul class="incremental">
+<li>Suppose you construct vectors using a <code>struct</code> (see later)</li>
+<li>You want a function <code>double innerProduct(struct vector v1, struct vector v2)</code> that computes the inner product</li>
+<li>Since C uses pass-by-value, those objects would be copied when function is called</li>
+<li>Memory access is slow, this would give bad performance for large cases</li>
+</ul>
+<p>=&gt; This is also addressed by pointers</p>
+</div>
+</section>
+<section id="pointer-basics-1" class="level2">
+<h2 class="anchored" data-anchor-id="pointer-basics-1">Pointer basics</h2>
+<ul>
+<li>A pointer is a variable that contains the address of a variable</li>
+<li>Pointer arguments allow modifying object in the called function</li>
+<li>There are different pointer types, depending on the variable they point to, for example, <code>int *px;</code> or <code>double *pa;</code></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Mnemonic: read <code>int *px</code> as “<code>*px</code> is of type <code>int</code>”. Sometimes people also use <code>int* px</code> to declare an integer pointer.</p>
+</div>
+</div>
+</section>
+<section id="pointer-basics-2" class="level2">
+<h2 class="anchored" data-anchor-id="pointer-basics-2">Pointer basics</h2>
+<ul>
+<li>The <code>&amp;</code> operator gives the address of a variable</li>
+<li>The <code>*</code> operator dereferences a pointer, i.e., gives the value of the variable that is pointed to</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> x <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> y<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>px<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>px <span class="op">=</span> <span class="op">&amp;</span>x<span class="op">;</span> <span class="co">// px now points to x, i.e. it holds the address of x</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> <span class="op">*</span>px<span class="op">;</span> <span class="co">// y now holds the value of the object px points to, i.e. y = 1</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="op">*</span>px <span class="op">=</span> <span class="dv">10</span><span class="op">;</span> <span class="co">// the value of the object px points to is set, i.e. x = 10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="swapping-variables-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-pointers">Swapping variables: pointers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> <span class="op">*</span>a<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="op">*</span>a <span class="op">=</span> <span class="op">*</span>b<span class="op">;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="op">*</span>b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="op">}</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>    swap<span class="op">(&amp;</span>x<span class="op">,</span> <span class="op">&amp;</span>y<span class="op">);</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="op">}</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-pointers-1" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-pointers-1">Swapping variables: pointers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> <span class="op">*</span>a<span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="op">*</span>a <span class="op">=</span> <span class="op">*</span>b<span class="op">;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="op">*</span>b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="op">}</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>    swap<span class="op">(&amp;</span>x<span class="op">,</span> <span class="op">&amp;</span>y<span class="op">);</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="op">}</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>0x100</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>0x104</code></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-pointers-2" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-pointers-2">Swapping variables: pointers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> <span class="op">*</span>a<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>    <span class="op">*</span>a <span class="op">=</span> <span class="op">*</span>b<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>    <span class="op">*</span>b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="op">}</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a>    swap<span class="op">(&amp;</span>x<span class="op">,</span> <span class="op">&amp;</span>y<span class="op">);</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="op">}</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>0x100</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>0x104</code></td>
+</tr>
+<tr class="odd">
+<td><code>temp</code></td>
+<td><code>0x110</code></td>
+<td><code>5</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-pointers-3" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-pointers-3">Swapping variables: pointers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> <span class="op">*</span>a<span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="op">*</span>a <span class="op">=</span> <span class="op">*</span>b<span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="op">*</span>b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="op">}</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>    swap<span class="op">(&amp;</span>x<span class="op">,</span> <span class="op">&amp;</span>y<span class="op">);</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="op">}</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>0x100</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>0x104</code></td>
+</tr>
+<tr class="odd">
+<td><code>temp</code></td>
+<td><code>0x110</code></td>
+<td><code>5</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-pointers-4" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-pointers-4">Swapping variables: pointers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> <span class="op">*</span>a<span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="op">*</span>a <span class="op">=</span> <span class="op">*</span>b<span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="op">*</span>b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="op">}</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>    swap<span class="op">(&amp;</span>x<span class="op">,</span> <span class="op">&amp;</span>y<span class="op">);</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a><span class="op">}</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="odd">
+<td><code>a</code></td>
+<td><code>0x108</code></td>
+<td><code>0x100</code></td>
+</tr>
+<tr class="even">
+<td><code>b</code></td>
+<td><code>0x10C</code></td>
+<td><code>0x104</code></td>
+</tr>
+<tr class="odd">
+<td><code>temp</code></td>
+<td><code>0x110</code></td>
+<td><code>5</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="swapping-variables-pointers-5" class="level2">
+<h2 class="anchored" data-anchor-id="swapping-variables-pointers-5">Swapping variables: pointers</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="dt">void</span> swap<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>a<span class="op">,</span> <span class="dt">int</span> <span class="op">*</span>b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="dt">int</span> temp <span class="op">=</span> <span class="op">*</span>a<span class="op">;</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="op">*</span>a <span class="op">=</span> <span class="op">*</span>b<span class="op">;</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>    <span class="op">*</span>b <span class="op">=</span> temp<span class="op">;</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="op">}</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb14-10"><a href="#cb14-10"></a>    <span class="dt">int</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">,</span> y <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a>    swap<span class="op">(&amp;</span>x<span class="op">,</span> <span class="op">&amp;</span>y<span class="op">);</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a>    printf<span class="op">(</span><span class="st">"x = </span><span class="sc">%d</span><span class="st">, y = </span><span class="sc">%d\n</span><span class="st">"</span><span class="op">,</span> x<span class="op">,</span> y<span class="op">);</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="op">}</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">x</span> = 10, y = 5</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th>Address</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td><code>0x100</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="even">
+<td><code>y</code></td>
+<td><code>0x104</code></td>
+<td><code>5</code></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>&nbsp;</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="arrays" class="level2">
+<h2 class="anchored" data-anchor-id="arrays">Arrays</h2>
+<ul>
+<li>An array is a block of consecutive objects of a specified type
+<ul>
+<li><code>int a[10];</code> declares 10 consecutive <code>int</code> objects</li>
+<li>The i-th element can be accessed as <code>a[i]</code></li>
+</ul></li>
+<li>Pointers are a natural way to loop over arrays</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> a<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> <span class="op">*</span>pa<span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>pa <span class="op">=</span> <span class="op">&amp;</span>a<span class="op">[</span><span class="dv">0</span><span class="op">];</span> <span class="co">// pa points to first element of a</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>pa<span class="op">++;</span> <span class="co">// pa now points to second element of a</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When pointing to array elements, incrementing a pointer <em>always</em> means going to the next object irrespective of the object type!</p>
+</div>
+</div>
+</section>
+<section id="array-indexing-sourcery" class="level2">
+<h2 class="anchored" data-anchor-id="array-indexing-sourcery">Array indexing sourcery</h2>
+<div class="incremental">
+<ul class="incremental">
+<li>In C, the name of an array is a synonym for the memory address of the initial element
+<ul class="incremental">
+<li><code>int *pa = &amp;a[0]</code> is identical to <code>int *pa = a</code></li>
+</ul></li>
+<li>Access to the i-th element <code>a[i]</code> is translated to <code>*(a+i)</code></li>
+<li>Because integer addition is commutative, <code>a[i]</code> is identical to <code>i[a]</code>!</li>
+</ul>
+</div>
+</section>
+<section id="arrays-as-function-arguments" class="level2">
+<h2 class="anchored" data-anchor-id="arrays-as-function-arguments">Arrays as function arguments</h2>
+<ul>
+<li>When passing an array to a function, the location of the initial element is passed</li>
+<li>Within the called function, the corresponding local variable is a pointer</li>
+<li>You can pass a part of an array to a function
+<ul>
+<li><code>f(&amp;a[2])</code> passes the subarray that starts at <code>a[2]</code></li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You cannot pass a <em>slice</em> of an array, the called function is responsible to respect the bounds of the array. This is one of the reasons why C programs are often considered at risk for unsafe memory management.</p>
+</div>
+</div>
+</section>
+<section id="array-decay" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="array-decay">Array decay</h2>
+<ul>
+<li>When passed to a function, an array decays into a pointer to its first element</li>
+<li><code>sizeof(arr)</code> inside function gives size of pointer, not array</li>
+<li>Array length information is lost</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode c small-code code-with-copy"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> foo<span class="op">(</span><span class="dt">int</span> arr<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"sizeof(arr) = </span><span class="sc">%zu\n</span><span class="st">"</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>arr<span class="op">));</span> <span class="co">// prints size of pointer</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> arr<span class="op">[</span><span class="dv">10</span><span class="op">];</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"sizeof(arr) = </span><span class="sc">%zu\n</span><span class="st">"</span><span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>arr<span class="op">));</span> <span class="co">// prints size of array</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    foo<span class="op">(</span>arr<span class="op">);</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Output:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash small-code code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sizeof</span><span class="er">(</span><span class="ex">arr</span><span class="kw">)</span> <span class="ex">=</span> 40</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sizeof</span><span class="er">(</span><span class="ex">arr</span><span class="kw">)</span> <span class="ex">=</span> 8</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="character-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="character-pointers">Character pointers</h2>
+<ul>
+<li>C does not have a basic string type</li>
+<li>An array of characters is very similar to a string</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> amessage<span class="op">[]</span> <span class="op">=</span> <span class="st">"My first string"</span><span class="op">;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> <span class="op">*</span>pmessage <span class="op">=</span> <span class="st">"My second string"</span><span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>String constants are terminated with <code>\0</code> internally
+<ul>
+<li>Allows to know where string ends</li>
+<li>You do not need to know this if you use functions from the standard library to work with strings</li>
+</ul></li>
+</ul>
+</section>
+<section id="dynamic-memory-allocation" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="dynamic-memory-allocation">Dynamic memory allocation</h2>
+<ul>
+<li>The C89 standard does not allow variable length arrays
+<ul>
+<li>Array size must be known at compile time</li>
+<li><code>size_t len = 5; int a[len];</code> is strictly speaking invalid</li>
+<li>Since C99 it is supported and many compilers allow it by default</li>
+</ul></li>
+<li>Even if you can have VLAs, there are some downsides
+<ul>
+<li>Allocated on stack, so limited in size</li>
+<li>Scope is local, similar as other variables</li>
+<li>VLA <em>might</em> be less efficient</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Variable length refers to the fact that length is only known at runtime, a variable length array remains of the same size during its lifetime.</p>
+</div>
+</div>
+</section>
+<section id="dynamic-memory-allocation-1" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="dynamic-memory-allocation-1">Dynamic memory allocation</h2>
+<div class="incremental">
+<ul class="incremental">
+<li>Memory for arrays can be dynamically allocated on the heap
+<ul class="incremental">
+<li>Heap is a large area of memory used at runtime</li>
+<li>Signature: <code>void *malloc(size_t size);</code></li>
+<li><code>size</code> is in bytes: make use of <code>sizeof</code></li>
+<li>returns <code>void</code> pointer, cast it to correct pointer type</li>
+<li>if memory cannot be allocated, null pointer is returned</li>
+<li><em>always</em> <code>free()</code> the memory <em>exactly</em> once!</li>
+<li><code>calloc</code>: includes initializing to zero (so slower than <code>malloc</code>)</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="dynamic-memory-allocation-2" class="level2">
+<h2 class="anchored" data-anchor-id="dynamic-memory-allocation-2">Dynamic memory allocation</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">**</span>argv<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">size_t</span> len <span class="op">=</span> atoi<span class="op">(</span>argv<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> <span class="op">*</span>pa <span class="op">=</span> <span class="op">(</span><span class="dt">double</span> <span class="op">*)</span> malloc<span class="op">(</span>len <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">double</span><span class="op">));</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>pa <span class="op">==</span> NULL<span class="op">)</span> <span class="op">{</span> <span class="cf">return</span> <span class="dv">1</span><span class="op">;}</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>pa<span class="op">);</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="multidimensional-arrays" class="level2">
+<h2 class="anchored" data-anchor-id="multidimensional-arrays">Multidimensional arrays</h2>
+<ul>
+<li>C supports multidimensional arrays by using multiple <code>[]</code></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> matrix<span class="op">[</span><span class="dv">2</span><span class="op">][</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span><span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">},</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span><span class="dv">4</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="dv">6</span><span class="op">}</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Indexing is done with <code>[i][j]</code> (not <code>[i,j]</code>)</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> x <span class="op">=</span> matrix<span class="op">[</span><span class="dv">1</span><span class="op">][</span><span class="dv">2</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>C uses row-major storage: last dimension is fastest in memory</li>
+</ul>
+</section>
+<section id="pointers-to-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="pointers-to-pointers">Pointers to pointers</h2>
+<ul>
+<li>A pointer is also a variable -&gt; another pointer can point to its address</li>
+<li>In contrast to multidimensional arrays, we can now have irregular structures</li>
+<li>Example: storing an upper triangular matrix</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> <span class="op">**</span>lower<span class="op">;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>lower <span class="op">=</span> <span class="op">(</span><span class="dt">double</span> <span class="op">**)</span>malloc<span class="op">(</span> n <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">double</span> <span class="op">*))</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    lower<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="op">(</span><span class="dt">double</span> <span class="op">*)</span>malloc<span class="op">(</span> <span class="op">(</span>n <span class="op">-</span> i<span class="op">)</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">double</span><span class="op">));</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>lower<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>free<span class="op">(</span>lower<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="arrays-of-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="arrays-of-pointers">Arrays of pointers</h2>
+<ul>
+<li>By now it should be clear pointers and arrays are very similar</li>
+<li>The previous example as an array of pointers:</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> <span class="op">*</span>lower<span class="op">[</span>n<span class="op">];</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    lower<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="op">(</span><span class="dt">double</span> <span class="op">*)</span>malloc<span class="op">(</span> <span class="op">(</span>n <span class="op">-</span> i<span class="op">)</span> <span class="op">*</span> <span class="kw">sizeof</span><span class="op">(</span><span class="dt">double</span><span class="op">));</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="op">...</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>n<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    free<span class="op">(</span>lower<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="pointers-to-functions" class="level2">
+<h2 class="anchored" data-anchor-id="pointers-to-functions">Pointers to functions</h2>
+<ul>
+<li>Example
+<ul>
+<li>When <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are close, the integral <span class="math inline">\(\int_a^{b} f(x) dx \approx \frac{1}{2} \frac{f(a) + f(b)}{b-a}\)</span></li>
+<li>This rule can be written for any <span class="math inline">\(f(x)\)</span> as:</li>
+</ul></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> trapezoidRule <span class="op">(</span><span class="dt">double</span> <span class="op">(*</span>f<span class="op">)(</span><span class="dt">double</span><span class="op">),</span> <span class="dt">double</span> a<span class="op">,</span> <span class="dt">double</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">(</span>b<span class="op">-</span>a<span class="op">)*(</span>f<span class="op">(</span>a<span class="op">)</span> <span class="op">+</span> f<span class="op">(</span>b<span class="op">))/</span><span class="dv">2</span><span class="op">;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> trap <span class="op">=</span> trapezoidRule<span class="op">(</span>cos<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> M_PI<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="exercises" class="level1">
+<h1>Exercises</h1>
+<section id="quadrature" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="quadrature">Quadrature</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Write a program that can numerically integrate arbitrary functions</li>
+</ul>
+<p><strong>Learning outcome:</strong></p>
+<ul>
+<li>Use pointers to let functions operate on arrays and functions</li>
+</ul>
+<p><strong>Instructions:</strong></p>
+<ul>
+<li>Write a function that allocates an array, with evenly spaced real numbers in a chosen interval as entries</li>
+<li>Write a function that approximates the integral of <code>sin</code> and <code>cos^2</code> on the chosen interval</li>
+<li>See <code>exercises/08_quadrature</code></li>
+</ul>
+</section>
+<section id="heat-equation" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="heat-equation">Heat equation</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Write a program that solves the 2D heat equation</li>
+</ul>
+<p><strong>Learning outcome:</strong></p>
+<ul>
+<li>Learn to work with multi-dimensional arrays</li>
+</ul>
+<p><strong>Instructions:</strong></p>
+<ul>
+<li>See <code>exercises/09_heat_equation</code></li>
+</ul>
+</section>
+<section id="heat-equation-memory-leak" class="level2">
+<h2 class="anchored" data-anchor-id="heat-equation-memory-leak">Heat equation memory leak</h2>
+<ul>
+<li>The provided code allocated memory at <strong>each</strong> iteration without ever freeing it</li>
+<li>This is a memory leak: for larger grids and/or more steps, you would run out of memory</li>
+<li>Make sure to <strong>always</strong> free memory you allocated with <code>malloc/calloc</code></li>
+<li>In this case the allocation only has to be done once (outside of the loop)</li>
+</ul>
+</section>
+</section>
+<section id="structures" class="level1">
+<h1>Structures</h1>
+<section id="structures-1" class="level2">
+<h2 class="anchored" data-anchor-id="structures-1">Structures <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></h2>
+<ul>
+<li>A structure is a collection of one or more variables, possibly of different types</li>
+<li>Makes it convenient to organize and handle complicated data</li>
+<li>A very lightweight class (but do not call C object-oriented):
+<ul>
+<li>No inheritance</li>
+<li>No class methods</li>
+</ul></li>
+</ul>
+</section>
+<section id="structure-example" class="level2">
+<h2 class="anchored" data-anchor-id="structure-example">Structure example</h2>
+<ul>
+<li>A structure is defined with <code>struct</code>, usually followed by a tag as a name</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> particle <span class="op">{</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> x<span class="op">;</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> y<span class="op">;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> z<span class="op">;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> mass<span class="op">;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> symbol<span class="op">;</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The variables named in the <code>struct</code> are members and can be accessed with the <code>.</code> operator</li>
+</ul>
+</section>
+<section id="structure-example-1" class="level2">
+<h2 class="anchored" data-anchor-id="structure-example-1">Structure example</h2>
+<ul>
+<li>A <code>struct</code> can be initialized directly or member-by-member</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> particle p1<span class="op">;</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>p1<span class="op">.</span>x <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>p1<span class="op">.</span>y <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>p1<span class="op">.</span>z <span class="op">=</span> <span class="fl">3.0</span><span class="op">;</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>p1<span class="op">.</span>mass <span class="op">=</span> <span class="fl">1.000784</span><span class="op">;</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>p1<span class="op">.</span>symbol <span class="op">=</span> <span class="ch">'H'</span><span class="op">;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> particle p2 <span class="op">=</span> <span class="op">{</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">,</span> <span class="fl">5.0</span><span class="op">,</span> <span class="fl">12.011</span><span class="op">,</span> <span class="ch">'C'</span><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Initializing member-by-member is a bit more robust when the <code>struct</code> definition changes</p>
+</div>
+</div>
+</div>
+</section>
+<section id="structures-and-functions" class="level2">
+<h2 class="anchored" data-anchor-id="structures-and-functions">Structures and functions</h2>
+<ul>
+<li>Functions can operate on structures much the same way as basic types</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> particle centerOfMass<span class="op">(</span><span class="kw">struct</span> particle p1<span class="op">,</span> <span class="kw">struct</span> particle p2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> mass <span class="op">=</span> p1<span class="op">.</span>m <span class="op">+</span> p2<span class="op">.</span>m<span class="op">;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> particle com<span class="op">;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    com<span class="op">.</span>x <span class="op">=</span> <span class="op">(</span>p1<span class="op">.</span>x <span class="op">*</span> p1<span class="op">.</span>m <span class="op">+</span> p2<span class="op">.</span>x <span class="op">*</span> p2<span class="op">.</span>m<span class="op">)</span> <span class="op">/</span> mass<span class="op">;</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    com<span class="op">.</span>y <span class="op">=</span> <span class="op">(</span>p1<span class="op">.</span>y <span class="op">*</span> p1<span class="op">.</span>m <span class="op">+</span> p2<span class="op">.</span>y <span class="op">*</span> p2<span class="op">.</span>m<span class="op">)</span> <span class="op">/</span> mass<span class="op">;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    com<span class="op">.</span>z <span class="op">=</span> <span class="op">(</span>p1<span class="op">.</span>z <span class="op">*</span> p1<span class="op">.</span>m <span class="op">+</span> p2<span class="op">.</span>z <span class="op">*</span> p2<span class="op">.</span>m<span class="op">)</span> <span class="op">/</span> mass<span class="op">;</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    com<span class="op">.</span>mass <span class="op">=</span> mass</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> com<span class="op">;</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="arrays-of-structures" class="level2">
+<h2 class="anchored" data-anchor-id="arrays-of-structures">Arrays of structures</h2>
+<ul>
+<li>Arrays can be made up of <code>struct</code>s</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Make an array with n particles</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> particle particles<span class="op">[</span>n<span class="op">];</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li>Defined in this way, accessing all <code>x</code> coordinates would give strided memory access
+<ul>
+<li>Having a struct with arrays can be more efficient than an array of structs</li>
+<li>Depends on the specific application</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="structures-and-pointers" class="level2">
+<h2 class="anchored" data-anchor-id="structures-and-pointers">Structures and pointers</h2>
+<ul>
+<li>Structures are variables, so you can point to their address</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> translateX<span class="op">(</span><span class="kw">struct</span> particle <span class="op">*</span>p<span class="op">,</span> <span class="dt">double</span> distance<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="op">(*</span>p<span class="op">).</span>x <span class="op">+=</span> distance<span class="op">;</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li>A member of a pointer can be accessed with <code>-&gt;</code>
+<ul>
+<li>If <code>p</code> is a pointer to a <code>struct particle</code>, <code>(*p).x</code> is the same as <code>p-&gt;x</code></li>
+</ul></li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> translateX<span class="op">(</span><span class="kw">struct</span> particle <span class="op">*</span>p<span class="op">,</span> <span class="dt">double</span> distance<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    p<span class="op">-&gt;</span>x <span class="op">+=</span> distance<span class="op">;</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="structures-and-pointers-1" class="level2">
+<h2 class="anchored" data-anchor-id="structures-and-pointers-1">Structures and pointers</h2>
+<ul>
+<li>The <code>.</code> and <code>-&gt;</code> operators have highest precedence:
+<ul>
+<li><code>*p.x</code> would be interpreted as <code>*(p.x)</code> (unwanted in our example)</li>
+<li>use brackets to make your intention clear</li>
+</ul></li>
+</ul>
+</section>
+<section id="common-data-structures" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="common-data-structures">Common data structures</h2>
+<div class="incremental">
+<ul class="incremental">
+<li>Multidimensional arrays
+<ul class="incremental">
+<li>Regular and fixed structure, only members of a single type</li>
+</ul></li>
+<li>Linked lists
+<ul class="incremental">
+<li>Allow dynamic lengths and make insertion easy</li>
+</ul></li>
+<li>Trees
+<ul class="incremental">
+<li>Represent hierarchical data</li>
+</ul></li>
+<li>Graph
+<ul class="incremental">
+<li>More general than trees, allow more complicated topologies</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="typedef" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="typedef">Typedef</h2>
+<p>The <code>typedef</code> keyword creates an alias for an existing data type</p>
+<div class="incremental">
+<ul class="incremental">
+<li><p>To abbreviate a long type name:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">unsigned</span> <span class="dt">long</span> <span class="dt">int</span> ULINT<span class="op">;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ULINT i<span class="op">;</span> <span class="co">// Equivalent to unsigned long int i;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>To facilitate switching between precisions or improve portability:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#ifdef REDUCED_PRECISION</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">float</span> MYFLOAT<span class="op">;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#else</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="dt">double</span> MYFLOAT<span class="op">;</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#endif</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>To have a type name closer to its semantical meaning</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> Item <span class="op">*</span> Item<span class="op">;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">struct</span> Item <span class="op">*</span> List<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>[look up linked-list implementation to better understand this one]</p></li>
+</ul>
+</div>
+</section>
+<section id="unions" class="level2 smaller" data-background-color="lightgrey">
+<h2 class="smaller anchored" data-background-color="lightgrey" data-anchor-id="unions">Unions</h2>
+<ul>
+<li><p>A <code>union</code> can hold objects of different types, but only one at a time</p>
+<ul>
+<li>Only the last assigned member is guaranteed to hold a valid value</li>
+</ul></li>
+<li><p>Similar to a <code>struct</code>, but in a union, members share the same memory</p></li>
+<li><p>Can be used to have some pseudo-polymorphism in C</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">union</span> MyUnion <span class="op">{</span><span class="dt">int</span> myInt<span class="op">;</span> <span class="dt">double</span> myDouble<span class="op">;};</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="kw">union</span> MyUnion u<span class="op">;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>u<span class="op">.</span>myInt <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>u<span class="op">.</span>myDouble <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span> <span class="co">// From here, u.myInt has invalid value</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+<li><p>Sometimes used to make low-level access easier, for instance interpret a 4-byte int as 4 1-byte chars</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">typedef</span> <span class="kw">union</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">struct</span> <span class="op">{</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>      <span class="dt">unsigned</span> <span class="dt">char</span> byte1<span class="op">,</span> byte2<span class="op">,</span> byte3<span class="op">,</span> byte4<span class="op">;</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span> bytes<span class="op">;</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">unsigned</span> <span class="dt">int</span> dword<span class="op">;</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> HW_Register<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
+</ul>
+</section>
+</section>
+<section id="exercises-1" class="level1">
+<h1>Exercises</h1>
+<section id="size-of-structure" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="size-of-structure">Size of structure</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Write a program centered around a <code>Person</code> structure</li>
+</ul>
+<p><strong>Learning outcomes:</strong></p>
+<ul>
+<li>Define a structure and functions operating on it</li>
+<li>Think about memory alignment</li>
+</ul>
+<p><strong>Instructions:</strong></p>
+<ul>
+<li>Create a <code>Person</code> structure with members height, weight, year of birth, and first letter of name</li>
+<li>Check the size of the structure in memory and explain the result</li>
+<li>Write a function that computes the total weight of a group of persons [hint: see variadic functions]</li>
+<li>See <code>exercises/10_struct_basics</code></li>
+</ul>
+</section>
+<section id="dna-sequencing" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="dna-sequencing">DNA sequencing</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Write a program to detect motifs in a DNA sequence associated with an increased risk of a hypothetical disease</li>
+</ul>
+<p><strong>Learning Outcomes:</strong></p>
+<ul>
+<li>Define and use <code>struct</code>s for organizing biological data</li>
+<li>Work with arrays of structs</li>
+<li>Implement string search algorithms in C</li>
+</ul>
+</section>
+<section id="dna-sequencing-1" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="dna-sequencing-1">DNA sequencing</h2>
+<ul>
+<li><p>Consider the following hypothetical DNA sequences:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Name</th>
+<th>Sequence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>seq1</td>
+<td>Alice</td>
+<td>ATCGGGTAATCG</td>
+</tr>
+<tr class="even">
+<td>seq2</td>
+<td>Bob</td>
+<td>GGTAATCGGGTA</td>
+</tr>
+<tr class="odd">
+<td>seq3</td>
+<td>Carol</td>
+<td>ATCGATCGGGTA</td>
+</tr>
+<tr class="even">
+<td>seq4</td>
+<td>Dave</td>
+<td>GGGGATCGATCG</td>
+</tr>
+<tr class="odd">
+<td>seq5</td>
+<td>Eve</td>
+<td>ATCGGGGGGGTA</td>
+</tr>
+</tbody>
+</table>
+<p>Imagine that the number of times one of the following motifs is present, increases the risk to carry a certain disease:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Motif</th>
+<th>Disease</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ATCG</td>
+<td>Disease1</td>
+</tr>
+<tr class="even">
+<td>GGTA</td>
+<td>Disease2</td>
+</tr>
+</tbody>
+</table></li>
+</ul>
+</section>
+<section id="dna-sequencing-2" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="dna-sequencing-2">DNA sequencing</h2>
+<ul>
+<li>Construct <code>struct</code>s to represent DNA sequences and motifs</li>
+<li>Compute for each sequence and for each disease the risk factor</li>
+</ul>
+<p>See <code>exercises/11_dna_sequencing</code></p>
+</section>
+</section>
+<section id="input-and-output" class="level1">
+<h1>Input and output</h1>
+<section id="input-and-output-1" class="level2">
+<h2 class="anchored" data-anchor-id="input-and-output-1">Input and output <a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></h2>
+<div class="incremental">
+<ul class="incremental">
+<li>Input/output is not part of C, but of standard library =&gt; need for <code>#include &lt;stdio.h&gt;</code></li>
+<li>Converting input/output can be tedious (use AI assistant?)</li>
+<li>Make use of dedicated libraries/formats such as HDF5, NetCDF, Zarr</li>
+<li>Annotate data with metadata (units, meaning, etc…)</li>
+<li>Limited coverage in this course, see K&amp;R Appendix B</li>
+</ul>
+</div>
+</section>
+<section id="writing-to-standard-out-stdout" class="level2">
+<h2 class="anchored" data-anchor-id="writing-to-standard-out-stdout">Writing to standard out (stdout)</h2>
+<p><code>printf</code> allows to print internal values as characters in terminal</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co">// int with minimal width 5</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"a = </span><span class="sc">%5d\n</span><span class="st">"</span><span class="op">,</span> a<span class="op">);</span> <span class="co">// a =    10</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co">// int with minimal width 5 and zero padding</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"a = </span><span class="sc">%05d\n</span><span class="st">"</span><span class="op">,</span> a<span class="op">);</span> <span class="co">// a = 00010</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="co">// double with 8 digits after comma</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"pi = </span><span class="sc">%.8f\n</span><span class="st">"</span><span class="op">,</span> M_PI<span class="op">);</span> <span class="co">// pi = 3.14159265</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co">// double in exponential notation</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"pi = </span><span class="sc">%8.2e\n</span><span class="st">"</span><span class="op">,</span> M_PI<span class="op">);</span> <span class="co">// pi = 3.14e+00</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="co">// fixed-width string</span></span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"</span><span class="sc">%.10s\n</span><span class="st">"</span><span class="op">,</span> <span class="st">"Hello, world"</span><span class="op">);</span> <span class="co">// Hello, wor</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="reading-from-standard-in-stdin" class="level2">
+<h2 class="anchored" data-anchor-id="reading-from-standard-in-stdin">Reading from standard in (stdin)</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> day<span class="op">;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="dt">char</span> month<span class="op">[</span><span class="dv">20</span><span class="op">];</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>printf<span class="op">(</span><span class="st">"Enter data in format '01 January'</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>scanf<span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st"> </span><span class="sc">%s</span><span class="st">"</span><span class="op">,</span> <span class="op">&amp;</span>day<span class="op">,</span> month<span class="op">);</span> <span class="co">// Make sure to check values!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>scanf</code>:</p>
+<ul>
+<li>returns number of matched items</li>
+<li>stops when format string is exhausted or input fails to match specification</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To run non-interactively, you can redirect file contents to stdin on Linux with <code>./a.out &lt;inputfile</code></p>
+</div>
+</div>
+</section>
+<section id="command-line-arguments" class="level2">
+<h2 class="anchored" data-anchor-id="command-line-arguments">Command-line arguments</h2>
+<ul>
+<li>Command-line arguments are passed to <code>main</code></li>
+<li>First argument: number of command-line arguments + 1 (typically <code>argc</code>)</li>
+<li>Second argument: pointer to array of character strings (typically <code>argv</code>)
+<ul>
+<li>First array element (at index 0) has name of program</li>
+</ul></li>
+</ul>
+</section>
+<section id="command-line-arguments-1" class="level2">
+<h2 class="anchored" data-anchor-id="command-line-arguments-1">Command-line arguments</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">*</span>argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"There are </span><span class="sc">%d</span><span class="st"> command-line arguments</span><span class="sc">\n</span><span class="st">"</span><span class="op">,</span> argc<span class="op">);</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">"The program is called </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> argv<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> argc<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">"Command-line argument </span><span class="sc">%d</span><span class="st"> is </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> i<span class="op">,</span> argv<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./a.out Hello World</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="ex">There</span> are 3 command-line arguments</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="ex">The</span> program is called ./a.out</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="ex">Command-line</span> argument 1 is Hello</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="ex">Command-line</span> argument 2 is World</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="file-access" class="level2">
+<h2 class="anchored" data-anchor-id="file-access">File access</h2>
+<ul>
+<li>Files are accessed using a <code>FILE</code> structure defined in <code>stdio.h</code>:
+<ul>
+<li><code>FILE *fp; fp = fopen(name, mode);</code></li>
+</ul></li>
+<li><code>mode</code> can be read <code>r</code>, append <code>a</code>, or write <code>w</code></li>
+<li>Make sure to check if <code>fopen</code> was succesful by comparing with <code>NULL</code> pointer</li>
+<li>Make sure to close file again with <code>fclose(fp)</code>;</li>
+</ul>
+</section>
+<section id="file-access-example" class="level2">
+<h2 class="anchored" data-anchor-id="file-access-example">File access example</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode c code-with-copy"><code class="sourceCode c"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>    <span class="dt">FILE</span> <span class="op">*</span>values <span class="op">=</span> fopen<span class="op">(</span><span class="st">"values.txt"</span><span class="op">,</span> <span class="st">"r"</span><span class="op">);</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>values <span class="op">==</span> NULL<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">"Failed to open values.txt</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> line<span class="op">[</span><span class="dv">256</span><span class="op">];</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="op">(</span>fgets<span class="op">(</span>line<span class="op">,</span> <span class="kw">sizeof</span><span class="op">(</span>line<span class="op">),</span> values<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">double</span> value<span class="op">;</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>sscanf<span class="op">(</span>line<span class="op">,</span> <span class="st">"</span><span class="sc">%lf</span><span class="st">"</span><span class="op">,</span> <span class="op">&amp;</span>value<span class="op">)</span> <span class="op">==</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>            printf<span class="op">(</span><span class="st">"Read value </span><span class="sc">%f\n</span><span class="st">"</span><span class="op">,</span> value<span class="op">);</span></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    fclose<span class="op">(</span>values<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cat values.txt</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="ex">42</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="ex">3.14</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="ex">981.12</span></span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> ./a.out</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="ex">Read</span> value 42.000000</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="ex">Read</span> value 3.140000</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="ex">Read</span> value 981.120000</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="exercise-regression" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-regression">Exercise: regression</h2>
+<p><strong>Goal:</strong></p>
+<ul>
+<li>Write a program that reads temperature anomalies and predicts future values using simple linear regression</li>
+</ul>
+<p><strong>Learning outcomes:</strong></p>
+<ul>
+<li>Learn how to read numbers from a structured input file and process them</li>
+</ul>
+<p><strong>Instructions:</strong></p>
+<ul>
+<li>See <code>exercises/12_regression</code></li>
+</ul>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Kernighan and Ritchie, Chapter 5, Pointers and arrays<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Adapted from https://github.com/gjbex/Scientific-C<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Kernighan and Ritchie, Chapter 6, Structures<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Adapted from https://github.com/gjbex/Scientific-C<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Kernighan and Ritchie, Chapter 7, Input and Output<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Adapted from https://github.com/gjbex/Scientific-C<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,663 @@
+{{< include outline.qmd >}}
+
+# External libraries
+
+## External libraries
+
+::: {.incremental}
+- There are literally hundreds of potentially useful scientific libraries
+- The ones discussed here are by no means exhaustive or representative for your case
+- The intention is to get a feel for how you can proceed to use libraries in general
+:::
+
+## External libraries overview {.smaller}
+
+::: {.fragment}
+- External libraries extend C's capabilities — especially useful in scientific computing (e.g., linear algebra, FFT, plotting)
+:::
+::: {.fragment}
+- Common scientific libraries:
+  - **GSL** (GNU Scientific Library)
+  - **BLAS/LAPACK** (Linear Algebra)
+  - **FFTW** (Fast Fourier Transforms)
+  - **HDF5** (Hierarchical data format)
+:::
+::: {.fragment}
+- Benefits:
+  - Avoid reinventing the wheel
+  - Leverage optimized, tested code
+  - Improve performance and portability
+:::
+
+## Using external libraries
+
+- Before you can include calls to external libraries in your code, you typically need to include relevant header files
+  - Header files define signatures of functions, structs, constants
+- To compile code relying on an external library into an executable, you need to link that library
+  - Typically `-l<libname>`, check library documentation
+
+## Static vs Dynamic Libraries {.smaller}
+
+| Feature              | Static Library (.a/.lib)         | Dynamic Library (.so/.dll)         |
+|----------------------|----------------------------------|------------------------------------|
+| Linking time         | Compile time                     | Runtime                            |
+| Binary size          | Larger (library included)        | Smaller (library separate)         |
+| Portability          | Easier to distribute             | Requires library on target system  |
+| Updates              | Recompile to update              | Can update without recompiling     |
+| Performance          | Slightly faster (no indirection) | May have overhead at runtime       |
+
+::: {.fragment .callout-tip}
+Use `gcc -static` for static linking, or `-l<libname>` with `-L<path>` for dynamic linking
+:::
+::: {.fragment .callout-tip}
+Details differ from library to library: check the specific documentation
+:::
+
+## GNU Scientific Library {.smaller}
+
+- The [GNU Scientific Library](https://www.gnu.org/software/gsl/) (GSL) provides a wide range of mathematical routines
+- How to get it:
+  - On the cluster: load it as a module, `module load GSL/2.8-GCC-13.3.0` for example
+  - On your machine: install it as a system package, `apt-get install libgsl-dev` for example
+- How to use it:
+  - Include the relevant headers in your code
+  - Find relevant link flags with `pkg-config --libs gsl` for example
+
+::: {.callout-tip .fragment}
+By loading a module on the cluster, some variables are set to make it easier to use libraries.
+For instance `CPATH` will include the path of the header files, `LD_LIBRARY_PATH` will include the path of the libraries.
+:::
+
+## Minimizing a function with GSL
+
+See [https://www.gnu.org/software/gsl/doc/html/min.html](https://www.gnu.org/software/gsl/doc/html/min.html) for documentation about one dimensional minimization
+
+```{.c}
+#include <stdio.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_min.h>
+#include <gsl/gsl_math.h>
+
+typedef struct {
+    double a, b, sigma;
+} Params;
+
+// Define a function f according to the GSL rules
+double f(double x, void *params) {
+    Params *p = (Params *) params;
+    return exp(-p->sigma*x*x)*sin(p->a + p->b*x);
+}
+```
+
+## Minimizing a function with GSL {.smaller}
+
+```{.c}
+int main() {
+    Params params = {0.3, 1.0, 0.05};
+
+    double minimum = -2.5, lower = -3.0, upper = 0.0;
+    int iter = 0, maxIter = 100, status;
+
+    const gsl_min_fminimizer_type *T = gsl_min_fminimizer_brent;
+    gsl_min_fminimizer *minimizer = gsl_min_fminimizer_alloc(T);
+    gsl_function F;
+    F.function = &f;
+    F.params = (void *) &params;
+
+    gsl_min_fminimizer_set(minimizer, &F, minimum, lower, upper);
+
+    do {
+        gsl_min_fminimizer_iterate(minimizer);
+        lower = gsl_min_fminimizer_x_lower(minimizer);
+        upper = gsl_min_fminimizer_x_upper(minimizer);
+        status = gsl_min_test_interval(lower, upper, 1.0e-6, 0.0);
+    } while (status == GSL_CONTINUE && ++iter < maxIter);
+
+    if (status == GSL_SUCCESS) {
+        minimum = gsl_min_fminimizer_x_minimum(minimizer);
+        printf("f reached the minimum %.6f at %.6f after %d iterations\n", f(minimum, F.params), minimum, iter);
+    }
+
+    gsl_min_fminimizer_free(minimizer);
+    return 0;
+}
+```
+
+## BLAS: Basic Linear Algebra Subprograms
+
+- Low-level routines for vector and matrix operations
+- Levels:
+  - Level 1: Vector-vector (e.g., dot product)
+  - Level 2: Matrix-vector (e.g., solving triangular systems)
+  - Level 3: Matrix-matrix (e.g., matrix multiplication)
+
+## LAPACK: Linear Algebra PACKage
+
+- Built on top of BLAS
+- High-level routines for:
+  - Solving linear systems
+  - Eigenvalue problems
+  - Singular value decomposition
+
+## BLAS & LAPACK {.smaller}
+
+::: {.fragment}
+- Why use them?
+  - Highly optimized for performance
+  - Portable across platforms
+  - Widely used in scientific and engineering applications
+:::
+::: {.fragment}
+- Many implementations are available
+  - OpenBLAS - Intel MKL - ATLAS
+:::
+::: {.fragment}
+- Often implemented (partially) in Fortran and assembly
+  - C bindings nearly always available though
+:::
+
+::: {.fragment .callout-tip}
+Link typically happens with `-lblas -llapack`, but this can be different for optimized implementations like OpenBLAS, Intel MKL, or ATLAS.
+:::
+
+## Dot product in BLAS {.smaller}
+
+```{.c}
+#include <stdio.h>
+#include <cblas.h>
+
+int main() {
+    double x[3] = {1.0, 2.0, 3.0};
+    double y[3] = {4.0, 5.0, 6.0};
+    double result = cblas_ddot(3, x, 1, y, 1);
+    printf("Dot product: %f\n", result);
+    return 0;
+}
+```
+
+```{.c}
+$ gcc dotproduct.c -o dotproduct -lblas && ./dotproduct
+Dot product: 32.000000
+```
+
+::: {.fragment .callout-tip}
+On the cluster, use `module load OpenBLAS/0.3.27-GCC-13.3.0` and link with `-lopenblas`
+:::
+
+## HDF5: Managing Scientific Data in C {.smaller}
+
+- HDF5 (Hierarchical Data Format v5)
+  - Designed for storing and organizing large, complex datasets
+  - Supports n-dimensional arrays, tables, images, and metadata
+  - Common in physics, climate modeling, bioinformatics, and engineering
+
+- Features
+  - Portable and self-describing binary format
+  - Hierarchical structure: groups and datasets (like folders and files)
+  - Supports compression, parallel I/O, and chunking
+
+## HDF5: schematic view of an HDF5 file
+
+![](images/hdf5_structure4.jpg)
+
+## HDF5: writing a dataset
+
+```{.c}
+#include "hdf5.h"
+
+int main() {
+    hid_t file_id, dataset_id, dataspace_id;
+    hsize_t dims[2] = {4, 6};
+    double data[4][6] = { /* initialize with values */ };
+
+    file_id = H5Fcreate("example.h5", H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    dataspace_id = H5Screate_simple(2, dims, NULL);
+    dataset_id = H5Dcreate(file_id, "/mydata", H5T_NATIVE_DOUBLE, dataspace_id,
+                           H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+    H5Dwrite(dataset_id, H5T_NATIVE_DOUBLE, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+    H5Dclose(dataset_id);
+    H5Sclose(dataspace_id);
+    H5Fclose(file_id);
+    return 0;
+}
+```
+
+# Exercises
+
+## Solve a linear system of equations with GSL {.smaller}
+
+**Goal:**
+
+- Write a program that balances a chemical equation by solving a linear system
+of equations using GSL.
+
+**Learning outcomes:**
+
+- Learn how to call functions in GSL.
+
+**Instructions:**
+
+- Consider the chemical equation $a C_3H_8 + b O_2 \leftrightarrow c CO_2 + d H_2O$.
+  Write a program that determines values for a,b,c,d such that the equation is
+  balanced (i.e., each element appears as often on the left hand side as on the right
+  hand side). Make use of [GSL linear algebra functions](http://gnu.ist.utl.pt/software/gsl/manual/html_node/Linear-Algebra-Examples.html)
+  to do this.
+- Bonus: Find a way to make sure the coefficients are integer
+
+## Handwriting recognition {.smaller}
+
+**Goal:**
+
+- Train a model that can recognize handwritten digits
+
+**Learning outcomes:**
+
+- Learn how to read "production" C code without understanding all details
+- Work with HDF5 and BLAS libraries
+
+::: {.fragment .callout-tip}
+It is not necessary or even wanted to fully understand the mathematics of the model.
+The following slides contain the essential things you need to know.
+:::
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+### Supervised machine learning models:
+
+::: {.incremental}
+- Propose a model $y = f(x; A)$ that relates the input $x$ to the output $y$ 
+  with a function $f$ that depends on (currently unknown) parameters $A$
+- Collect a training set of known input-output pairs of $\{x, y\}$ and
+  determine the parameters $A$ such that the model predicts the expected
+  outputs for the training set
+  - Technically: minimize a cost function using gradient descent
+- Use the estimated parameters to compute output for new inputs (inference)
+:::
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+- Input $\mathbf{x}$: vector of size $784$ representing grayscale values of an image of $28 \times 28$ pixels
+- Output $\mathbf{y}$: vector of size $10$, representing probabilities that image is classified as integer $\{ 0, 1, ..., 9\}$
+- Model $\mathbf{y} = \sigma \left( W \mathbf{x} + \mathbf{B} \right)$
+  - Perceptron: neuron whose activation depends on weights, biases and inputs
+  - $\sigma$ is an activation function, in this case a softmax
+- Parameters: $W$ ($782 \times 10$) matrix and $\mathbf{B}$ (vector of size 10)
+
+::: {.fragment .callout-tip}
+This is not a state-of-the art model, but does demonstrate the essence of even very modern machine learning.
+:::
+
+## Handwriting recognition {.smaller background-color="lightgrey"}
+
+An excellent tutorial is available at [https://www.3blue1brown.com/lessons/neural-networks](https://www.3blue1brown.com/lessons/neural-networks)
+(it uses multiple layers, so more parameters than in our case)
+
+![](images/neural-network-function.png)
+
+## Handwriting recognition {.smaller}
+
+**Instructions:**
+
+- Use [https://github.com/AndrewCarterUK/mnist-neural-network-plain-c](https://github.com/AndrewCarterUK/mnist-neural-network-plain-c) as a
+  starting point
+- Go through the code and try to get a high-level overview, without getting lost in the implementation details
+- Add checkpointing: allow storing parameters at the end of training in HDF5
+  format. Also allow reading them back in as initial guess to resume training
+- Replace the linear algebra operations by calls to BLAS. Compare the performance
+  with the original implementation
+- Write a companion program that does inference by using precalculated parameters
+- Implement your own feature that you think would improve the code
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitA_3.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.00%
+P(1) =   0.01%
+P(2) =   0.11%
+P(3) =  99.81%
+P(4) =   0.00%
+P(5) =   0.02%
+P(6) =   0.00%
+P(7) =   0.00%
+P(8) =   0.05%
+P(9) =   0.00%
+Digit prediction: 3
+```
+:::
+::::
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitB_6.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.05%
+P(1) =   0.00%
+P(2) =   0.01%
+P(3) =  96.88%
+P(4) =   0.00%
+P(5) =   3.06%
+P(6) =   0.00%
+P(7) =   0.00%
+P(8) =   0.00%
+P(9) =   0.00%
+Digit prediction: 3
+```
+:::
+::::
+
+## Handwriting recognition discussion {.smaller}
+
+- After training for 500 epochs: accuracty for test set is about 90%
+- Inference for examples outside of test set:
+
+:::: {.columns}
+::: {.column width="40%"}
+![](images/digitC_6.png)
+:::
+::: {.column width="55%"}
+```{.bash}
+P(0) =   0.00%
+P(1) =   0.08%
+P(2) =   0.68%
+P(3) =   0.01%
+P(4) =   0.00%
+P(5) =   0.00%
+P(6) =  99.08%
+P(7) =   0.00%
+P(8) =   0.14%
+P(9) =   0.00%
+Digit prediction: 6
+```
+:::
+::::
+
+# Segmentation faults
+
+## Segmentation faults
+
+- A **segmentation fault** occurs when a program accesses memory it **does not own**.
+- Common causes:
+  - Dereferencing **NULL** or **uninitialized pointers**
+  - Accessing memory **out of bounds** (arrays, strings)
+  - Writing to **read-only memory**
+
+## Segmentation fault example {.smaller}
+
+```{.c .small-code}
+#include <stdio.h>
+ 
+int main(void) {
+    int n = 4;
+    int A[n];
+    for (int i = 0; i <= n; i++) printf("A[%5d] = %12d\n", i, A[i]);
+    for (int i = 1; i <= n; i++) printf("A[%5d] = %12d\n", i * 30000, A[i * 30000]);
+    return 0;
+}
+```
+
+What will happen when you compile and run this program?
+
+- The program will not compile
+- The program will crash when accessing `A[0]` since its value is not initialized
+- The program will crash when accessing `A[4]` since it is outside of the array
+- The program *might* crash when accessing any element outside of the array
+- The program will always run to completion
+
+## Segmentation fault example {.smaller}
+
+Invalid array access gives undefined behavior, the result can depend on the system
+
+```{.bash}
+A[    0] =            0
+A[    1] =            0
+A[    2] =      4199005
+A[    3] =            0
+A[    4] =  -2103564768
+A[30000] =   1818850658
+A[60000] =    774974819
+Segmentation fault (core dumped)
+```
+
+- Some elements of the array (`A[2]`) have a *garbage* value
+  - Makes sense, elements were not initialized
+- Some elements outside of array (`A[30000]`) have a garbage value
+  - Makes sense, you just get what happens to be in memory at `(A + 30000)`
+- The access of `A[90000]` gives a segmentation fault
+  - ???
+
+## Virtual vs physical memory {background-color="lightgrey" .smaller}
+
+:::: {.columns}
+::: {.column width=65%}
+- As a user/programmer, you see *virtual* memory
+- Virtual memory creates the illusion of a large, contiguous, uniform address space
+  - Hides fragmentation of physical memory
+  - Delegates managing memory hierarchy (caches, RAM, disk) to OS
+  - Provides safety mechanism to isolate process' address space
+:::
+::: {.column width=35%}
+![](images/virtual_memory.svg) 
+:::
+:::: 
+
+::: {.fragment}
+- Mapping to phyical memory in page table
+  - Out-of-bound memory access can pick up garbage mapping address
+  - You might be accessing another process' memory, even on read access the CPU throws a segmentation fault
+:::
+
+## Segmentation fault example {.smaller}
+
+Invalid array access gives undefined behavior, the result can depend on the system
+
+```{.bash}
+A[    0] =            0
+A[    1] =            0
+A[    2] =      4199005
+A[    3] =            0
+A[    4] =  -2103564768
+A[30000] =   1818850658
+A[60000] =    774974819
+Segmentation fault (core dumped)
+```
+
+- Some elements of the array (`A[2]`) have a *garbage* value
+  - Makes sense, elements were not initialized
+- Some elements outside of array (`A[30000]`) have a garbage value
+  - Makes sense, you just get what happens to be in memory at `(A + 3000)`
+- The access of `A[90000]` gives a segmentation fault
+  - This virtual address corresponds to a physical address that is not part of the process
+  - The operating system reports this as a segmentation fault
+
+
+## Handling segmentation faults
+
+- Do not make coding mistakes :)
+- Ask the compiler to instrument executable to 
+  - `gcc -fsanitize=bounds-strict segmentation_fault.c`
+  - Can lead to lower performance
+- Run the program under a debugger such as `gdb`
+  - Compile with debug symbols (`-g`)
+
+# Versions of C
+
+## Versions of C ^[Adapted from https://github.com/gjbex/Scientific-C]
+
+## A brief history of C
+
+- C development starts in the early 1970s
+- First standard published in 1989: ANSI C or C89
+- Update in 1999: C99 standard
+- Update in 2011: C11 standard
+- Minor bugfixes in 2017: C17 (sometimes referred to as C18)
+- Update in 2023: C23
+
+## Different C standards
+
+- The C89 standard is still considered the default
+- Compiler has to be instructed to use specific standard: `gcc -std=c11`
+  - You need a recent compiler for the most recent standard
+- Compilers often do not stick *exactly* to standard
+  - `gcc` provides some C99 constructions by default
+  - Options like `-std=c89 -pedantic` make it more strict
+
+## The C99 standard additions {.smaller}
+
+- Single-line comments with `//`
+- Variable length arrays
+- Mark functions with `inline` to avoid call overhead
+- Use `restrict` to indicate arrays do not overlap
+- Boolean and complex types in `<bool.h>` and `<complex.h>`
+- Type-generic macros in `<tgmath.h>`
+- IEEE 754 floating point support
+
+## Inline functions {.smaller}
+
+- Function call: expensive
+  - call stack must be maintained
+  - stack variables allocated, initialized
+- Small functions, called often: lots of overhead
+- Inline functions: function code inserted in caller
+  - good compilers try that anyway
+  - helping compilers: better optimization!
+
+```{.c}
+inline double sqr(double x) {
+    return x*x;
+}
+```
+
+## Restrict keyword for arrays
+
+- Arrays in C:
+  - decay into pointers, just contain address of first element
+  - no semantics for compiler
+- Multiple arrays as function arguments, do they overlap?
+- Help compiler, use `restrict`
+  - programmer assures to compiler that arrays don't overlap
+
+```{.c}
+void daxpy_r(double * restrict z, double a, double * restrict x,
+             double * restrict y, int n);
+```
+
+## Complex numbers
+
+- Types:
+  - float complex: single precision
+  - double complex: double precision
+  - long double complex: extended precision
+- Declarations in complex.h
+  - types
+  - literal: I
+  - functions, e.g., `creal`, `cimag`, `csqrt`, `cexp`, ...
+
+## Type-generic math {.smaller}
+
+- Automatically selects the correct version of a math function:
+  - `float`, `double`, or `long double`
+  - `complex` or `real` types
+- Cleaner code: No need to manually choose `sinf`, `sin`, or `sinl`.
+- Type safety: Matches function to argument type at compile time.
+
+```{.c}
+#include <tgmath.h>
+
+double x = 0.5;
+float y = 0.5f;
+
+double result1 = sin(x);  // uses sin()
+float result2 = sin(y);   // uses sinf()
+```
+
+## IEEE 754 floating point support 
+
+- float: 4 byte, single precision
+- double: 8 byte, double precision
+- long double: 12 byte, extended precision
+- Rounding well-defined
+- Support for Inf, -Inf, NaN 
+
+## The C11 standard
+
+The `_Generic` Keyword
+
+- Enables **type-generic programming** (like `tgmath.h`)
+- Example:
+  ```c
+  #define my_abs(x) _Generic((x), \
+      int: abs, \
+      float: fabsf, \
+      double: fabs \
+  )(x)
+  ```
+
+## Mathematics in C23
+
+- New mathematical functions in `math.h`
+  - `sinpi(x)` is the same as `sin(pi*x)` with better precision
+  - `exp10` et al.
+- Checked integer arithmetic in `stdckdint.h`
+  - `ckd_add` et al.
+- Support for `1'000` and `1'133.023` notation
+- Decimal floating-point math (IEEE 754-2008/2019)
+
+## Syntax changes in C23
+
+- `nullptr` (keyword) rather than `NULL` (macro)
+- `true/false` keywords, `stdbool.h` not required
+- Unnamed function parameters
+- `stdbit.h`: bit manipulation functions
+- `strdup/strndup`: simple string duplication
+- `constexpr` for compile-time constants
+- `static_assert` for compile-time asserts
+- `typeof` to determine type at compile time
+
+## C23 attributes {.smaller}
+
+- Defensive programming
+  - `[[fallthrough]]`: intentional fall-through in switch
+  - `[[nodiscard]]`: don't ignore return value
+  - `[[maybe_unused]]`: don't warn if not used (function/parameter)
+  - `[[deprecated]]`
+- Performance related
+  - `[[unsequenced]]`: function has no side-effects, calls can be out-of-order
+  - `[[reproducible]]`: function has no side-effect, calls have to be in-order (e.g., random numbers)
+
+# Wrapping up
+
+## Scientific programming landscape
+
+![](images/scientific_programming_languages_landscape.png)
+
+## More to explore
+
+- How to do HPC => [HPC intro](https://hpcleuven.github.io/HPC-intro) and [Linux for HPC](https://hpcleuven.github.io/Linux-for-HPC/)
+- Build systems => [CMake intro](https://hpcleuven.github.io/CMake-intro/) and [Makefile intro](https://hpcleuven.github.io/Makefile-intro/)
+- Version control => [Version control with git](https://github.com/gjbex/Version-control-with-git)
+- Optimizing code => [Code optimization](https://gjbex.github.io/Code-optimization/)
+- Debugging code => [Defensive programming and debugging](https://gjbex.github.io/Defensive_programming_and_debugging/)
+- Parallel programming => [Parallel programming](https://github.com/gjbex/Parallel-programming)
+- Setting up an Integrated Development Environment (IDE)
+
+## More to explore
+
+::: {.callout-tip}
+The calendar of VSC Trainings can be found at [https://www.vscentrum.be/vsctraining](https://www.vscentrum.be/vsctraining).
+Learning paths that show connections between trainings can be found at [https://gjbex.github.io/](https://gjbex.github.io/).
+:::

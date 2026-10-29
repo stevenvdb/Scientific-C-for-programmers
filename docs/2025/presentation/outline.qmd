@@ -1,0 +1,56 @@
+## Outline
+
+<div style="display: flex; gap: 1em; flex-wrap: wrap;">
+<div style="flex: 1 1 45%;">
+<h3>Day 1</h3>
+<details>
+  <summary>Introduction</summary>
+  <ul>
+    <li>Motivation</li>
+    <li>Context</li>
+    <li>Course overview</li>
+  </ul>
+</details>
+<details>
+  <summary>Jumping in</summary>
+  <ul>
+    <li>Hello, world</li>
+    <li>Temperature conversion</li>
+    <li>Logistic map</li>
+  </ul>
+</details>
+<h3>Day 2</h3>
+<details>
+  <summary>Basics of C</summary>
+  <ul>
+    <li>Types and operators</li>
+    <li>Control flow</li>
+    <li>Functions</li>
+
+  </ul>
+</details>
+</div>
+<div style="flex: 1 1 45%;">
+<h3>Day 3</h3>
+<details>
+  <summary>Advanced C</summary>
+  <ul>
+    <li>Arrays and pointers</li>
+    <li>Structures</li>
+    <li>Input and output</li>
+  </ul>
+</details>
+<h3>Day 4</h3>
+<details>
+  <summary>Beyond the core of C</summary>
+  <ul>
+    <li>External libraries</li>
+    <li>Segmentation faults</li>
+    <li>C standards</li>
+  </ul>
+</details>
+<details>
+  <summary>Wrapping up</summary>
+</details>
+</div>
+</div>

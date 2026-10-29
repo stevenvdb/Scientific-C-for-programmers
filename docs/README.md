@@ -93,11 +93,17 @@ compile and run C programs.
 
 ## Level
 
-TODO
-* Introductory: 50 %
-* Intermediate: 50 %
+* Introductory: 70%
+* Intermediate: 30%
 
 
-## Trainer(s)
+## Trainer
 
-  * Steven Vandenbrande ([steven.vandenbrande@kuleuven.be](mailto:steven.vandenbrande@kuleuven.be))
+* Steven Vandenbrande ([steven.vandenbrande@kuleuven.be](mailto:steven.vandenbrande@kuleuven.be))
+
+
+## Archive
+
+* 2025
+  * [description](2025/)
+  * [slides](2025/presentation)
