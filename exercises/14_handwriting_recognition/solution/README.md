@@ -18,7 +18,7 @@ By [AndrewCarterUK ![(Twitter)](http://i.imgur.com/wWzX9uB.png)](https://twitter
 
 ```sh
 make
-./mnist
+./training
 ```
 
 ## Description

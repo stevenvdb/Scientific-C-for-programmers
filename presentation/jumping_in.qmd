@@ -59,7 +59,7 @@ You can use another compiler such as `clang` if you prefer, some options may dif
     git clone https://github.com/stevenvdb/Scientific-C-for-programmers/
     ```
   - Alternatively, visit [https://github.com/stevenvdb/Scientific-C-for-programmers/](https://github.com/stevenvdb/Scientific-C-for-programmers/) in a browser
-- This exercise is located in `exercises/01_temperature_conversion`
+- This exercise is located in `exercises/01_convert_temperatures`
 
 ---
 

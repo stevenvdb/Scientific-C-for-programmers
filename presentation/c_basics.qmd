@@ -1094,4 +1094,4 @@ points inside a unit circle
 - Compute the nth element by using a recursive function
 - Try to trigger a stack overflow for large n
 - Write a function without recursion
-- See `exercises/07_recursion`
+- See `exercises/07_fibonacci`

@@ -272,7 +272,7 @@ for (int i=0; i<n; i++) {
 ## Pointers to functions
 
 - Example
-  - When $a$ and $b$ are close, the integral $\int_a^{b} f(x) dx \approx \frac{1}{2} \frac{f(a) + f(b)}{b-a}$
+  - When $a$ and $b$ are close, the integral $\int_a^{b} f(x) dx \approx \frac{1}{2} (f(a) + f(b))(b-a)$
   - This rule can be written for any $f(x)$ as:
 
 ```{.c}
@@ -312,7 +312,7 @@ double trap = trapezoidRule(cos, 0, M_PI);
 
 **Instructions:** 
 
-- See `exercises/09_heat_equation`
+- See `exercises/09_heat_equation_2D`
 
 ## Heat equation memory leak
 
