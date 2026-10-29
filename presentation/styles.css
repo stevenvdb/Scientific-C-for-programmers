@@ -2,6 +2,10 @@
   font-size: 70%;   /* or e.g. 0.8em */
 }
 
+.reveal .slides section div.callout {
+  font-size: calc(0.7em * 0.8);
+}
+
 /* Full grid + reliable outer border */
 .reveal table {
   border-collapse: collapse;
@@ -73,4 +77,3 @@ h1.title {
 .reveal .slides section.x-slide::after {
   transform: translate(-50%, -50%) rotate(-45deg);
 }
-

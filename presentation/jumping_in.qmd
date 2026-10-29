@@ -8,6 +8,8 @@
 
 **Instructions:**
 
+Use **one** of the following environments:
+
 - Open the Visual Studio Code app via [https://ondemand.hpc.kuleuven.be](https://ondemand.hpc.kuleuven.be) if you have a VSC account
 - Use a C environment on your local machine if available
 - Create an app on [https://replit.com/languages/c](https://replit.com/languages/c) otherwise

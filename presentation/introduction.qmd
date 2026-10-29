@@ -10,8 +10,6 @@ Main lecturer: Steven Vandenbrande
   part of the Vlaams Supercomputer Centrum (VSC ^[[https://www.vscentrum.be](https://www.vscentrum.be/)])
 - Background in molecular modeling
 
-Support during hands-on sessions from Jan De Laet
-
 ## Who are you?
 
 Please present yourself:
@@ -29,14 +27,14 @@ Please present yourself:
 
 ::: {.fragment}
 ::: {.callout-tip}
-First run of this course, feedback is much appreciated.
+Second run of this course, feedback is much appreciated.
 :::
 :::
 ::: {.fragment}
 ::: {.callout-warning}
 These slides are not intended as a reference manual, but to accompany a talk.
 A book like [The C programming language](https://en.wikipedia.org/wiki/The_C_Programming_Language)
-is better suited as a reference.
+by Kernighan and Ritchie is better suited as a reference.
 :::
 :::
 
@@ -50,16 +48,19 @@ is better suited as a reference.
 
 ## Why learn to program ~~in C~~?
 
-Didn't AI agents take over programming? In my opinion:
+It's 2026, didn't AI take over programming?
 
-- AI agents are invaluable assistants
-- Still benefit greatly from a prompter with expertise because:
-  - They will confidently write code that is wrong
-  - They will often produce sub-optimal code (speed, maintainability, ...)
-
+::: {.incremental}
+- *Should you write all code yourself?*<br>
+  => No, for some tasks AI assistants have only benefits
+- *Should AI write **all** your code?*<br>
+  => Perhaps, it depends...
+- *Should you still learn to program?*<br>
+  => Different question: even if AI **writes** all code, being able to **read** code can be important
+:::
 <div class="fragment">
 ::: {.callout-warning}
-This opinion might be outdated very soon.
+These opinions might be outdated very soon.
 :::
 </div>
 
@@ -67,15 +68,26 @@ This opinion might be outdated very soon.
 
 ## Why learn to program ~~in C~~? {.slide}
 
-I encourage you to use AI assistance during this course
+- Keep ownership of a project
+- Understand the code
+- Assist your AI assistant
+- Understand software development workflows
+- Handle sensitive data
+- Out of intellectual curiosity
 
-- You will use it in real-life coding
-- You need to learn how to use it
+<div class="fragment">
+::: {.callout-tip}
+Importance of each reason highly depends on the project.
+:::
+</div>
 
-with two caveats:
+---
 
-- The exercises are educational,<br>AI might perform better than for your real problems
-- Don't cheat on yourself,<br>try to understand the answers to learn something
+## Why learn to program ~~in C~~? {.slide}
+
+- This course is about learning to program,<br> not how to use AI when programming
+- AI assistance during this course is encouraged
+- Caveat: don't cheat on yourself,<br>try to understand the answers to learn something
 
 ---
 
