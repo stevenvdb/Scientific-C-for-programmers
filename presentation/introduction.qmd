@@ -6,7 +6,7 @@ Main lecturer: Steven Vandenbrande
  
 - Member of the HPC Support Team of ICTS
 - HPC (High Performance Computing):<br>
-  KU Leuven offers Tier-2 cluster to researchers,<br>
+  KU Leuven offers a Tier-2 cluster to researchers,<br>
   part of the Vlaams Supercomputer Centrum (VSC ^[[https://www.vscentrum.be](https://www.vscentrum.be/)])
 - Background in molecular modeling
 
@@ -23,7 +23,7 @@ Please present yourself:
 
 - Four sessions of 3 hours (with a break)
 - Course website:<br><https://stevenvdb.github.io/Scientific-C-for-programmers/>
-- Hands on: make sure you have a working C environment
+- Hands-on: make sure you have a working C environment
 
 ::: {.fragment}
 ::: {.callout-tip}
@@ -77,7 +77,7 @@ These opinions might be outdated very soon.
 
 <div class="fragment">
 ::: {.callout-tip}
-Importance of each reason highly depends on the project.
+The importance of each reason depends strongly on the project.
 :::
 </div>
 
@@ -87,7 +87,7 @@ Importance of each reason highly depends on the project.
 
 - This course is about learning to program,<br> not how to use AI when programming
 - AI assistance during this course is encouraged
-- Caveat: don't cheat on yourself,<br>try to understand the answers to learn something
+- Caveat: don't fool yourself,<br>try to understand the answers to learn something
 
 ---
 
@@ -176,7 +176,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 - Source code compiled to Java bytecode which runs in virtual machine
   - in principle slower code execution
 - Memory safety and automatic garbage collection
-- Quite often used in bio informatics
+- Quite often used in bioinformatics
 
 ![](images/java.png)
 
@@ -210,7 +210,7 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 
 ![](images/R.png)
 
-## Matlab
+## MATLAB
 
 - Proprietary numeric computing environment
 - Extensive built-in functions for linear algebra, signal processing, optimization, and statistics
@@ -245,9 +245,9 @@ The [godbolt](https://godbolt.org/) project gives a taste of what assembly looks
 
 - Knowing multiple languages is useful
   - Allows you to use the right tool for the right job
-  - For example, C for computationally-intensive parts, Python for post processing
+  - For example, C for computationally intensive parts, Python for post-processing
 - Select a few languages in which you become an expert
-- Look beyond intrinsic properties, the ecosystem and support is important
+- Look beyond intrinsic properties, the ecosystem and support are important
 
 # Course overview
 

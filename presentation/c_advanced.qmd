@@ -113,7 +113,7 @@ When pointing to array elements, incrementing a pointer *always* means going to 
 irrespective of the object type!
 :::
 
-## Array indexing sourcery
+## Array indexing sorcery
 
 ::: {.incremental}
 - In C, the name of an array is a synonym for the memory address of the initial element
@@ -130,8 +130,8 @@ irrespective of the object type!
   - `f(&a[2])` passes the subarray that starts at `a[2]`
 
 ::: {.callout-warning}
-You cannot pass a *slice* of an array, the called function is responsible to
-respect the bounds of the array. This is one of the reasons why C programs are
+You cannot pass a *slice* of an array, the called function is responsible for
+respecting the bounds of the array. This is one of the reasons why C programs are
 often considered at risk for unsafe memory management.
 :::
 
@@ -182,7 +182,7 @@ char *pmessage = "My second string";
   - Since C99 it is supported and many compilers allow it by default
 - Even if you can have VLAs, there are some downsides
   - Allocated on stack, so limited in size
-  - Scope is local, similar as other variables
+  - Scope is local, as with other variables
   - VLA *might* be less efficient
 
 ::: {.callout-tip}
@@ -534,7 +534,7 @@ risk of a hypothetical disease
   | seq4 | Dave | GGGGATCGATCG |
   | seq5 | Eve | ATCGGGGGGGTA |
 
-  Imagine that the number of times one of the following motifs is present,
+  Imagine that the number of times one of the following motifs is present
   increases the risk to carry a certain disease:
 
   | Motif | Disease |
@@ -561,16 +561,16 @@ See `exercises/11_dna_sequencing`
 - Limited coverage in this course, see K&R Appendix B
 :::
 
-## Writing to standard out (stdout)
+## Writing to standard output (stdout)
 
-`printf` allows to print internal values as characters in terminal
+`printf` allows you to print internal values as characters in terminal
 
 ```{.c}
 // int with minimal width 5
 printf("a = %5d\n", a); // a =    10
 // int with minimal width 5 and zero padding
 printf("a = %05d\n", a); // a = 00010
-// double with 8 digits after comma
+// double with 8 digits after the decimal place
 printf("pi = %.8f\n", M_PI); // pi = 3.14159265
 // double in exponential notation
 printf("pi = %8.2e\n", M_PI); // pi = 3.14e+00
@@ -578,7 +578,7 @@ printf("pi = %8.2e\n", M_PI); // pi = 3.14e+00
 printf("%.10s\n", "Hello, world"); // Hello, wor
 ```
 
-## Reading from standard in (stdin)
+## Reading from standard input (stdin)
 
 ```{.c}
 int day;
@@ -630,7 +630,7 @@ Command-line argument 2 is World
 - Files are accessed using a `FILE` structure defined in `stdio.h`:
   - `FILE *fp; fp = fopen(name, mode);`
 - `mode` can be read `r`, append `a`, or write `w`
-- Make sure to check if `fopen` was succesful by comparing with `NULL` pointer
+- Make sure to check if `fopen` was successful by comparing with `NULL` pointer
 - Make sure to close file again with `fclose(fp)`;
 
 ## File access example

@@ -70,7 +70,7 @@ For instance `CPATH` will include the path of the header files, `LD_LIBRARY_PATH
 
 ## Minimizing a function with GSL
 
-See [https://www.gnu.org/software/gsl/doc/html/min.html](https://www.gnu.org/software/gsl/doc/html/min.html) for documentation about one dimensional minimization
+See [https://www.gnu.org/software/gsl/doc/html/min.html](https://www.gnu.org/software/gsl/doc/html/min.html) for documentation about one-dimensional minimization
 
 ```{.c}
 #include <stdio.h>
@@ -239,10 +239,9 @@ of equations using GSL.
 
 - Consider the chemical equation $a C_3H_8 + b O_2 \leftrightarrow c CO_2 + d H_2O$.
   Write a program that determines values for a,b,c,d such that the equation is
-  balanced (i.e., each element appears as often on the left hand side as on the right
-  hand side). Make use of [GSL linear algebra functions](http://gnu.ist.utl.pt/software/gsl/manual/html_node/Linear-Algebra-Examples.html)
+  balanced (i.e., each element appears as often on the left-hand side as on the right-hand side). Make use of [GSL linear algebra functions](http://gnu.ist.utl.pt/software/gsl/manual/html_node/Linear-Algebra-Examples.html)
   to do this.
-- Bonus: Find a way to make sure the coefficients are integer
+- Bonus: Find a way to make sure the coefficients are integers
 
 ## Handwriting recognition {.smaller}
 
@@ -284,7 +283,7 @@ The following slides contain the essential things you need to know.
 - Parameters: $W$ ($782 \times 10$) matrix and $\mathbf{B}$ (vector of size 10)
 
 ::: {.fragment .callout-tip}
-This is not a state-of-the art model, but does demonstrate the essence of even very modern machine learning.
+This is not a state-of-the-art model, but does demonstrate the essence of even very modern machine learning.
 :::
 
 ## Handwriting recognition {.smaller background-color="lightgrey"}
@@ -362,7 +361,7 @@ Digit prediction: 3
 
 ## Handwriting recognition discussion {.smaller}
 
-- After training for 500 epochs: accuracty for test set is about 90%
+- After training for 500 epochs: accuracy for test set is about 90%
 - Inference for examples outside of test set:
 
 :::: {.columns}
@@ -456,8 +455,8 @@ Segmentation fault (core dumped)
 :::: 
 
 ::: {.fragment}
-- Mapping to phyical memory in page table
-  - Out-of-bound memory access can pick up garbage mapping address
+- Mapping to physical memory in page table
+  - Out-of-bounds memory access can pick up garbage mapping address
   - You might be accessing another process' memory, even on read access the CPU throws a segmentation fault
 :::
 
@@ -587,9 +586,9 @@ float result2 = sin(y);   // uses sinf()
 
 ## IEEE 754 floating point support 
 
-- float: 4 byte, single precision
-- double: 8 byte, double precision
-- long double: 12 byte, extended precision
+- float: 4 bytes, single precision
+- double: 8 bytes, double precision
+- long double: 12 bytes, extended precision
 - Rounding well-defined
 - Support for Inf, -Inf, NaN 
 
@@ -658,6 +657,6 @@ The `_Generic` Keyword
 ## More to explore
 
 ::: {.callout-tip}
-The calendar of VSC Trainings can be found at [https://www.vscentrum.be/vsctraining](https://www.vscentrum.be/vsctraining).
-Learning paths that show connections between trainings can be found at [https://gjbex.github.io/](https://gjbex.github.io/).
+The calendar of VSC Training sessions can be found at [https://www.vscentrum.be/vsctraining](https://www.vscentrum.be/vsctraining).
+Learning paths that show connections between training sessions can be found at [https://gjbex.github.io/](https://gjbex.github.io/).
 :::

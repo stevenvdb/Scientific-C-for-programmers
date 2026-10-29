@@ -35,14 +35,14 @@ gcc hello.c -o hello
 ```
 
 ::: {.callout-tip}
-You can use another compiler such as `clang` if you prefer, some options can be different.
+You can use another compiler such as `clang` if you prefer, some options may differ.
 :::
 
 ## Temperature conversion
 
 **Goal:**
 
-- Print a table with temperatures in Fahrenheit and Celcius, the formula is $^\circ C= \frac{5}{9}(^\circ F - 32)$
+- Print a table with temperatures in Fahrenheit and Celsius, the formula is $^\circ C= \frac{5}{9}(^\circ F - 32)$
 
 **Learning outcome:**
 
