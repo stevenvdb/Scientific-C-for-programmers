@@ -15,7 +15,7 @@ language. The content is based on the similar
 Total duration: 12 hours, split over four sessions.
 
 
-### Session one
+### Session 1
 
 Total duration: 3 hours
 
@@ -25,7 +25,7 @@ Total duration: 3 hours
   | jumping in                                  | 100 min.  |
 
 
-### Session two
+### Session 2
 
 Total duration: 3 hours
 
@@ -36,7 +36,7 @@ Total duration: 3 hours
   | functions                                   | 60 min.  |
 
 
-### Session three
+### Session 3
 
 Total duration: 3 hours
 
@@ -47,7 +47,7 @@ Total duration: 3 hours
   | input and output                     | 60 min.  |
 
 
-### Session four
+### Session 4
 
 Total duration: 3 hours
 
