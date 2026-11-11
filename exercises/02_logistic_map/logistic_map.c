@@ -15,9 +15,11 @@ int main() {
     FILE *outputfile = fopen("population.txt", "w");
 
     for (int i=0; i < Nsteps; i++){
-        current_population = update_population(current_population, growth_rate);
         fprintf(outputfile, "%d %12.6f\n", i, current_population);
+        current_population = update_population(current_population, growth_rate);
     }
+
+    fprintf(outputfile, "%d %12.6f\n", Nsteps, current_population);
 
     fclose(outputfile);
     return 0;
