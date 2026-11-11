@@ -3,7 +3,7 @@
 
 int main(void) {
     int N, max_iter = 10000, iter;
-    double T0, TL, tol = 1e-6;
+    double T0, TL, tol = 1e-3;
 
     printf("Enter number of points: ");
     scanf("%d", &N);
@@ -20,10 +20,11 @@ int main(void) {
     }
     T[0] = T0;
     T[N-1] = TL;
+    double max_diff = 0.0;
 
     // Iterative relaxation
     // FIXME: Write a loop over iter from 0 up to max_iter
-        double max_diff = 0.0;
+        max_diff = 0.0;
         //FIXME: Copy the values of T into T_old
 
         for (int i = 1; i < N-1; i++) {
@@ -37,7 +38,7 @@ int main(void) {
             break;
     }
 
-    printf("\nSteady-state temperature distribution after %d iterations:\n", iter);
+    // FIXME: Print if steady state was reached or not
     for (int i = 0; i < N; i++) {
         printf("x = %5.2f, T = %8.4f\n", (double)i / (N-1), T[i]);
     }

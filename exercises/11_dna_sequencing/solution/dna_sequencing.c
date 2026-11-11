@@ -42,15 +42,17 @@ int main() {
 
     // Analyze sequences; for each DNA sequence, compute the risk score for
     // each motif, but counting the number of times the motif appears
+    printf("| %12s | ", "Person");
+    for (int j = 0; j < NUM_MOTIFS; j++) printf("%12s | ", motifs[j]);
+    printf("\n");
     for (int i = 0; i < MAX_SEQ; i++) {
         int risk_score = 0;
-
+        printf("| %12s | ", sequences[i].name);
         for (int j = 0; j < NUM_MOTIFS; j++) {
-            risk_score += count_motif(sequences[i].sequence, motifs[j]);
+            risk_score = count_motif(sequences[i].sequence, motifs[j]);
+            printf("%12d | ", risk_score);
         }
-
-        printf("ID: %s, Name: %s, Risk Score: %d\n",
-               sequences[i].id, sequences[i].name, risk_score);
+        printf("\n");
     }
 
     return 0;

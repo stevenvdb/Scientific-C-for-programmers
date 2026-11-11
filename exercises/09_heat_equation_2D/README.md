@@ -15,7 +15,12 @@
   constant. In a computer program, space and time are discretized and the update
   formula looks as follows:
 
-  $$u_{i,j}(n+1) \leftarrow \kappa \delta t \left(\frac{u_{i+1,j}(n) - 2 * u_{i,j}(n) + u_{i-1,j}(n)}{\delta x ^2} + \frac{u_{i,j-1}(n) - 2 * u_{i,j}(n) + u_{i,j-1}(n)}{\delta y ^2}\right)$$
+  $$u_{i,j}(n+1) = u_{i,j}(n) +  \kappa \delta t \left(\frac{u_{i+1,j}(n) - 2 * u_{i,j}(n) + u_{i-1,j}(n)}{\delta x ^2} + \frac{u_{i,j-1}(n) - 2 * u_{i,j}(n) + u_{i,j+1}(n)}{\delta y ^2}\right)$$
+
+  The stability condition is:
+
+  $$\kappa\Delta t\left(\Delta x^{-2}+\Delta y^{-2}\right)\leq\tfrac{1}{2}.$$
+
 
 - Write a program that applies this formula iteratively, starting from $u_{i,j}(0)$
   that is zero, except in the first quadrant where it is 1. The boundary conditions
