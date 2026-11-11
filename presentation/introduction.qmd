@@ -58,11 +58,10 @@ It's 2026, didn't AI take over programming?
 - *Should you still learn to program?*<br>
   => Different question: even if AI **writes** all code, being able to **read** code can be important
 :::
-<div class="fragment">
+
 ::: {.callout-warning}
 These opinions might be outdated very soon.
 :::
-</div>
 
 ---
 
@@ -70,9 +69,10 @@ These opinions might be outdated very soon.
 
 ::: {.incremental}
 - Keep/take ownership of a project
-  - Human remains reponsible of AI-generated code
+  - Human remains responsible of AI-generated code
   - Requires that you understand the code
   - [AI ownership may become accepted]{style="color: red;"}
+  - [Same argument applies for proprietary software]{style="color: red;"}
 - Assist your AI assistant
   - Human in the loop as a policy (KU Leuven AI charter)
   - Human in the loop for high-level decisions
@@ -98,10 +98,10 @@ These opinions might be outdated very soon.
 ## Why learn to program ~~in C~~? {.slide}
 
 ::: {.incremental}
-- Problem to solve maps nicely to software
+- Problem to solve maps nicely to software/hardware
   - Better understanding of problem through implementing
   - [Human understanding might become irrelevant]{style="color: red;"}
-- *Out of intellectual curiosity*
+- *Out of intellectual curiosity,<br>to avoid cognitive debt*
 :::
 
 ---
@@ -109,7 +109,7 @@ These opinions might be outdated very soon.
 ## Why learn to program ~~in C~~? {.slide}
 
 - This course is about learning to program,<br> not how to use AI when programming
-- AI assistance during this course is encouraged
+- AI assistance during this course is encouraged<br> to help with learning
 - Caveat: don't fool yourself,<br>try to understand the answers to learn something
 
 ---
