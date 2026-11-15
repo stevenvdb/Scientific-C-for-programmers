@@ -14,6 +14,8 @@ resources:
   - jumping_in.qmd
   - c_basics.qmd
   - c_advanced.qmd
+  - external_libraries.qmd
+  - python_bindings.qmd
   - beyond_c_core.qmd
   - wrapping_up.qmd
   - outline.qmd
@@ -24,5 +26,7 @@ toc: false
 {{< include jumping_in.qmd >}}
 {{< include c_basics.qmd >}}
 {{< include c_advanced.qmd >}}
+{{< include external_libraries.qmd >}}
+{{< include python_bindings.qmd >}}
 {{< include beyond_c_core.qmd >}}
 {{< include wrapping_up.qmd >}}
