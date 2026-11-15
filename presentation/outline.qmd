@@ -45,6 +45,7 @@
   <summary>Beyond the core of C</summary>
   <ul>
     <li>External libraries</li>
+    <li>Python bindings</li>
     <li>Segmentation faults</li>
     <li>C standards</li>
   </ul>

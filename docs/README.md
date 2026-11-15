@@ -31,8 +31,8 @@ Total duration: 3 hours
 
   | Subject                                     | Duration |
   |---------------------------------------------|----------|
-  | control flow                                | 60 min.  |
   | data types                                  | 60 min.  |
+  | control flow                                | 60 min.  |
   | functions                                   | 60 min.  |
 
 
@@ -53,7 +53,8 @@ Total duration: 3 hours
 
   | Subject                              | Duration |
   |--------------------------------------|----------|
-  | using third-party libraries          | 120 min. |
+  | using third-party libraries          | 60 min. |
+  | generating Python bindings           | 60 min. |
   | wrap up                              | 60 min.  |
 
 
