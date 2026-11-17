@@ -29,8 +29,8 @@
 ```{.c code-line-numbers="false"}
 int a = 10;
 if (a > 0) {
-    b = 2; // Single-line comment
-    c = 3;
+    int b = 2; // Single-line comment
+    int c = 3;
 }
 /* Multi-line
    comment */
@@ -43,9 +43,9 @@ if (a > 0) {
 - are case sensitive
 - consist of `{A,...,Z,a,...,z,_,0,...,9}`
 - start with `{A,...,Z,a,...,z,_}`
-- can have any length, but at most:
-  - variables: 31 significant, 64 for C99+
-  - functions: 6 significant^[guaranteed by standard, nowadays most compilers allow longer lengths], 32 for C99+
+- can have any length, but:
+  - variables: only 31 chars guaranteed significant^[64 for C99+, compiler may allow even more]
+  - functions and external variables: only 6 chars guaranteed significant (32 for C99+)
 - cannot be reserved words such as `if`, `while`, `char`, `int`, ...
 
 ## Conventions for names
@@ -74,7 +74,8 @@ try to stick to a generally accepted code style, e.g. the
 
 - a `char` holds 1 character of the local character set
 - usually 1 byte, check with the `sizeof` operator
-- limits are defined in `limits.h` header as `CHAR_MIN` and `CHAR_MAX`
+- internally an integer, allows mathematics
+- limits are defined in `limits.h` header (`CHAR_MIN`, `CHAR_MAX`)
 - `char` can be signed or unsigned
   - almost always irrelevant, just use `char`
 - Example: `char myChar = 'b';`
@@ -129,7 +130,7 @@ need and choose the appropriate type.
 The C standard only imposes a minimal range for integers:
 
 - For example, `int` should at least cover $[−32767, +32767]$
-- Some platforms provide larger range => code is potentially platform dependent
+- Some platforms provide larger range<br>=> code is potentially platform dependent
 
 If you need a fixed range:
 
@@ -178,13 +179,13 @@ If you need a fixed range:
 
 ## Basic floating-point representations
 
-- `double`: most often used in science
+- `double`: most often used in physics/engineering/...
 - `float`: half the number of bits compared to `double`, usually 7 *decimal* digit precision
 - `long double`: usually larger range than `double`, not used often
 
 ::: {.callout-note}
-In deep learning, reduced-precision formats (FP16, FP8) are often used. Only
-dedicated devices like GPUs give hardware support.
+In deep learning, reduced-precision formats (FP16, FP8 or even FP4) are often
+used. Only dedicated devices like GPUs give hardware support.
 :::
 
 ## Enumeration
@@ -207,7 +208,10 @@ enum Pieces myPiece = Bishop; // myPiece will be 'B'
 ## Type conversion
 
 - In constants, use suffix, e.g. `123456789L` is a `long int`
-- In expressions, automatic conversion to largest type, e.g. `5/9.0` is interpreted as `5.0/9.0`
+- In expressions, automatic conversion:
+  - real number present<br>=> integer converted to real number
+  - e.g., `5/9.0` is interpreted as `5.0/9.0`
+  - from "narrower" to "widest" type present,<br>see K&R A6.5 for complete rules
 - Explicit casting with brackets, e.g. `(int) 5.3`
   - this evaluates to the integer 5, so information is lost
 
@@ -247,17 +251,15 @@ conversion.c:6:13: warning: conversion from ‘double’ to ‘int’ may change
 ```
 
 ::: {.fragment}
-- The `abs` function is for `int`, `double a` was silently converted
+- The `abs` function is for `int`, `double a` was silently converted to
+  integer outside of representable range
 - Solution: use the `fabs` function
 
 ```{.c .small-code}
-#include <stdio.h>
-#include <math.h>
-
 int main() {
     double a = -1.6e12;
-    if (fabs(a) > 0) printf("abs(a) is greater than 0\n");
-    else printf("abs(a) is smaller or equal to 0\n");
+    if (fabs(a) > 0) printf("fabs(a) is greater than 0\n");
+    else printf("fabs(a) is smaller or equal to 0\n");
 }
 ```
 
@@ -376,7 +378,7 @@ Use brackets for clarity instead of relying on precedence rules
 
 ::: {.fragment}
 ::: {.callout-tip}
-Be careful when comparing doubles, e.g. `pow(sqrt(5.0), 2) == 5.0` is false!
+Be careful when comparing floating-point numbers, e.g. `pow(sqrt(5.0), 2) == 5.0` is false!
 :::
 :::
 
@@ -448,16 +450,14 @@ if (a > b) {
 z = (a > b) ? a : b;
 ```
 
-## Precedence and associativity
+## Precedence and associativity 
 
 - K&R provide a table with precedence rules (2.12)
-  - Make your code readable and maintainable by using brackets
+  - Make your code readable by using brackets
 - C does not specify order of evaluation for most operators:
   - order can even depend on compiler options
-  - `x = f() + g();` might evaluate `g` before `f`
-    - important if `g` alters variable used by `f`
-  - `a + b + c;` could be `(a + b) + c` or `a + (b + c)`
-    - floating-point arithmetic does not preserve mathematical associativity
+  - `x = f() + g();` might evaluate `g` before `f`<br>=> important if `g` alters variable used by `f`
+  - `a + b + c;` could be `(a + b) + c` or `a + (b + c)`<br>=> floating-point arithmetic does not preserve mathematical associativity
 
 ## Exercise: operators
 
@@ -701,7 +701,7 @@ label:
 - Hide implementation details
 - Make it easier to reuse existing code
 
-## Basics of functions {.smaller}
+## Basics of functions
 
 ```{.c}
 // General function definition
@@ -714,7 +714,7 @@ return-type function-name(type1 arg1, type2 arg2, ...) {
 - A function can have no arguments: `int myFunction(void);`
 - A function can return nothing: `void myFunction(int A);`
   - No `return` statement in body required
-- The compiler requires a function to be *known* before it can process a call
+- Function must be *known* before it can be called:
   - Declare the function: `return-type function-name(type1 arg1, type2 arg2);`
   - Declaration is promise to provide implementation later
 
@@ -767,8 +767,8 @@ int returnInt() {
 
 ## Return code of main function {background-color="lightgrey"}
 
-- The return code of `main` is passed as exit code to calling process
-- Convention is to return `0` in case of success, non-zero otherwise
+- Return code of `main`: passed as exit code to calling process
+- Convention: return `0` in case of success, non-zero otherwise
 - Allows chaining dependent commands, for example in bash:
   - `&&` only executes next command if previous one had exit code `0`
   ```{.bash}
@@ -857,7 +857,7 @@ The *scope* of a variable or function is the part of the program where the varia
 - So far: small programs in one `.c` file: easy to compile
 - Larger projects: many source files
   - Order of compilation can matter because of dependencies
-  - Difficult to remember compilation commands (linking and flags)
+  - Difficult to remember compilation commands (linking/flags)
   - Editing one file does not require recompiling entirely
 
 ## Header files and build systems {background-color="lightgrey" .smaller}
@@ -929,13 +929,14 @@ unsigned long fac(unsigned long n) {
 }
 ```
 
-- Each function call has overhead (pushing frame on stack)
-- Often not the fastest or lowest footprint
-  - Deep recursion levels can even cause stack overflow
 - Often closer to mathematical description
+- Often not the fastest or lowest footprint
+  - Each function call has overhead (pushing frame on stack)
+  - Deep recursion levels can even cause stack overflow
+
 
 ::: {.fragment .callout-tip}
-When turning on compiler optimizations, recursive functions might be automatically converted to a loop,
+Compiler optimizations may convert recursive functions into loops,
 especially in case of tail recursion (where the recursive call is the last statement).
 :::
 
@@ -959,7 +960,7 @@ code presented to compiler.
 ## The C Preprocessor
 
 A macro substitution replaces each occurrence of a `name` with a `replacement`,
-for example `#define max(A, B) ((A) > (B) ? (A) : (B))`
+for example<br> `#define max(A, B) ((A) > (B) ? (A) : (B))`
 
 - Every occurrence of `max(x, y)` will be replaced
 - Use with care, can make code more readable, but also obfuscate when reading code for the first time
