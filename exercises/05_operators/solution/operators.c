@@ -5,7 +5,7 @@ int isLeapYear(int year) {
     /* Return 1 if year is a leap year and return 0 otherwise
        A year is a leap year if:
        - it is divisible by 4 but not by 100 OR
-       - it is disisible by 400
+       - it is divisible by 400
     */
     if ( (year % 4 == 0 && year % 100 != 0) || (year % 400) == 0) return 1;
     else return 0; 

@@ -319,15 +319,13 @@ Digit prediction: 6
 
 **Learning outcomes:**
 
-- Combine what you learned about C and Cython in a new problem.
-- Learn how to find out how to pass a NumPy array to C by reading documentation.
-- Learn how a 2D array looks like from the C side.
+- How to combine your own C code with Python
+- How to pass a NumPy array to C and understand memory layout
 
 **Instructions:**
 
-- Run `mandelbrot.py`, look at the result and note how long it takes.
-- Write a C function that computes the number of iterations for each point of the grid and stores them in an array.
-- Write a Cython wrapper, a `setup.py` and a Python script that calls the function with a NumPy array
+- Compute the number of iterations for each grid point by calling a C function
+  you write from Python
 - Compare the result and the run time with the pure Python version.
 - Bonus: Write a `Makefile`, and compare run times for increasing grid sizes.
 
