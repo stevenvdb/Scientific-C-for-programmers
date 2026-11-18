@@ -1078,6 +1078,7 @@ points inside a unit circle
   Nsamples = 100000000 Estimated pi =   3.14169792 Error =   1.0527e-04
   ```
 - Main optimization in this case is probably inlining `get_random_double`
+- With recent `gcc` versions the gap seems to be smaller
 
 ## Fibonacci {.smaller}
 
@@ -1096,3 +1097,42 @@ points inside a unit circle
 - Try to trigger a stack overflow for large n
 - Write a function without recursion
 - See `exercises/07_fibonacci`
+
+## Fibonacci recursive solution
+
+- Recursive implementation: exponential increase in number of function calls
+
+<div style="text-align: center;"><img src="images/fibonacci.jpeg" width="60%"/></div>^[https://medium.com/launch-school/recursive-fibonnaci-method-explained-d82215c5498e]
+
+## Alternative Fibonacci solution
+
+ - memoization: store and reuse previously calculated values
+ - loop: update last two values in each iteration
+   - next     ← previous + current
+   - previous ← current
+   - current  ← next
+ - use closed-form expression
+
+$$
+F_n = \frac{\varphi^n - \psi^n}{\sqrt{5}},
+\qquad
+\varphi = \frac{1+\sqrt{5}}{2},
+\quad
+\psi = \frac{1-\sqrt{5}}{2} = 1 - \varphi
+$$
+
+## Recursion {background-color="lightgrey"}
+
+:::: {.columns}
+
+::: {.column width="60%"}
+- High recursion depths can trigger a stack overflow
+- Compute time of recursive Fibonacci implementation will be prohibitive (unless you set a very small stack size)
+- The solution contains a "bare" recursive function for demonstration
+:::
+
+::: {.column width="40%"}
+![](images/stack.png){fig-align="center"}^[https://www.crio.do/bytes/understand-function-call-stack/]
+:::
+
+::::
