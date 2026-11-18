@@ -63,8 +63,7 @@
   computes the inner product
 - Since C uses pass-by-value, those objects would be copied when function is called
 - Memory access is slow, this would give bad performance for large cases
-
-=> This is also addressed by pointers
+  => This is also addressed by pointers
 :::
 
 ## Pointer basics
