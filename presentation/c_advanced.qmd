@@ -215,6 +215,12 @@ int main(int argc, char **argv) {
 }
 ```
 
+::: {.callout-note}
+The `malloc` function will store some metadata about the assigned memory,
+allowing the `free` function to know which memory blocks need to be freed.
+In the standard `malloc`, that metadata is not accessible to programmers.
+:::
+
 ## Multidimensional arrays
 
 - C supports multidimensional arrays by using multiple `[]`
@@ -465,7 +471,7 @@ The `typedef` keyword creates an alias for an existing data type
   [look up linked-list implementation to better understand this one]
 :::
 
-## Unions {.smaller background-color="lightgrey"}
+## Unions {.smaller background-color="#ffe5e5"}
 
 - A `union` can hold objects of different types, but only one at a time
   - Only the last assigned member is guaranteed to hold a valid value

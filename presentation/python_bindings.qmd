@@ -14,7 +14,7 @@
 
 ## Options to speed up Python
 
-- Use existing packages:
+- Use existing Python packages:
   - NumPy/SciPy: many mathematical operations with good performance
 - Use a Python compiler:
   - Numba compiles Python into machine code just-in-time
@@ -44,7 +44,7 @@ def estimate_pi_numba(N):
 - Only supports a subset of Python and NumPy
 - Offers automatic parallelization
 
-## Calling C from Python
+## Calling C from Python {.smaller}
 
 ::: {.incremental}
 - Implement computationally intensive functions in C
@@ -53,7 +53,7 @@ def estimate_pi_numba(N):
   - `ctypes`: part of the Python standard library, no compilation of bindings,
     but you declare all types by hand
   - pybind11: convenient, targets C++
-  - **Cython**: a compiler that turns Python-like code into C
+  - **Cython**: C-extensions for Python, turns Python-like code into C
 :::
 
 ::: {.fragment .callout-tip}
@@ -351,6 +351,7 @@ Plotting the number of iterations gives the Mandelbrot set:
 
 - The Cython documentation on typed memoryviews explains how to work with NumPy arrays in Cython, including how to pass them to a C function: [https://docs.cython.org/en/latest/src/userguide/memoryviews.html](https://docs.cython.org/en/latest/src/userguide/memoryviews.html)
 - The `mc_pi` example is a good starting point for the wrapper and for `setup.py`
+  (see [presentation/code_examples/mc_pi_python](https://github.com/stevenvdb/Scientific-C-for-programmers/tree/main/presentation/code_examples/mc_pi_python)) in the repo)
 
 **Memory layout**
 
